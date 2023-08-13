@@ -1,0 +1,58 @@
+
+
+User(
+id    key
+name  varchar()
+last_name varchar()
+ci varchar()
+address varchar()
+telf varchar
+) 
+
+Empleado(
+id   key
+correo varchar()
+password varchar()
+estado varchar()
+
+rol foreing key
+user foreing key
+)
+
+Externo(
+id  key
+user foreing key
+)
+
+visita(
+id key
+user foreing key
+razon text
+created date
+updated date
+)
+
+tarjetas(
+id key
+tipo varchar()
+description text
+rfid varchar()
+
+user foreing key unique
+
+created date
+updated date
+)
+
+ingreso/salida(
+id key
+tarjeta foreing key
+molino foreing key
+created date
+)        
+
+molino (
+id key
+name varchar
+description text
+)
