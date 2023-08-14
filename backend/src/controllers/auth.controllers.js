@@ -84,7 +84,11 @@ export const verifyToken = async (req, res) => {
       if (err) return res.status(401).json({ errors: ["Unauthorized"] });
       const userFound = await Employee.findOne({
         where: { id: user.id },
-        attributes: ["id", "email","status"],
+        attributes: ["id", "email"],
+        include: [
+          { model: User, attributes: ["id", "first_name", "last_name", "ci"] },
+          { model: Role, attributes: ["id", "name"] },
+        ],
       });
       if (!userFound) return res.status(401).json({ errors: ["Unauthorized"] });
       res.json(userFound);
