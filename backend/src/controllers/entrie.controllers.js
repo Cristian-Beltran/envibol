@@ -193,21 +193,26 @@ export const getEntrie = async (req, res) => {
 };
 
 export const createEntrie = async (req, res) => {
-  const { rfid, turnstileId, type } = req.body;
+  const { rfid, turnstile, type } = req.body;
   try {
+    console.log(rfid, turnstile, type);
     const card = await Card.findOne({
-      where: { rfid },
+      where: { rfid: rfid },
     });
-    if (!card) return res.status(404).json({ errors: ["Couldn't find card"] });
-    if (!card.userId)
-      return res.status(404).json({ errors: ["Card is not available"] });
+    if (!card) return res.status(404).json({ res: 0 });
+    if (!card.userId) return res.status(404).json({ res: 0 });
+
+    const getTurnstile = await Turnstile.findOne({
+      where: { name: turnstile },
+    });
 
     const newEntrie = await Entrie.create({
       type,
-      turnstileId,
+      turnstileId: getTurnstile.id,
       userId: card.userId,
     });
-    return res.json(newEntrie);
+
+    return res.json({ res: 1 });
   } catch (error) {
     return res.status(500).json({ errors: error });
   }

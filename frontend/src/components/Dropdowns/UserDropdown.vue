@@ -2,11 +2,11 @@
   <div>
     <a
       class="text-blueGray-500 block"
-      href="#pablo"
       ref="btnDropdownRef"
       v-on:click="toggleDropdown($event)"
     >
       <div class="items-center flex">
+        
         <span
           class="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full"
         >
@@ -28,29 +28,55 @@
     >
       <a
         href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        class="text-sm border-b py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
       >
-        Action
+        Acciones
       </a>
-      <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-      >
-        Another action
-      </a>
-      <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-      >
-        Something else here
-      </a>
+      <router-link to="/admin/settings" v-slot="{ href, navigate }">
+        <a
+          :href="href"
+          @click="
+            () => {
+              navigate;
+              dropdownPopoverShow = false;
+            }
+          "
+          class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        >
+          Mi informacion
+        </a>
+      </router-link>
+
+      <router-link to="/admin/settings" v-slot="{ href, navigate }">
+        <a
+          :href="href"
+          @click="
+            () => {
+              navigate;
+              dropdownPopoverShow = false;
+            }
+          "
+          class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        >
+          Actualizar contraseña
+        </a>
+      </router-link>
       <div class="h-0 my-2 border border-solid border-blueGray-100" />
-      <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-      >
-        Seprated link
-      </a>
+
+      <router-link to="/auth/login" v-slot="{ href, navigate }">
+        <a
+          :href="href"
+          @click="
+            () => {
+              navigate;
+              dropdownPopoverShow = false;
+            }
+          "
+          class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        >
+          Logout
+        </a>
+      </router-link>
     </div>
   </div>
 </template>
@@ -79,6 +105,9 @@ export default {
         });
       }
     },
+  },
+  created() {
+    console.log(this.$store.user);
   },
 };
 </script>
