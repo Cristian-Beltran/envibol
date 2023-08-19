@@ -24,8 +24,6 @@ export default {
     HeaderColor,
     FooterAdmin,
   },
-  created() {
-    console.log(this.$store.state.user);
-  },
+  
 };
 </script>

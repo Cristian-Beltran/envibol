@@ -14,8 +14,9 @@ import {
 
 const router = new Router();
 router.post("/entrie", createEntrie);
-router.get("/entrie", authRequired, getEntries);
-router.get("/exit", authRequired, getExits);
+router.get("/entries/:init/:final", authRequired, getEntries);
+router.get("/exits/:init/:final", authRequired, getExits);
+
 router.get("/entrie/today", authRequired, getEntriesToday);
 router.get("/exit/today", authRequired, getExitsToday);
 router.get("/entrie/:id", authRequired, getEntrie);

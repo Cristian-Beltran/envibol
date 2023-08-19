@@ -55,7 +55,6 @@
             </div>
           </div>
         </div>
-        
 
         <!-- Divider -->
         <hr class="my-4 md:min-w-full" />
@@ -63,7 +62,7 @@
         <h6
           class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
         >
-          Admin Layout Pages
+          Pagina de administracion
         </h6>
         <!-- Navigation -->
 
@@ -75,7 +74,12 @@
             >
               <a
                 :href="href"
-                @click="navigate"
+                @click="
+                  () => {
+                    navigate;
+                    collapseShow = 'hidden';
+                  }
+                "
                 class="text-xs uppercase py-3 font-bold block"
                 :class="[
                   isActive
@@ -94,12 +98,71 @@
 
           <li class="items-center">
             <router-link
-              to="/admin/settings"
+              to="/admin/employee"
               v-slot="{ href, navigate, isActive }"
             >
               <a
                 :href="href"
-                @click="navigate"
+                @click="
+                  () => {
+                    navigate;
+                    collapseShow = 'hidden';
+                  }
+                "
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-emerald-500 hover:text-emerald-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-user-tie mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Empleados
+              </a>
+            </router-link>
+          </li>
+
+          <li class="items-center">
+            <router-link to="/admin/role" v-slot="{ href, navigate, isActive }">
+              <a
+                :href="href"
+                @click="
+                  () => {
+                    navigate;
+                    collapseShow = 'hidden';
+                  }
+                "
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-emerald-500 hover:text-emerald-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-users mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Roles
+              </a>
+            </router-link>
+          </li>
+          <li class="items-center">
+            <router-link
+              to="/admin/turnstile"
+              v-slot="{ href, navigate, isActive }"
+            >
+              <a
+                :href="href"
+                @click="
+                  () => {
+                    navigate;
+                    collapseShow = 'hidden';
+                  }
+                "
                 class="text-xs uppercase py-3 font-bold block"
                 :class="[
                   isActive
@@ -111,19 +174,23 @@
                   class="fas fa-tools mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
-                Settings
+                Molinetes
               </a>
             </router-link>
           </li>
-
           <li class="items-center">
             <router-link
-              to="/admin/tables"
+              to="/admin/external"
               v-slot="{ href, navigate, isActive }"
             >
               <a
                 :href="href"
-                @click="navigate"
+                @click="
+                  () => {
+                    navigate;
+                    collapseShow = 'hidden';
+                  }
+                "
                 class="text-xs uppercase py-3 font-bold block"
                 :class="[
                   isActive
@@ -132,10 +199,174 @@
                 ]"
               >
                 <i
-                  class="fas fa-table mr-2 text-sm"
+                  class="fas fa-user mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
-                Tables
+                Usuarios externos
+              </a>
+            </router-link>
+          </li>
+          <li class="items-center">
+            <router-link
+              to="/admin/visit"
+              v-slot="{ href, navigate, isActive }"
+            >
+              <a
+                :href="href"
+                @click="
+                  () => {
+                    navigate;
+                    collapseShow = 'hidden';
+                  }
+                "
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-emerald-500 hover:text-emerald-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-address-book mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Visitas
+              </a>
+            </router-link>
+          </li>
+
+          <li class="items-center">
+            <router-link to="/admin/card" v-slot="{ href, navigate, isActive }">
+              <a
+                :href="href"
+                @click="
+                  () => {
+                    navigate;
+                    collapseShow = 'hidden';
+                  }
+                "
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-emerald-500 hover:text-emerald-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-id-card mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Tarjetas
+              </a>
+            </router-link>
+          </li>
+          <li class="items-center">
+            <router-link
+              to="/admin/typecard"
+              v-slot="{ href, navigate, isActive }"
+            >
+              <a
+                :href="href"
+                @click="
+                  () => {
+                    navigate;
+                    collapseShow = 'hidden';
+                  }
+                "
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-emerald-500 hover:text-emerald-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-id-card mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Tipos de Tarjetas
+              </a>
+            </router-link>
+          </li>
+          <li class="items-center">
+            <router-link
+              to="/admin/entrie"
+              v-slot="{ href, navigate, isActive }"
+            >
+              <a
+                :href="href"
+                @click="
+                  () => {
+                    navigate;
+                    collapseShow = 'hidden';
+                  }
+                "
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-emerald-500 hover:text-emerald-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-sign-in-alt mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Entradas
+              </a>
+            </router-link>
+          </li>
+
+          <li class="items-center">
+            <router-link to="/admin/exit" v-slot="{ href, navigate, isActive }">
+              <a
+                :href="href"
+                @click="
+                  () => {
+                    navigate;
+                    collapseShow = 'hidden';
+                  }
+                "
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-emerald-500 hover:text-emerald-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-sign-out-alt mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Salidas
+              </a>
+            </router-link>
+          </li>
+          <li class="items-center">
+            <router-link
+              to="/admin/report"
+              v-slot="{ href, navigate, isActive }"
+            >
+              <a
+                :href="href"
+                @click="
+                  () => {
+                    navigate;
+                    collapseShow = 'hidden';
+                  }
+                "
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-emerald-500 hover:text-emerald-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-file mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Reportes
               </a>
             </router-link>
           </li>

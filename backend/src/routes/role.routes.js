@@ -11,7 +11,7 @@ import {
 } from "../controllers/role.controllers.js";
 
 const router = new Router();
-router.post("/role",authRequired, createRole);
+router.post("/role", createRole);
 router.get("/role", authRequired, getRoles);
 router.get("/role/:id", authRequired, getRole);
 router.put("/role/:id", authRequired, updateRole);
