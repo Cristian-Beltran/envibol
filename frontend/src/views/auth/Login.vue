@@ -9,10 +9,18 @@
             <div class="text-center mb-3">
               <h6 class="text-blueGray-500 text-xl font-bold">Login</h6>
             </div>
-
             <hr class="mt-6 border-b-1 border-blueGray-300" />
           </div>
           <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
+            <div v-if="alertOpen">
+              <div
+                v-for="(item, index) in errors"
+                :key="index"
+                className="bg-red-500 p-2 text-white rounded-lg mb-2 text-center"
+              >
+                {{ item }}
+              </div>
+            </div>
             <form :onSubmit="handleSubmit">
               <div class="relative w-full mb-3">
                 <label
@@ -63,7 +71,7 @@
                   class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                   type="submit"
                 >
-                  Send
+                  Ingresar 
                 </button>
               </div>
             </form>
@@ -93,6 +101,7 @@ export default {
         password: "",
       },
       errors: [],
+      alertOpen: false,
     };
   },
   validations() {
@@ -114,6 +123,13 @@ export default {
     };
   },
   methods: {
+    notification() {
+      this.alertOpen = true;
+      const timer = setTimeout(() => {
+        this.alertOpen = false;
+      }, 3000);
+      return () => clearTimeout(timer);
+    },
     handleSubmit(event) {
       event.preventDefault();
       this.v$.$touch();
@@ -122,9 +138,11 @@ export default {
           try {
             const res = await loginRequest(this.formData);
             this.$store.commit("SET_USER", res.data);
+            this.$store.commit("SET_ISAUTHENTICATED", true);
             this.$router.push("/admin/dashboard");
           } catch (error) {
-            console.log(error);
+            this.errors = error.response.data.errors;
+            this.notification();
           }
         };
         request();

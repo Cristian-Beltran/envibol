@@ -6,15 +6,10 @@
       v-on:click="toggleDropdown($event)"
     >
       <div class="items-center flex">
-        
         <span
           class="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full"
         >
-          <img
-            alt="..."
-            class="w-full rounded-full align-middle border-none shadow-lg"
-            :src="image"
-          />
+          <i class="fas fa-user text-black text-xl"></i>
         </span>
       </div>
     </a>
@@ -47,7 +42,7 @@
         </a>
       </router-link>
 
-      <router-link to="/admin/settings" v-slot="{ href, navigate }">
+      <router-link to="/admin/updatePassword" v-slot="{ href, navigate }">
         <a
           :href="href"
           @click="
@@ -63,20 +58,13 @@
       </router-link>
       <div class="h-0 my-2 border border-solid border-blueGray-100" />
 
-      <router-link to="/auth/login" v-slot="{ href, navigate }">
-        <a
-          :href="href"
-          @click="
-            () => {
-              navigate;
-              dropdownPopoverShow = false;
-            }
-          "
-          class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-        >
-          Logout
-        </a>
-      </router-link>
+      <a
+        href="javascript:void(0);"
+        @click="logout"
+        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+      >
+        Logout
+      </a>
     </div>
   </div>
 </template>
@@ -84,13 +72,12 @@
 <script>
 import { createPopper } from "@popperjs/core";
 
-import image from "@/assets/img/team-1-800x800.jpg";
+import { logoutRequest } from "../../api/auth";
 
 export default {
   data() {
     return {
       dropdownPopoverShow: false,
-      image: image,
     };
   },
   methods: {
@@ -105,9 +92,17 @@ export default {
         });
       }
     },
-  },
-  created() {
-    console.log(this.$store.user);
+    async logout() {
+      console.log("logout");
+      try {
+        await logoutRequest();
+        this.$store.commit("SET_USER", null);
+        this.$store.commit("SET_ISAUTHENTICATED", false);
+        this.$router.push("/auth/login");
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>

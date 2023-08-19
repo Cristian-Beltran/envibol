@@ -13,10 +13,10 @@ import {
 } from "../controllers/employee.controllers.js";
 
 const router = new Router();
-router.post("/employee",createEmployee);
+router.post("/employee",authRequired,createEmployee);
 router.get("/employee", authRequired, getEmployees);
 router.get("/employee/:id", authRequired, getEmployee);
 router.put("/employee/:id", authRequired, updateEmployee);
 router.delete("/employee/:id", authRequired, deleteEmployee);
-router.post("/employee/status/:id", authRequired, updateStatusEmployee);
+router.put("/employee/status/:id", authRequired, updateStatusEmployee);
 export default router;

@@ -22,14 +22,6 @@
         </div>
       </div>
       <p class="text-sm text-blueGray-400 mt-4">
-        <span class="mr-2" :class="[statPercentColor]">
-          <i
-            :class="[
-              statArrow === 'up' ? `fas fa-arrow-up` : `fas fa-arrow-down`,
-            ]"
-          ></i>
-          {{ statPercent }}%
-        </span>
         <span class="whitespace-nowrap">{{ statDescripiron }}</span>
       </p>
     </div>
@@ -47,17 +39,7 @@ export default {
       type: String,
       default: "350,897",
     },
-    statArrow: {
-      default: "up",
-      validator: function (value) {
-        // The value must match one of these strings
-        return ["up", "down"].indexOf(value) !== -1;
-      },
-    },
-    statPercent: {
-      type: String,
-      default: "3.48",
-    },
+
     // can be any of the text color utilities
     // from tailwindcss
     statPercentColor: {

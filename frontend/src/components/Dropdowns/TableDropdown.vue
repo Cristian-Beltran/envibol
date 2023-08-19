@@ -20,19 +20,17 @@
         href="javascript:void(0);"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
       >
-        Action
+        Acciones
       </a>
       <a
+        v-for="(item, index) in options"
+        :key="index"
         href="javascript:void(0);"
         class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+        @click="emit({ action: item.id, id: id })"
       >
-        Another action
-      </a>
-      <a
-        href="javascript:void(0);"
-        class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-      >
-        Something else here
+        <i :class="item.icon"></i>
+        {{ item.name }}
       </a>
     </div>
   </div>
@@ -57,6 +55,18 @@ export default {
           placement: "bottom-start",
         });
       }
+    },
+    emit(action) {
+      this.dropdownPopoverShow = false;
+      this.$emit("emit", action);
+    },
+  },
+  props: {
+    options: {
+      default: [],
+    },
+    id: {
+      default: "",
     },
   },
 };

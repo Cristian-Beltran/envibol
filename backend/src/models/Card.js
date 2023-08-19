@@ -8,9 +8,7 @@ export const Card = sequelize.define("cards", {
     primaryKey: true,
     autoIncrement: true,
   },
-  type: {
-    type: DataTypes.STRING,
-  },
+  
   description: {
     type: DataTypes.TEXT,
   },
@@ -19,6 +17,34 @@ export const Card = sequelize.define("cards", {
     unique: true,
     allowNull: false,
   },
+});
+
+export const TypeCard = sequelize.define("typeCards",{
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+  },
+  color:{
+    type: DataTypes.STRING,
+  },
+  description: {
+    type: DataTypes.TEXT,
+  },
+  
+})
+
+TypeCard.hasOne(Card, {
+  foreignKey: "typeCardId",
+  sourceKey: "id",
+});
+
+Card.belongsTo(TypeCard, {
+  foreignKey: "typeCardId",
+  targetKey: "id",
 });
 
 User.hasOne(Card, {

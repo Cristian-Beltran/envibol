@@ -31,7 +31,6 @@ export const store = new Vuex.Store({
           commit("SET_ISAUTHENTICATED", false);
           return;
         }
-        console.log("Datos cargados");
         commit("SET_USER", res.data);
         commit("SET_ISAUTHENTICATED", true);
       } catch (error) {
@@ -41,6 +40,17 @@ export const store = new Vuex.Store({
     },
   },
   getters: {
+    dataUser(state) {
+      return {
+        email: state.user.email,
+        first_name: state.user.user.first_name,
+        last_name: state.user.user.last_name,
+        address: state.user.user.address,
+        telf: state.user.user.telf,
+        cel: state.user.user.cel,
+        ci: state.user.user.ci,
+      };
+    },
     fullNameUser(state) {
       return state.user.user.first_name + " " + state.user.user.last_name;
     },
