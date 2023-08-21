@@ -17,7 +17,7 @@ import statsRoutes from "./routes/stats.routes.js";
 const app = express();
 //Config
 app.set("appName", "MERN APP");
-app.set("port", 3000);
+app.set("port", process.env.PORT || 3000,);
 // Middleware
 app.use(
   cors({

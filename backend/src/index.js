@@ -10,7 +10,7 @@ async function main() {
   try {
     await sequelize.sync();
     console.log("Connection established");
-    app.listen(app.get("port"),'0.0.0.0');
+    app.listen(app.get("port"));
     console.log("Server listening on port " + app.get("port"));
   } catch (error) {
     console.log("Error: " + error);
