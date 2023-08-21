@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+=======
+# Created by https://www.toptal.com/developers/gitignore/api/node,vuejs,venv
+# Edit at https://www.toptal.com/developers/gitignore?templates=node,vuejs,venv
+
+### Node ###
+>>>>>>> 4a7ace6 (Agregando gitignore)
 # Logs
 logs
 *.log
@@ -102,7 +109,10 @@ dist
 
 # vuepress v2.x temp and cache directory
 .temp
+<<<<<<< HEAD
 .cache
+=======
+>>>>>>> 4a7ace6 (Agregando gitignore)
 
 # Docusaurus cache and generated files
 .docusaurus
@@ -128,3 +138,40 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+<<<<<<< HEAD
+=======
+
+### Node Patch ###
+# Serverless Webpack directories
+.webpack/
+
+# Optional stylelint cache
+
+# SvelteKit build / generate output
+.svelte-kit
+
+### venv ###
+# Virtualenv
+# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
+.Python
+[Bb]in
+[Ii]nclude
+[Ll]ib
+[Ll]ib64
+[Ll]ocal
+[Ss]cripts
+pyvenv.cfg
+.venv
+pip-selfcheck.json
+
+### Vuejs ###
+# Recommended template: Node.gitignore
+
+dist/
+npm-debug.log
+yarn-error.log
+
+# End of https://www.toptal.com/developers/gitignore/api/node,vuejs,venv
+
+
+>>>>>>> 4a7ace6 (Agregando gitignore)

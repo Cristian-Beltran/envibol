@@ -38,7 +38,6 @@ export const login = async (req, res) => {
       id: userFound.id,
     });
 
-    res.cookie("token", token);
     res.json({
       id: userFound.id,
       email: userFound.email,
@@ -55,6 +54,7 @@ export const login = async (req, res) => {
         telf: userFound.user.telf,
         cel: userFound.user.cel,
       },
+      token: token,
     });
   } catch (error) {
     res.status(500).json({
@@ -127,7 +127,7 @@ export const profile = async (req, res) => {
 
 export const verifyToken = async (req, res) => {
   try {
-    const token = req.cookies.token;
+    const token = req.headers.authorization;
     if (!token) return res.status(401).json({ errors: ["Unauthorized"] });
     jwt.verify(token, TOKEN_SECRET, async (err, user) => {
       if (err) return res.status(401).json({ errors: ["Unauthorized"] });

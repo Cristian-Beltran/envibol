@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+import VueCookies from 'vue-cookies';
 import { createWebHistory, createRouter } from "vue-router";
 
 // styles
@@ -233,4 +234,4 @@ router.beforeEach(async (to, from, next) => {
   }
 });
 
-createApp(App).use(router).use(store).mount("#app");
+createApp(App).use(router).use(store).use(VueCookies, { expires: '7d'}).mount("#app");

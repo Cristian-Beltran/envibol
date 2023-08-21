@@ -72,8 +72,6 @@
 <script>
 import { createPopper } from "@popperjs/core";
 
-import { logoutRequest } from "../../api/auth";
-
 export default {
   data() {
     return {
@@ -92,16 +90,11 @@ export default {
         });
       }
     },
-    async logout() {
-      console.log("logout");
-      try {
-        await logoutRequest();
-        this.$store.commit("SET_USER", null);
-        this.$store.commit("SET_ISAUTHENTICATED", false);
-        this.$router.push("/auth/login");
-      } catch (error) {
-        console.log(error);
-      }
+    logout() {
+      this.$cookies.remove("token");
+      this.$store.commit("SET_USER", null);
+      this.$store.commit("SET_ISAUTHENTICATED", false);
+      this.$router.push("/auth/login");
     },
   },
 };

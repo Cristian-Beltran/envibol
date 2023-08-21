@@ -57,7 +57,7 @@ const convertArray = (data) => {
   data.forEach((item) => {
     const { hour, count } = item.dataValues;
     const date = new Date(hour); // Obtener la parte de la fecha YYYY-MM-DD
-    const dateHour = date.getHours();
+    const dateHour = date.getHours()-6;
     dataFormat[dateHour] += parseInt(count, 10);
   });
   return dataFormat;
