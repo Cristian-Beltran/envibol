@@ -21,7 +21,11 @@ app.set("port", 3000);
 // Middleware
 app.use(
   cors({
+<<<<<<< HEAD
     origin: "https://envibol.netlify.app/",
+=======
+    origin: "https://envibol.netlify.app",
+>>>>>>> deploy
     credentials: true,
   })
 );
