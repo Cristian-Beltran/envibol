@@ -71,7 +71,7 @@
                   class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                   type="submit"
                 >
-                  Ingresar 
+                  Ingresar
                 </button>
               </div>
             </form>
@@ -139,6 +139,8 @@ export default {
             const res = await loginRequest(this.formData);
             this.$store.commit("SET_USER", res.data);
             this.$store.commit("SET_ISAUTHENTICATED", true);
+            const token = res.data.token; // Guarda el token en una cookie
+            this.$cookies.set("token",token,"1d");
             this.$router.push("/admin/dashboard");
           } catch (error) {
             this.errors = error.response.data.errors;
