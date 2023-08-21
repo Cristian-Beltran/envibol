@@ -21,7 +21,7 @@ app.set("port", 3000);
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://envibol.netlify.app",
     credentials: true,
   })
 );
