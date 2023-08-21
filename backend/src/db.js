@@ -1,7 +1,7 @@
 import Sequelize from "sequelize";
 
-export const sequelize = new Sequelize("envibol", "postgres", "holamundo", {
-  host: "localhost",
+export const sequelize = new Sequelize("envibol", "postgres", "holamundo1", {
+  host: "srv-captain--envibol-db",
   dialect: "postgres",
   timezone: "-04:00",
 });
