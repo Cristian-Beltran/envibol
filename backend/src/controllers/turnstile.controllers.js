@@ -11,6 +11,17 @@ export const getTurnstiles = async (req, res) => {
   }
 };
 
+export const getTurnstilesMQTT = async() => {
+  try {
+    const turnstile = await Turnstile.findAll();
+    return turnstile;
+  } catch (error) {
+    return error;
+  }
+};
+
+
+
 export const createTurnstile = async (req, res) => {
   const { name, description } = req.body;
   try {

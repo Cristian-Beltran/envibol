@@ -12,7 +12,7 @@ import {
 
 const router = new Router();
 router.post("/turnstile", authRequired, createTurnstile);
-router.get("/turnstile", getTurnstiles);
+router.get("/turnstile", authRequired,getTurnstiles);
 router.get("/turnstile/:id", authRequired, getTurnstile);
 router.put("/turnstile/:id", authRequired, updateTurnstile);
 export default router;

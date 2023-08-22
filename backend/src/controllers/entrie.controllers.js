@@ -5,6 +5,7 @@ import { Turnstile } from "../models/Turnstile.js";
 import { Op } from "sequelize";
 import { Role } from "../models/Role.js";
 
+
 export const getEntriesToday = async (req, res) => {
   try {
     const today = new Date();
@@ -289,5 +290,39 @@ export const createEntrie = async (req, res) => {
     return res.json(response);
   } catch (error) {
     return res.status(500).json({ errors: error });
+  }
+};
+
+export const createEntrieMQTT = async (rfid, turnstile, type) => {
+  try {
+    const card = await Card.findOne({
+      where: { rfid: rfid.trim() },
+    });
+    if (!card) return "I";
+    if (!card.userId) return "I";
+
+    const employee = await Employee.findOne({ where: { userId: card.userId } });
+    if (employee) {
+      if (employee.status != "1") return "I";
+    }
+    const getTurnstile = await Turnstile.findOne({
+      where: { name: turnstile },
+    });
+
+    const newEntrie = await Entrie.create({
+      type,
+      turnstileId: getTurnstile.id,
+      userId: card.userId,
+    });
+
+    const user = await User.findByPk(card.userId);
+    if (type === "entry") user.inside = true;
+    else if (type === "exit") user.inside = false;
+    user.save();
+
+    const response = type === "entry" ? "E" : "S";
+    return response;
+  } catch (error) {
+    return error;
   }
 };
