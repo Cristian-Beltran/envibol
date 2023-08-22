@@ -7,6 +7,9 @@
     "COPY ./backend/package.json /usr/src/app/",
     "RUN npm install && npm cache clean --force",
     "COPY ./backend /usr/src/app",
+    "ENV NODE_ENV production",
+    "ENV PORT 80",
+    "EXPOSE 80",
     "CMD [ \"npm\", \"start\" ]"
   ]
 }
