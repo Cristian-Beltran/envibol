@@ -141,7 +141,8 @@
 <script>
 import Table from "@/components/Tables/Table.vue";
 import {
-  getEmployeesRequest,
+  getEmployeesStaffRequest,
+  getEmployeesAdminRequest,
   deleteEmployeeRequest,
   changeStatusEmployeeRequest,
 } from "../../api/employee";
@@ -225,7 +226,10 @@ export default {
     async loadData() {
       this.load = true;
       try {
-        const res = await getEmployeesRequest();
+        const isAdmin = this.$store.getters.isAdmin;
+        let res;
+        if (isAdmin) res = await getEmployeesAdminRequest();
+        else res = await getEmployeesStaffRequest();
         this.items = res.data;
         this.itemsDisplay = this.items;
         this.load = false;

@@ -1,8 +1,10 @@
 import axios from "./axios";
 
-export const createEmployeeRequest = (card) => axios.post("/employee", card);
+export const createEmployeeRequest = (employee) => axios.post("/employee", employee);
 
-export const getEmployeesRequest = () => axios.get("/employee");
+export const getEmployeesStaffRequest = () => axios.get("/employeeStaff");
+
+export const getEmployeesAdminRequest = () => axios.get("/employeeAdmin");
 
 export const getEmployeeRequest = (id) => axios.get("/employee/" + id);
 

@@ -49,6 +49,14 @@ export const Employee = sequelize.define("employees", {
     type: DataTypes.STRING,
     defaultValue: 1,
   },
+  staff: {
+    type: DataTypes.BOOLEAN,
+    default: false,
+  },
+  admin:{
+    type: DataTypes.BOOLEAN,
+    default: false,
+  }
 });
 
 User.hasOne(Employee, {

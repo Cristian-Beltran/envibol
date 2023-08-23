@@ -62,7 +62,7 @@
         <h6
           class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
         >
-          Pagina de administracion
+          Administracion
         </h6>
         <!-- Navigation -->
 
@@ -95,6 +95,68 @@
               </a>
             </router-link>
           </li>
+          <li v-if="$store.getters.isAdmin" class="items-center">
+            <router-link
+              to="/admin/turnstile"
+              v-slot="{ href, navigate, isActive }"
+            >
+              <a
+                :href="href"
+                @click="
+                  () => {
+                    navigate;
+                    collapseShow = 'hidden';
+                  }
+                "
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-emerald-500 hover:text-emerald-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-tools mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Molinetes
+              </a>
+            </router-link>
+          </li>
+          
+          <li v-if="$store.getters.isAdmin" class="items-center">
+            <router-link to="/admin/role" v-slot="{ href, navigate, isActive }">
+              <a
+                :href="href"
+                @click="
+                  () => {
+                    navigate;
+                    collapseShow = 'hidden';
+                  }
+                "
+                class="text-xs uppercase py-3 font-bold block"
+                :class="[
+                  isActive
+                    ? 'text-emerald-500 hover:text-emerald-600'
+                    : 'text-blueGray-700 hover:text-blueGray-500',
+                ]"
+              >
+                <i
+                  class="fas fa-users mr-2 text-sm"
+                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
+                ></i>
+                Roles de empleados
+              </a>
+            </router-link>
+          </li>
+          <!-- Divider -->
+          <hr class="my-4 md:min-w-full" />
+          <!-- Heading -->
+          <h6
+            class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
+          >
+            Usuarios
+          </h6>
 
           <li class="items-center">
             <router-link
@@ -125,59 +187,6 @@
             </router-link>
           </li>
 
-          <li class="items-center">
-            <router-link to="/admin/role" v-slot="{ href, navigate, isActive }">
-              <a
-                :href="href"
-                @click="
-                  () => {
-                    navigate;
-                    collapseShow = 'hidden';
-                  }
-                "
-                class="text-xs uppercase py-3 font-bold block"
-                :class="[
-                  isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
-                    : 'text-blueGray-700 hover:text-blueGray-500',
-                ]"
-              >
-                <i
-                  class="fas fa-users mr-2 text-sm"
-                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                ></i>
-                Roles
-              </a>
-            </router-link>
-          </li>
-          <li class="items-center">
-            <router-link
-              to="/admin/turnstile"
-              v-slot="{ href, navigate, isActive }"
-            >
-              <a
-                :href="href"
-                @click="
-                  () => {
-                    navigate;
-                    collapseShow = 'hidden';
-                  }
-                "
-                class="text-xs uppercase py-3 font-bold block"
-                :class="[
-                  isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
-                    : 'text-blueGray-700 hover:text-blueGray-500',
-                ]"
-              >
-                <i
-                  class="fas fa-tools mr-2 text-sm"
-                  :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                ></i>
-                Molinetes
-              </a>
-            </router-link>
-          </li>
           <li class="items-center">
             <router-link
               to="/admin/external"
@@ -235,6 +244,15 @@
             </router-link>
           </li>
 
+          <!-- Divider -->
+          <hr class="my-4 md:min-w-full" />
+          <!-- Heading -->
+          <h6
+            class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
+          >
+            Tarjetas
+          </h6>
+
           <li class="items-center">
             <router-link to="/admin/card" v-slot="{ href, navigate, isActive }">
               <a
@@ -260,7 +278,7 @@
               </a>
             </router-link>
           </li>
-          <li class="items-center">
+          <li v-if="$store.getters.isAdmin" class="items-center">
             <router-link
               to="/admin/typecard"
               v-slot="{ href, navigate, isActive }"
@@ -288,6 +306,15 @@
               </a>
             </router-link>
           </li>
+          <!-- Divider -->
+          <hr class="my-4 md:min-w-full" />
+          <!-- Heading -->
+          <h6
+            class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
+          >
+            E/S de molinetes
+          </h6>
+
           <li class="items-center">
             <router-link
               to="/admin/entrie"
@@ -342,6 +369,15 @@
               </a>
             </router-link>
           </li>
+          <!-- Divider -->
+          <hr class="my-4 md:min-w-full" />
+          <!-- Heading -->
+          <h6
+            class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
+          >
+            Reportes
+          </h6>
+
           <li class="items-center">
             <router-link
               to="/admin/report"
@@ -366,7 +402,7 @@
                   class="fas fa-file mr-2 text-sm"
                   :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                 ></i>
-                Reportes
+                Reportes de molinetes
               </a>
             </router-link>
           </li>

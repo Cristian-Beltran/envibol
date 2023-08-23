@@ -19,8 +19,6 @@ export const store = new Vuex.Store({
   actions: {
     async verifyToken({ commit }) {
       const cookies = Cookies.get();
-      console.log("Token")
-      console.log(cookies)
       if (!cookies.token) {
         commit("SET_USER", null);
         commit("SET_ISAUTHENTICATED", false);
@@ -28,6 +26,7 @@ export const store = new Vuex.Store({
       }
       try {
         const res = await verifyTokenRequest(cookies.token);
+        console.log(res.data);
         if (!res.data) {
           commit("SET_USER", null);
           commit("SET_ISAUTHENTICATED", false);
@@ -59,14 +58,8 @@ export const store = new Vuex.Store({
     isLogin(state) {
       return state.isAuthenticated;
     },
-    isSAdmin(state) {
-      return state.user.role.name === "SAdmin";
-    },
-    isRRHH(state) {
-      return state.user.role.name === "RRHH";
-    },
-    isPorter(state) {
-      return state.user.role.name === "Portero";
+    isAdmin(state) {
+      return state.user ? state.user.admin : false;
     },
   },
   modules: {},

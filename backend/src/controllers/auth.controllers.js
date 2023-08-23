@@ -9,8 +9,8 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const userFound = await Employee.findOne({
-      where: { email, status: "1" },
-      attributes: ["id", "email", "password", "status"],
+      where: { email, status: "1", staff: true },
+      attributes: ["id", "email", "password", "status", "admin"],
       include: [
         {
           model: User,
@@ -41,6 +41,7 @@ export const login = async (req, res) => {
     res.json({
       id: userFound.id,
       email: userFound.email,
+      admin: userFound.admin,
       role: {
         id: userFound.role.id,
         name: userFound.role.name,
@@ -132,8 +133,8 @@ export const verifyToken = async (req, res) => {
     jwt.verify(token, TOKEN_SECRET, async (err, user) => {
       if (err) return res.status(401).json({ errors: ["Unauthorized"] });
       const userFound = await Employee.findOne({
-        where: { id: user.id, status: "1" },
-        attributes: ["id", "email", "status"],
+        where: { id: user.id, status: "1", staff: true },
+        attributes: ["id", "email", "status","admin"],
         include: [
           {
             model: User,

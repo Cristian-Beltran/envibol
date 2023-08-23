@@ -141,7 +141,7 @@ export default {
             this.$store.commit("SET_ISAUTHENTICATED", true);
             const token = res.data.token; // Guarda el token en una cookie
             this.$cookies.set("token",token,"1d");
-            this.$router.push("/admin/dashboard");
+            location.reload();
           } catch (error) {
             this.errors = error.response.data.errors;
             this.notification();

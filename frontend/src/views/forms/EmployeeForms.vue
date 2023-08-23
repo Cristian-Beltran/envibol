@@ -139,6 +139,34 @@
                   </select>
                 </div>
               </div>
+              <div class="w-full lg:w-6/12 px-4" v-if="$store.getters.isAdmin">
+                <div class="relative w-full mb-3">
+                  <label
+                    class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                  >
+                    Acceso al sistema
+                  </label>
+                  <input
+                    v-model="v$.formData.staff.$model"
+                    type="checkbox"
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-auto ease-linear transition-all duration-150"
+                  />
+                </div>
+              </div>
+              <div class="w-full lg:w-6/12 px-4" v-if="$store.getters.isAdmin">
+                <div class="relative w-full mb-3">
+                  <label
+                    class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                  >
+                    Permisos de administrador
+                  </label>
+                  <input
+                    v-model="v$.formData.admin.$model"
+                    type="checkbox"
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-auto ease-linear transition-all duration-150"
+                  />
+                </div>
+              </div>
             </div>
             <hr class="mt-6 border-b-1 border-blueGray-300" />
 
@@ -199,7 +227,7 @@
                       :href="href"
                       :click="navigate"
                       class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                      type="submit"
+                      type="button"
                     >
                       <span><i class="fas fa-arrow-left"></i> Atras</span>
                     </button>
@@ -247,6 +275,8 @@ export default {
         telf: "",
         address: "",
         cel: "",
+        staff: false,
+        admin: false,
       },
       errors: [],
       roles: [],
@@ -277,8 +307,22 @@ export default {
         telf: {},
         cel: {},
         password: {},
+        staff: {},
+        admin: {},
       },
     };
+  },
+  watch: {
+    "formData.admin"(newValue, oldValue) {
+      if (newValue && !this.formData.staff) {
+        this.formData.staff = true;
+      }
+    },
+    "formData.staff"(newValue, oldValue) {
+      if (!newValue && this.formData.admin) {
+        this.formData.admin = false;
+      }
+    },
   },
   methods: {
     notification() {

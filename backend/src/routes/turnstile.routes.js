@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { authRequired } from "../middlewares/validateToken.js";
-import { validateSchema } from "../middlewares/validator.middlewares.js";
+import { adminRequired } from "../middlewares/validateAdmin.js";
 
 import {
   createTurnstile,
@@ -11,8 +11,8 @@ import {
 } from "../controllers/turnstile.controllers.js";
 
 const router = new Router();
-router.post("/turnstile", authRequired, createTurnstile);
-router.get("/turnstile", authRequired,getTurnstiles);
-router.get("/turnstile/:id", authRequired, getTurnstile);
-router.put("/turnstile/:id", authRequired, updateTurnstile);
+router.post("/turnstile", authRequired, adminRequired, createTurnstile);
+router.get("/turnstile", authRequired, adminRequired, getTurnstiles);
+router.get("/turnstile/:id", authRequired, adminRequired, getTurnstile);
+router.put("/turnstile/:id", authRequired, adminRequired, updateTurnstile);
 export default router;

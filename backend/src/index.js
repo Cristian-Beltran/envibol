@@ -9,7 +9,7 @@ import "./models/Turnstile.js";
 import mqttHandler from "./mqtt_handler.js";
 async function main() {
   try {
-    await sequelize.sync();
+    await sequelize.authenticate();
     console.log("Connection established");
     app.listen(app.get("port"));
     var mqttClient = new mqttHandler();

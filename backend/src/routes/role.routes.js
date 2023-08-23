@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { authRequired } from "../middlewares/validateToken.js";
-import { validateSchema } from "../middlewares/validator.middlewares.js";
+import { adminRequired } from "../middlewares/validateAdmin.js";
 
 import {
   createRole,
@@ -11,8 +11,8 @@ import {
 } from "../controllers/role.controllers.js";
 
 const router = new Router();
-router.post("/role", createRole);
+router.post("/role", authRequired, adminRequired, createRole);
 router.get("/role", authRequired, getRoles);
 router.get("/role/:id", authRequired, getRole);
-router.put("/role/:id", authRequired, updateRole);
+router.put("/role/:id", authRequired, adminRequired, updateRole);
 export default router;

@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { authRequired } from "../middlewares/validateToken.js";
-import { validateSchema } from "../middlewares/validator.middlewares.js";
+import { adminRequired } from "../middlewares/validateAdmin.js";
 
 import {
   createTypeCard,
@@ -12,9 +12,9 @@ import {
 } from "../controllers/typecard.controllers.js";
 
 const router = new Router();
-router.post("/typecard", authRequired, createTypeCard);
+router.post("/typecard", authRequired,adminRequired, createTypeCard);
 router.get("/typecard", authRequired, getTypeCards);
 router.get("/typecard/:id", authRequired, getTypeCard);
-router.put("/typecard/:id", authRequired, updateTypeCard);
-router.delete("/typecard/:id", authRequired, deleteTypeCard);
+router.put("/typecard/:id", authRequired,adminRequired, updateTypeCard);
+router.delete("/typecard/:id", authRequired,adminRequired, deleteTypeCard);
 export default router;

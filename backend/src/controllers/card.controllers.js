@@ -1,21 +1,52 @@
 import { Card, TypeCard } from "../models/Card.js";
 import { User, Employee, External } from "../models/User.js";
 
-import { Op } from "sequelize";
+import { Op, where } from "sequelize";
 
 export const getCards = async (req, res) => {
+  const userId = req.user.id;
   try {
-    const cards = await Card.findAll({
-      include: [
-        {
-          model: TypeCard,
-          attributes: ["id", "name", "color"],
+    const user = await Employee.findByPk(userId);
+    let cards;
+    if (user.admin) {
+      cards = await Card.findAll({
+        include: [
+          {
+            model: TypeCard,
+            attributes: ["id", "name", "color"],
+          },
+          {
+            model: User,
+          },
+        ],
+      });
+    } else {
+      cards = await Card.findAll({
+        include: [
+          {
+            model: TypeCard,
+            attributes: ["id", "name", "color"],
+          },
+          {
+            model: User,
+            include: [
+              {
+                model: Employee,
+              },
+            ],
+          },
+        ],
+        where: {
+          "$user.employee.admin$": {
+            [Op.or]: {
+              [Op.eq]: false, 
+              [Op.is]: null, 
+            },
+          },
         },
-        {
-          model: User,
-        },
-      ],
-    });
+      });
+    }
+
     const cardModify = cards.map((card) => ({
       id: card.id,
       typeCardId: card.typeCardId,

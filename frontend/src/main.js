@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import VueCookies from 'vue-cookies';
+import VueCookies from "vue-cookies";
 import { createWebHistory, createRouter } from "vue-router";
 
 // styles
@@ -89,14 +89,17 @@ const routes = [
       {
         path: "/admin/typecard",
         component: TypeCard,
+        meta: { requiresAdmin: true },
       },
       {
         path: "/admin/newTypeCard",
         component: TypeCardForms,
+        meta: { requiresAdmin: true },
       },
       {
         path: "/admin/updateTypeCard",
         component: TypeCardForms,
+        meta: { requiresAdmin: true },
       },
       //Empleados
       {
@@ -146,27 +149,33 @@ const routes = [
       {
         path: "/admin/role",
         component: Role,
+        meta: { requiresAdmin: true },
       },
       {
         path: "/admin/newRole",
         component: RoleForms,
+        meta: { requiresAdmin: true },
       },
       {
         path: "/admin/updateRole",
         component: RoleForms,
+        meta: { requiresAdmin: true },
       },
       //Molinos
       {
         path: "/admin/turnstile",
         component: Turnstile,
+        meta: { requiresAdmin: true },
       },
       {
         path: "/admin/newTurnstile",
         component: TurnstileForms,
+        meta: { requiresAdmin: true },
       },
       {
         path: "/admin/updateTurnstile",
         component: TurnstileForms,
+        meta: { requiresAdmin: true },
       },
       //Visitas
       {
@@ -205,6 +214,9 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+  let ok = false;
+  let path = "";
+
   if (!store.getters["isLogin"]) {
     try {
       await store.dispatch("verifyToken"); // Carga los datos del usuario
@@ -215,23 +227,39 @@ router.beforeEach(async (to, from, next) => {
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!store.getters["isLogin"]) {
-      next({
-        path: "/auth/login",
-      });
+      path = "/auth/login";
+      ok = false;
     } else {
-      next();
+      ok = true;
     }
   }
 
   if (to.matched.some((record) => record.meta.notAuthenticated)) {
     if (store.getters["isLogin"]) {
-      next({
-        path: "/",
-      });
+      ok = false;
+      path = "/";
     } else {
-      next();
+      ok = true;
     }
+  }
+
+  if (to.matched.some((record) => record.meta.requiresAdmin)) {
+    if (!store.getters["isAdmin"]) {
+      ok = false;
+      path = "/";
+    } else {
+      ok = true;
+    }
+  }
+  if (ok) {
+    next();
+  } else {
+    next({ path });
   }
 });
 
-createApp(App).use(router).use(store).use(VueCookies, { expires: '7d'}).mount("#app");
+createApp(App)
+  .use(router)
+  .use(store)
+  .use(VueCookies, { expires: "7d" })
+  .mount("#app");
