@@ -17,11 +17,11 @@ import statsRoutes from "./routes/stats.routes.js";
 const app = express();
 //Config
 app.set("appName", "MERN APP");
-app.set("port", process.env.PORT || 3000,);
+app.set("port", process.env.PORT || 3000);
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["https://envibol.netlify.app", "http://localhost:5173"],
     //origin: "https://envibol.netlify.app",
     credentials: true,
   })
