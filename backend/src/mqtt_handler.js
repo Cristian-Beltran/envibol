@@ -13,7 +13,6 @@ class MqttHandler {
       username: this.username,
       password: this.password,
     });
-    this.connect();
   }
   connect() {
     this.mqttClient.on("error", (err) => {
