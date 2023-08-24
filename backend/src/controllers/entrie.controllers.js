@@ -5,18 +5,25 @@ import { Turnstile } from "../models/Turnstile.js";
 import { Op } from "sequelize";
 import { Role } from "../models/Role.js";
 
-
-export const getEntriesToday = async (req, res) => {
+export const getEntriesExits = async (req, res) => {
   try {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const { init, final } = req.params;
+    const initDate = new Date(init);
+    const finalDate = new Date(final);
+    initDate.setUTCHours(initDate.getUTCHours() + 4);
+    finalDate.setUTCHours(finalDate.getUTCHours() + 28);
     const entries = await Entrie.findAll({
       where: {
-        type: "entry",
         createdAt: {
-          [Op.between]: [today, new Date()],
+          [Op.between]: [initDate, finalDate],
+        },
+        "$user.employee.id$": {
+          [Op.not]: null, // Filtrar las entradas que tengan un Empleado asociado
         },
       },
+      order: [
+        ["createdAt", "DESC"], // Ordenar por fecha de creación en orden descendente
+      ],
       include: [
         {
           model: User,
@@ -44,9 +51,11 @@ export const getEntriesToday = async (req, res) => {
       ci: entrie.user.ci,
       role: entrie.user.employee.role.name,
       turnstile: entrie.turnstile.name,
+      type: entrie.type === "entry" ? "Entrada" : "Salida",
     }));
     res.json(entriesModify);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ errors: [error] });
   }
 };
@@ -102,42 +111,6 @@ export const getEntries = async (req, res) => {
     res.json(entriesModify);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ errors: [error] });
-  }
-};
-
-export const getExitsToday = async (req, res) => {
-  try {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const entrie = await Entrie.findAll({
-      where: {
-        type: "exit",
-        createdAt: {
-          [Op.gte]: today,
-        },
-      },
-      include: [
-        {
-          model: User,
-          attributes: [
-            "id",
-            "first_name",
-            "last_name",
-            "ci",
-            "address",
-            "telf",
-            "cel",
-          ],
-        },
-        {
-          model: Turnstile,
-          attributes: ["name"],
-        },
-      ],
-    });
-    res.json(entrie);
-  } catch (error) {
     return res.status(500).json({ errors: [error] });
   }
 };

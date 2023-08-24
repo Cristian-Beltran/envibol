@@ -8,17 +8,16 @@ import {
   getExits,
   getEntrie,
   getUserEntrie,
-  getEntriesToday,
-  getExitsToday,
+  getEntriesExits,
 } from "../controllers/entrie.controllers.js";
 
 const router = new Router();
-router.post("/entrie", authRequired,createEntrie);
+router.post("/entrie", authRequired, createEntrie);
 router.get("/entries/:init/:final", authRequired, getEntries);
 router.get("/exits/:init/:final", authRequired, getExits);
 
-router.get("/entrie/today", authRequired, getEntriesToday);
-router.get("/exit/today", authRequired, getExitsToday);
+router.get("/entriesexits/:init/:final", authRequired, getEntriesExits);
+
 router.get("/entrie/:id", authRequired, getEntrie);
 router.get("/entrie/user/:userId", authRequired, getUserEntrie);
 export default router;
