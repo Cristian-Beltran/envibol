@@ -16,7 +16,7 @@
               <div
                 v-for="(item, index) in errors"
                 :key="index"
-                className="bg-red-500 p-2 text-white rounded-lg mb-2 text-center"
+                class="bg-red-500 p-2 text-white rounded-lg mb-2 text-center"
               >
                 {{ item }}
               </div>

@@ -1,13 +1,13 @@
-import { Entrie } from "../models/Entrie.js";
-import { Employee, External, User } from "../models/User.js";
-import { Card } from "../models/Card.js";
-import { Turnstile } from "../models/Turnstile.js";
-import { Op } from "sequelize";
-import { Role } from "../models/Role.js";
+import {Entrie} from "../models/Entrie.js";
+import {Employee, External, User} from "../models/User.js";
+import {Card} from "../models/Card.js";
+import {Turnstile} from "../models/Turnstile.js";
+import {Op} from "sequelize";
+import {Role} from "../models/Role.js";
 
 export const getEntriesExits = async (req, res) => {
   try {
-    const { init, final } = req.params;
+    const {init, final} = req.params;
     const initDate = new Date(init);
     const finalDate = new Date(final);
     initDate.setUTCHours(initDate.getUTCHours() + 4);
@@ -36,7 +36,7 @@ export const getEntriesExits = async (req, res) => {
             "telf",
             "cel",
           ],
-          include: [{ model: Employee, include: [{ model: Role }] }],
+          include: [{model: Employee, include: [{model: Role}]}],
         },
         {
           model: Turnstile,
@@ -56,13 +56,13 @@ export const getEntriesExits = async (req, res) => {
     res.json(entriesModify);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ errors: [error] });
+    return res.status(500).json({errors: [error]});
   }
 };
 
 export const getEntries = async (req, res) => {
   try {
-    const { init, final } = req.params;
+    const {init, final} = req.params;
     const initDate = new Date(init);
     const finalDate = new Date(final);
     initDate.setUTCHours(initDate.getUTCHours() + 4);
@@ -92,7 +92,7 @@ export const getEntries = async (req, res) => {
             "telf",
             "cel",
           ],
-          include: [{ model: Employee, include: [{ model: Role }] }],
+          include: [{model: Employee, include: [{model: Role}]}],
         },
         {
           model: Turnstile,
@@ -111,13 +111,13 @@ export const getEntries = async (req, res) => {
     res.json(entriesModify);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ errors: [error] });
+    return res.status(500).json({errors: [error]});
   }
 };
 
 export const getExits = async (req, res) => {
   try {
-    const { init, final } = req.params;
+    const {init, final} = req.params;
     const initDate = new Date(init);
     const finalDate = new Date(final);
     initDate.setUTCHours(initDate.getUTCHours() + 4);
@@ -148,7 +148,7 @@ export const getExits = async (req, res) => {
             "telf",
             "cel",
           ],
-          include: [{ model: Employee, include: [{ model: Role }] }],
+          include: [{model: Employee, include: [{model: Role}]}],
         },
         {
           model: Turnstile,
@@ -167,14 +167,14 @@ export const getExits = async (req, res) => {
     res.json(entriesModify);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ errors: [error] });
+    return res.status(500).json({errors: [error]});
   }
 };
 
 export const getUserEntrie = async (req, res) => {
   try {
     const entrie = await Entrie.findAll({
-      where: { userId: req.params.userId },
+      where: {userId: req.params.userId},
       include: [
         {
           model: User,
@@ -196,12 +196,12 @@ export const getUserEntrie = async (req, res) => {
     });
     res.json(entrie);
   } catch (error) {
-    return res.status(500).json({ errors: [error] });
+    return res.status(500).json({errors: [error]});
   }
 };
 
 export const getEntrie = async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
     const entrie = await entrie.findByPk(id, {
       include: [
@@ -225,25 +225,25 @@ export const getEntrie = async (req, res) => {
     });
     res.json(entrie);
   } catch (error) {
-    return res.status(500).json({ errors: [error] });
+    return res.status(500).json({errors: [error]});
   }
 };
 
 export const createEntrie = async (req, res) => {
-  const { rfid, turnstile, type } = req.body;
+  const {rfid, turnstile, type} = req.body;
   try {
     const card = await Card.findOne({
-      where: { rfid: rfid.trim() },
+      where: {rfid: rfid.trim()},
     });
-    if (!card) return res.status(404).json({ res: "I" });
-    if (!card.userId) return res.status(404).json({ res: "I" });
+    if (!card) return res.status(404).json({res: "I"});
+    if (!card.userId) return res.status(404).json({res: "I"});
 
-    const employee = await Employee.findOne({ where: { userId: card.userId } });
+    const employee = await Employee.findOne({where: {userId: card.userId}});
     if (employee) {
-      if (employee.status != "1") return res.status(400).json({ res: "I" });
+      if (employee.status != "1") return res.status(400).json({res: "I"});
     }
     const getTurnstile = await Turnstile.findOne({
-      where: { name: turnstile },
+      where: {name: turnstile},
     });
 
     const newEntrie = await Entrie.create({
@@ -262,24 +262,24 @@ export const createEntrie = async (req, res) => {
     };
     return res.json(response);
   } catch (error) {
-    return res.status(500).json({ errors: error });
+    return res.status(500).json({errors: error});
   }
 };
 
 export const createEntrieMQTT = async (rfid, turnstile, type) => {
   try {
     const card = await Card.findOne({
-      where: { rfid: rfid.trim() },
+      where: {rfid: rfid.trim()},
     });
     if (!card) return "I";
     if (!card.userId) return "I";
 
-    const employee = await Employee.findOne({ where: { userId: card.userId } });
+    const employee = await Employee.findOne({where: {userId: card.userId}});
     if (employee) {
       if (employee.status != "1") return "I";
     }
     const getTurnstile = await Turnstile.findOne({
-      where: { name: turnstile },
+      where: {name: turnstile},
     });
 
     const newEntrie = await Entrie.create({

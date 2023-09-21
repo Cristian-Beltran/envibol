@@ -1,14 +1,14 @@
-import { User, Employee } from "../models/User.js";
-import { Role } from "../models/Role.js";
-import { Card, TypeCard } from "../models/Card.js";
-import { Op } from "sequelize";
+import {User, Employee} from "../models/User.js";
+import {Role} from "../models/Role.js";
+import {Card, TypeCard} from "../models/Card.js";
+import {Op} from "sequelize";
 import bcrypt from "bcryptjs";
 
 export const getEmployeesAdmin = async (req, res) => {
   try {
     const employees = await Employee.findAll({
       attributes: ["id", "email", "status", "createdAt", "staff", "admin"],
-      where: { status: { [Op.ne]: "0" }, id: { [Op.ne]: req.user.id } },
+      where: {status: {[Op.ne]: "0"}, id: {[Op.ne]: req.user.id}},
       include: [
         {
           model: User,
@@ -34,7 +34,7 @@ export const getEmployeesAdmin = async (req, res) => {
             },
           ],
         },
-        { model: Role, attributes: ["id", "name"] },
+        {model: Role, attributes: ["id", "name"]},
       ],
     });
 
@@ -58,7 +58,7 @@ export const getEmployeesAdmin = async (req, res) => {
     }));
     res.json(employeesModify);
   } catch (error) {
-    return res.status(500).json({ errors: [error] });
+    return res.status(500).json({errors: [error]});
   }
 };
 
@@ -67,8 +67,8 @@ export const getEmployeesStaff = async (req, res) => {
     const employees = await Employee.findAll({
       attributes: ["id", "email", "status", "createdAt", "staff"],
       where: {
-        status: { [Op.ne]: "0" },
-        id: { [Op.ne]: req.user.id },
+        status: {[Op.ne]: "0"},
+        id: {[Op.ne]: req.user.id},
         admin: false,
       },
       include: [
@@ -96,7 +96,7 @@ export const getEmployeesStaff = async (req, res) => {
             },
           ],
         },
-        { model: Role, attributes: ["id", "name"] },
+        {model: Role, attributes: ["id", "name"]},
       ],
     });
 
@@ -117,7 +117,7 @@ export const getEmployeesStaff = async (req, res) => {
     }));
     res.json(employeesModify);
   } catch (error) {
-    return res.status(500).json({ errors: [error] });
+    return res.status(500).json({errors: [error]});
   }
 };
 
@@ -136,14 +136,14 @@ export const createEmployee = async (req, res) => {
     admin,
   } = req.body;
   try {
-    const userEmail = await Employee.findOne({ where: { email } });
+    const userEmail = await Employee.findOne({where: {email}});
     if (userEmail)
-      return res.status(400).json({ errors: ["El correo ya existe"] });
+      return res.status(400).json({errors: ["El correo ya existe"]});
     const userCi = await Employee.findOne({
-      include: [{ model: User, where: { ci } }],
+      include: [{model: User, where: {ci}}],
     });
     if (userCi)
-      return res.status(400).json({ errors: ["El ci ya esta ingresado"] });
+      return res.status(400).json({errors: ["El ci ya esta ingresado"]});
     const passwordHash = await bcrypt.hash(password, 10); // hashaleatorio
 
     const newUser = await User.create({
@@ -178,12 +178,12 @@ export const createEmployee = async (req, res) => {
       return res.json(newEmployee);
     }
   } catch (error) {
-    return res.status(500).json({ errors: [error] });
+    return res.status(500).json({errors: [error]});
   }
 };
 
 export const getEmployee = async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
     const employee = await Employee.findByPk(id, {
       attributes: ["id", "email", "status", "staff", "admin"],
@@ -200,7 +200,7 @@ export const getEmployee = async (req, res) => {
             "cel",
           ],
         },
-        { model: Role, attributes: ["id", "name"] },
+        {model: Role, attributes: ["id", "name"]},
       ],
     });
     const data = {
@@ -225,13 +225,13 @@ export const getEmployee = async (req, res) => {
     }
     res.json(data);
   } catch (error) {
-    return res.status(500).json({ errors: [error] });
+    return res.status(500).json({errors: [error]});
   }
 };
 
 export const updateEmployee = async (req, res) => {
   try {
-    const { id } = req.params;
+    const {id} = req.params;
     const {
       first_name,
       last_name,
@@ -253,11 +253,11 @@ export const updateEmployee = async (req, res) => {
     const user = await User.findByPk(employee.userId);
 
     const userCi = await Employee.findOne({
-      include: [{ model: User, where: { ci } }],
+      include: [{model: User, where: {ci}}],
     });
 
     if (userCi.ci === user.ci && userCi.id != user.id)
-      return res.status(400).json({ errors: ["El ci ya esta ingresado"] });
+      return res.status(400).json({errors: ["El ci ya esta ingresado"]});
 
     console.log(user.ci);
     console.log(ci);
@@ -278,24 +278,24 @@ export const updateEmployee = async (req, res) => {
     await employee.save();
     return res.sendStatus(204);
   } catch (error) {
-    return res.status(500).json({ errors: [error] });
+    return res.status(500).json({errors: [error]});
   }
 };
 
 export const deleteEmployee = async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
     const employee = await Employee.findByPk(id);
     employee.status = 0;
     employee.save();
     return res.sendStatus(204);
   } catch (error) {
-    return res.status(500).json({ errors: [error] });
+    return res.status(500).json({errors: [error]});
   }
 };
 
 export const updateStatusEmployee = async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   try {
     const employee = await Employee.findByPk(id);
     if (employee.status === "1") employee.status = 2;
@@ -303,6 +303,6 @@ export const updateStatusEmployee = async (req, res) => {
     employee.save();
     return res.sendStatus(204);
   } catch (error) {
-    return res.status(500).json({ errors: [error.message] });
+    return res.status(500).json({errors: [error.message]});
   }
 };

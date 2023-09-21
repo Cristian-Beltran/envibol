@@ -143,7 +143,6 @@ export default {
   setup() {
     return { v$: useVuelidate() };
   },
-
   data() {
     return {
       formData: {
