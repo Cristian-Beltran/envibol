@@ -8,23 +8,13 @@
             <th
               v-for="column in columns"
               :key="column.key"
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
+              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 text-gray-500 border-gray-100"
             >
               {{ column.label }}
             </th>
 
             <th
-              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-              :class="[
-                color === 'light'
-                  ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-                  : 'bg-emerald-800 text-emerald-300 border-emerald-700',
-              ]"
+              class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-50 text-gray-500 border-gray-100"
             ></th>
           </tr>
         </thead>
@@ -82,7 +72,7 @@
           </tr>
         </tbody>
       </table>
-      <hr class="my-4 md:min-w-full border-black" />
+      <hr class="my-4 md:min-w-full border-gray-400" />
       <!-- Buttons pagination-->
       <div class="flex w-full mb-8 justify-center">
         <a
@@ -105,90 +95,72 @@
     </div>
   </div>
 </template>
-<script>
-import TableDropdown from "@/components/Dropdowns/TableDropdown.vue";
+<script setup>
+import { ref, computed, reactive, watch, onMounted } from "vue";
 
-export default {
-  data() {
-    return {
-      displayedItems: [],
-      currentPage: 1,
-    };
-  },
-  components: {
-    TableDropdown,
-  },
-  computed: {
-    totalPages() {
-      return Math.ceil(this.items.length / this.itemsPerPage);
-    },
-  },
-  watch: {
-    load() {
-      if (!this.load) {
-        this.changePage(1);
-      }
-    },
-    itemsPerPage() {
-      this.changePage(1);
-    },
-    items() {
-      this.changePage(1);
-    },
-  },
-  methods: {
-    changePage(page) {
-      if (this.totalPages === 0) {
-        this.currentPage = 0;
-        this.displayedItems = [];
-      }
-      else if (page >= 1 && page <= this.totalPages) {
-        this.currentPage = page;
-        const startIndex = (page - 1) * this.itemsPerPage;
-        const endIndex = startIndex + this.itemsPerPage;
-        this.displayedItems = this.items.slice(startIndex, endIndex);
-      }
-    },
-    emit(action) {
-      this.$emit("action", action);
-    },
-    date(value) {
-      var date = new Date(value);
-      function agregarCeros(numero) {
-        return numero < 10 ? "0" + numero : numero;
-      }
-      var ano = date.getFullYear();
-      var mes = agregarCeros(date.getMonth() + 1);
-      var dia = agregarCeros(date.getDate());
-      var hora = agregarCeros(date.getHours());
-      var minuto = agregarCeros(date.getMinutes());
-      var dateFormat = ano + "-" + mes + "-" + dia + " " + hora + ":" + minuto;
-      return dateFormat;
-    },
-  },
+import TableDropdown from "@/components/Dropdown/TableDropdown.vue";
+const displayedItems = ref();
+const currentPage = ref(1);
+const itemsPerPage = ref(10);
 
-  props: {
-    color: {
-      default: "light",
-      validator: function (value) {
-        return ["light", "dark"].indexOf(value) !== -1;
-      },
-    },
-    items: {
-      default: [],
-    },
-    columns: {
-      default: [],
-    },
-    load: {
-      default: true,
-    },
-    itemsPerPage: {
-      default: 10,
-    },
-    options: {
-      default: [],
-    },
+const props = defineProps({
+  items: {
+    type: Array,
+    default: [],
   },
-};
+  columns: {
+    type: Array,
+    default: [],
+  },
+  load: {
+    type: Boolean,
+    default: true,
+  },
+  options: {
+    type: Array,
+    default: [],
+  },
+});
+
+const totalPages = computed(() => {
+  return Math.ceil(props.items.length / itemsPerPage.value);
+});
+
+watch(itemsPerPage, () => {
+  changePage(1);
+});
+
+watch(props.items, () => {
+  changePage(1);
+});
+
+function changePage(page) {
+  if (totalPages.value === 0) {
+    currentPage.value = 0;
+  }
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+    const startIndex = (page - 1) * itemsPerPage.value;
+    const endIndex = startIndex + itemsPerPage.value;
+    displayedItems.value = props.items.slice(startIndex, endIndex);
+  }
+}
+
+function emit(action) {
+  emit("action", action);
+}
+
+function date(value) {
+  var date = new Date(value);
+  function agregarCeros(numero) {
+    return numero < 10 ? "0" + numero : numero;
+  }
+  var ano = date.getFullYear();
+  var mes = agregarCeros(date.getMonth() + 1);
+  var dia = agregarCeros(date.getDate());
+  var hora = agregarCeros(date.getHours());
+  var minuto = agregarCeros(date.getMinutes());
+  var dateFormat = ano + "-" + mes + "-" + dia + " " + hora + ":" + minuto;
+  return dateFormat;
+}
 </script>

@@ -183,7 +183,9 @@ export default {
 
   data() {
     return {
-      formData: this.$store.getters.dataUser,
+      formData: {
+        
+      },
       errors: [],
       alertOpen: false,
     };

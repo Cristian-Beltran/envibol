@@ -1,158 +1,107 @@
 <template>
-  <div class="flex flex-wrap mt-4">
-    <div class="w-full mb-12 px-4">
-      <div
-        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
-        :class="[color === 'light' ? 'bg-white' : 'bg-emerald-900 text-white']"
-      >
-        <div class="rounded-t mb-0 px-4 py-3 border-0">
-          <div class="flex flex-wrap items-center">
-            <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-              <h3
-                class="font-semibold text-lg"
-                :class="[
-                  color === 'light' ? 'text-blueGray-700' : 'text-white',
-                ]"
-              >
-                Tipos de tarjetas
-              </h3>
-            </div>
-          </div>
-        </div>
-        <hr class="my-4 md:min-w-full border-black" />
-        <div class="w-full px-12 flex flex-wrap gap-2 justify-between">
-          <div class="relative flex flex-wrap items-stretch mb-3">
-            <label
-              class="py-2 text-sm font-normal text-blueGray-600 mr-2"
-              for="items"
-              >Numero de items</label
-            >
-            <select
-              v-model="itemsPerPage"
-              class="placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-auto"
-              name="items"
-              id="items"
-            >
-              <option value="10">10</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
-          </div>
-
-          <form
-            class="relative flex flex-wrap items-stretch mb-3"
-            :onSubmit="searchItems"
+  <card-data title="Tipos de Tarjetas" icon="fa-address-card">
+    <template v-slot:filters>
+      <div class="pb-4">
+        <label for="table-search" class="sr-only">Search</label>
+        <div class="relative mt-1">
+          <div
+            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
           >
-              <span
-                class="z-10 h-full leading-snug font-normal text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-2 py-2"
-              >
-                <i class="fas fa-search"></i>
-              </span>
-              <input
-                type="text"
-                v-model="searchQuery"
-                placeholder="Buscar"
-                class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-full pl-10"
-              />
-          </form>
-          <div class="relative flex flex-wrap items-stretch mb-3">
-            <router-link to="/admin/newTypeCard" v-slot="{ href, navigate }">
-              <a :href="href" @click="navigate">
-                <button
-                  class="bg-grayBlue-800 text-sm border border-gray-300 px-2 py-2 rounded-md"
-                >
-                  Agregar Tipo Tarjeta
-                  <i class="fas fa-plus text-sm ml-2"></i>
-                </button>
-              </a>
-            </router-link>
+            <v-icon
+              name="fa-search"
+              class="w-4 h-4 text-gray-500 dark:text-gray-400"
+            />
           </div>
+          <input
+            type="text"
+            v-model="searchQuery"
+            class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Buscar"
+          />
         </div>
-        <hr class="my-4 md:min-w-full border-black" />
-        <Table
-          :items="itemsDisplay"
-          :load="load"
-          :columns="columnas"
-          :options="options"
-          :itemsPerPage="itemsPerPage"
-          @action="action"
-        />
       </div>
-    </div>
-  </div>
+      <button-add to="/newTypeCard">Agregar Tipo de Tarjeta</button-add>
+    </template>
+    <data-table
+      :items="itemsDisplay"
+      :columns="columnas"
+      :options="options"
+      @action="action"
+    ></data-table>
+  </card-data>
 </template>
-<script>
-import Table from "@/components/Tables/Table.vue";
+<script setup>
 import { deleteTypeCardRequest, getTypeCardsRequest } from "../../api/typecard";
+import { ref, onMounted, watch } from "vue";
+import DataTable from "@/components/Tables/DataTable.vue";
+import ButtonAdd from "@/components/button/ButtonAdd.vue";
+import CardData from "@/components/Cards/CardData.vue";
+import { useRouter } from "vue-router";
+import { toast } from "vue-sonner";
 
-export default {
-  data() {
-    return {
-      items: [],
-      itemsDisplay: [],
-      itemsPerPage: 10,
-      searchQuery: "",
-      color: "light",
-      load: true,
-      columnas: [
-        { key: "id", label: "ID" },
-        { key: "name", label: "Nombre" },
-        { key: "color", label: "Color", color: true },
-        { key: "description", label: "Descripción" },
-        { key: "createdAt", label: "Creado", date: true },
-      ],
-      options: [
-        { id: "update", name: "Actualizar", icon: "fa fa-plus" },
-        { id: "delete", name: "Eliminar", icon: "fas fa-times" },
-      ],
-    };
-  },
-  components: {
-    Table,
-  },
-  async created() {
-    this.loadData();
-  },
-  methods: {
-    async loadData() {
-      this.load = true;
-      try {
-        const res = await getTypeCardsRequest();
-        this.items = res.data;
-        this.itemsDisplay = this.items;
-        this.load = false;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    searchItems(event) {
-      event.preventDefault();
-      const filteredItems = this.items.filter(
-        (item) =>
-          item.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-          item.description
-            .toLowerCase()
-            .includes(this.searchQuery.toLowerCase())
-      );
-      this.itemsDisplay = filteredItems;
-      this.changePage(1);
-    },
-    async action(action) {
-      if (action.action === "update") {
-        this.$router.push({
-          path: "/admin/updateTypeCard",
-          query: { id: action.id },
-        });
-      } else if (action.action === "delete") {
-        try {
-          await deleteTypeCardRequest(action.id);
-          this.items = [];
-          this.loadData();
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    },
-  },
-};
+const router = useRouter();
+const items = ref([]);
+const itemsDisplay = ref([]);
+const searchQuery = ref("");
+const load = ref(true);
+const columnas = ref([
+  { key: "id", label: "ID" },
+  { key: "name", label: "Nombre" },
+  { key: "color", label: "Color", color: true },
+  { key: "description", label: "Descripción" },
+  { key: "createdAt", label: "Creado", date: true },
+]);
+
+const options = ref([
+  { id: "update", name: "Actualizar", icon: "fa-plus" },
+  { id: "delete", name: "Eliminar", icon: "fa-times" },
+]);
+
+async function loadData() {
+  load.value = true;
+  try {
+    const res = await getTypeCardsRequest();
+    items.value = res.data;
+    itemsDisplay.value = items.value;
+    load.value = false;
+  } catch (error) {
+    toast.error("Error al cargar datos");
+    console.log(error);
+  }
+}
+
+watch(searchQuery, () => {
+  searchItems();
+});
+
+function searchItems(event) {
+  const filteredItems = items.value.filter(
+    (item) =>
+      item.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+  itemsDisplay.value = filteredItems;
+}
+
+async function action(action) {
+  if (action.action === "update") {
+    router.push({
+      path: "/updateTypeCard",
+      query: { id: action.id },
+    });
+  } else if (action.action === "delete") {
+    try {
+      await deleteTypeCardRequest(action.id);
+      items.value = [];
+      loadData();
+      toast.success("Tarjeta eliminada");
+    } catch (error) {
+      toast.error("Error al eliminar tarjeta");
+    }
+  }
+}
+
+onMounted(() => {
+  loadData();
+});
 </script>

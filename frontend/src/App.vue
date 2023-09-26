@@ -1,5 +1,7 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+  <RouterView />
+  <Toaster richColors />
 </template>
+<script setup>
+import { Toaster } from "vue-sonner";
+</script>

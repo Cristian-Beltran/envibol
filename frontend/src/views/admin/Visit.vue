@@ -1,148 +1,84 @@
 <template>
-  <div class="flex flex-wrap mt-4">
-    <div class="w-full mb-12 px-4">
-      <div
-        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
-        :class="[color === 'light' ? 'bg-white' : 'bg-emerald-900 text-white']"
-      >
-        <div class="rounded-t mb-0 px-4 py-3 border-0">
-          <div class="flex flex-wrap items-center">
-            <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-              <h3
-                class="font-semibold text-lg"
-                :class="[
-                  color === 'light' ? 'text-blueGray-700' : 'text-white',
-                ]"
-              >
-                Visitas
-              </h3>
-            </div>
-          </div>
-        </div>
-        <hr class="my-4 md:min-w-full border-black" />
-        <div class="w-full px-12 flex flex-wrap gap-2 justify-between">
-          <div class="relative flex flex-wrap items-stretch mb-3">
-            <label
-              class="py-2 text-sm font-normal text-blueGray-600 mr-2"
-              for="items"
-              >Numero de items</label
-            >
-            <select
-              v-model="itemsPerPage"
-              class="placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-auto"
-              name="items"
-              id="items"
-            >
-              <option value="10">10</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
-          </div>
-
-          <form
-            class="relative flex flex-wrap items-stretch mb-3"
-            :onSubmit="searchItems"
+  <card-data title="Visitas" icon="fa-user-edit">
+    <template v-slot:filters>
+      <div class="pb-4">
+        <label for="table-search" class="sr-only">Search</label>
+        <div class="relative mt-1">
+          <div
+            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
           >
-            <span
-              class="z-10 h-full leading-snug font-normal text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-2 py-2"
-            >
-              <i class="fas fa-search"></i>
-            </span>
-            <input
-              type="text"
-              v-model="searchQuery"
-              placeholder="Buscar"
-              class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-full pl-10"
+            <v-icon
+              name="fa-search"
+              class="w-4 h-4 text-gray-500 dark:text-gray-400"
             />
-          </form>
-          <div class="relative flex flex-wrap items-stretch mb-3">
-            <router-link to="/admin/newVisit" v-slot="{ href, navigate }">
-              <a :href="href" @click="navigate">
-                <button
-                  class="bg-grayBlue-800 text-sm border border-gray-300 px-2 py-2 rounded-md"
-                >
-                  Agregar visita
-                  <i class="fas fa-plus text-sm ml-2"></i>
-                </button>
-              </a>
-            </router-link>
           </div>
+          <input
+            type="text"
+            v-model="searchQuery"
+            class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Buscar"
+          />
         </div>
-
-        <hr class="my-4 md:min-w-full border-black" />
-        <Table
-          :items="itemsDisplay"
-          :load="load"
-          :columns="columnas"
-          :itemsPerPage="itemsPerPage"
-        />
       </div>
-    </div>
-  </div>
+      <button-add to="/newVisit">Agregar visita</button-add>
+    </template>
+    <data-table
+      :items="itemsDisplay"
+      :columns="columnas"
+      :options="[]"
+      @action="action"
+    ></data-table>
+  </card-data>
 </template>
-<script>
-import Table from "@/components/Tables/Table.vue";
-import { getVisitsRequest } from "../../api/visit";
+<script setup>
+import { ref, onMounted, watch } from "vue";
+import DataTable from "@/components/Tables/DataTable.vue";
+import ButtonAdd from "@/components/button/ButtonAdd.vue";
+import CardData from "@/components/Cards/CardData.vue";
+import { useRouter } from "vue-router";
+import { toast } from "vue-sonner";
+import { getVisitsRequest } from "@/api/visit";
 
-export default {
-  data() {
-    return {
-      items: [],
-      itemsDisplay: [],
-      itemsPerPage: 10,
-      searchQuery: "",
-      color: "light",
-      load: true,
-      columnas: [
-        { key: "id", label: "ID" },
-        { key: "full_name", label: "Nombre de visitante" },
-        { key: "ci", label: "CI" },
-        { key: "reason", label: "Razon" },
-        { key: "createdAt", label: "Creado", date: true },
-      ],
-      options: [{ id: "update", name: "Actualizar", icon: "fas fa-plus" }],
-    };
-  },
-  components: {
-    Table,
-  },
-  async created() {
-    this.loadData();
-  },
+const router = useRouter();
+const items = ref([]);
+const itemsDisplay = ref([]);
+const searchQuery = ref("");
+const load = ref(true);
+const columnas = ref([
+  { key: "id", label: "ID" },
+  { key: "full_name", label: "Nombre de visitante" },
+  { key: "ci", label: "CI" },
+  { key: "reason", label: "Razon" },
+  { key: "createdAt", label: "Creado", date: true },
+]);
 
-  methods: {
-    async loadData() {
-      this.load = true;
-      try {
-        const res = await getVisitsRequest();
-        console.log(res.data);
-        this.items = res.data;
-        this.itemsDisplay = this.items;
-        this.load = false;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    searchItems(event) {
-      if (event) event.preventDefault();
-      const filteredItems = this.items.filter(
-        (item) =>
-          item.full_name
-            .toLowerCase()
-            .includes(this.searchQuery.toLowerCase()) ||
-          item.reason.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-          item.ci.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-      this.itemsDisplay = filteredItems;
-    },
-    async action(action) {
-      if (action.action === "update") {
-        this.$router.push({
-          path: "/admin/updateVisit",
-          query: { id: action.id },
-        });
-      }
-    },
-  },
-};
+async function loadData() {
+  load.value = true;
+  try {
+    const res = await getVisitsRequest();
+    items.value = res.data;
+    itemsDisplay.value = items.value;
+    load.value = false;
+  } catch (error) {
+    toast.error("Error al cargar datos");
+  }
+}
+
+watch(searchQuery, () => {
+  searchItems();
+});
+
+function searchItems(event) {
+  const filteredItems = items.value.filter(
+    (item) =>
+      item.full_name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      item.reason.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      item.ci.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+  itemsDisplay.value = filteredItems;
+}
+
+onMounted(() => {
+  loadData();
+});
 </script>
