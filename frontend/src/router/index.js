@@ -9,12 +9,14 @@ import Card from "@/views/admin/Card.vue";
 import TypeCard from "@/views/admin/TypeCard.vue";
 import Employee from "@/views/admin/Employee.vue";
 import Exit from "@/views/admin/Exit.vue";
-import Report from "@/views/admin/Report.vue";
 import Role from "@/views/admin/Role.vue";
 import Turnstile from "@/views/admin/Turnstile.vue";
 import Visit from "@/views/admin/Visit.vue";
 import External from "@/views/admin/External.vue";
 import Entrie from "@/views/admin/Entrie.vue";
+
+// Biometric
+import TimeTable from "@/views/admin/TimeTable.vue";
 
 // Forms
 import CardForms from "@/views/forms/CardForms.vue";
@@ -27,6 +29,7 @@ import ConnectCardForms from "@/views/forms/ConnectCardForms.vue";
 import ConnectCardExternalForms from "@/views/forms/ConnectCardExternalForms.vue";
 import VisitForms from "@/views/forms/VisitForms.vue";
 import UpdatePassword from "@/views/forms/UpdatePassword.vue";
+import TimeTableForms from "@/views/forms/TimeTableForms.vue";
 
 // views for Auth layout
 import Login from "@/views/auth/Login.vue";
@@ -169,11 +172,19 @@ const router = createRouter({
           path: "/newVisit",
           component: VisitForms,
         },
-        //Reportes
         {
-          path: "/report",
-          component: Report,
+          path: "/timetable",
+          component: TimeTable,
         },
+        {
+          path: "/updateTimeTable",
+          component: TimeTableForms,
+        },
+        {
+          path: "/newTimeTable",
+          component: TimeTableForms,
+        },
+        //Reportes
       ],
     },
     {

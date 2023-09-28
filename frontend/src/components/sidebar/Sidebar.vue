@@ -45,6 +45,9 @@
           </ArchorAccordion>
         </li>
         <li>
+          <Archor to="/timetable" icon="fa-calendar-alt" name="Horarios" />
+        </li>
+        <li>
           <ArchorAccordion name="Configuración" icon="co-settings">
             <li>
               <Archor to="/role" icon="fa-users" name="Roles de empleados" />

@@ -7,7 +7,7 @@
           statSubtitle="EMPLEADOS"
           :statTitle="employee"
           statDescripiron="Empleados regitrados"
-          statIconName="fas fa-user-tie"
+          statIconName="fa-user-tie"
           statIconColor="bg-red-500"
         />
       </div>
@@ -16,7 +16,7 @@
           statSubtitle="VISITAS"
           :statTitle="visit"
           statDescripiron="Visitas registradas hoy"
-          statIconName="fas fa-address-book"
+          statIconName="fa-address-book"
           statIconColor="bg-orange-500"
         />
       </div>
@@ -25,7 +25,7 @@
           statSubtitle="ENTRADAS"
           :statTitle="entrie"
           statDescripiron="Entradas registradas hoy"
-          statIconName="fas fa-sign-in-alt"
+          statIconName="fa-sign-in-alt"
           statIconColor="bg-pink-500"
         />
       </div>
@@ -34,7 +34,7 @@
           statSubtitle="SALIDAS"
           :statTitle="exit"
           statDescripiron="Salidas registradas hoy"
-          statIconName="fas fa-sign-out-alt"
+          statIconName="fa-sign-out-alt"
           statIconColor="bg-emerald-500"
         />
       </div>

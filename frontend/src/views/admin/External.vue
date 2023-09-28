@@ -1,7 +1,7 @@
 <template>
   <card-data title="Externos" icon="fa-user">
     <template v-slot:filters>
-      <div class="pb-4 flex">
+      <div class="pb-4 flex flex-wrap gap-2">
         <label for="table-search" class="sr-only">Search</label>
         <div class="relative mt-1">
           <div
@@ -15,11 +15,11 @@
           <input
             type="text"
             v-model="searchQuery"
-            class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Buscar"
           />
         </div>
-        <div class="ml-2 mt-1">
+        <div class="mt-1">
           <select
             v-model="inside"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

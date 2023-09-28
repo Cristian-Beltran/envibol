@@ -98,12 +98,15 @@ const formData = reactive({
 
 const rules = computed(() => ({
   email: {
-    email,
-    required,
+    email: helpers.withMessage("El email no es válido", email),
+    required: helpers.withMessage("El email es requerido", required),
   },
   password: {
-    required,
-    minLength: minLength(6),
+    required: helpers.withMessage("La contraseña es requerida", required),
+    minLength: helpers.withMessage(
+      "La contraseña debe tener al menos 6 caracteres",
+      minLength(6)
+    ),
   },
 }));
 

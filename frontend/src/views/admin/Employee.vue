@@ -1,303 +1,223 @@
 <template>
-  <div class="flex flex-wrap mt-4">
-    <div class="w-full mb-12 px-4">
-      <div
-        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
-        :class="[color === 'light' ? 'bg-white' : 'bg-emerald-900 text-white']"
-      >
-        <div class="rounded-t mb-0 px-4 py-3 border-0">
-          <div class="flex flex-wrap items-center">
-            <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-              <h3
-                class="font-semibold text-lg"
-                :class="[
-                  color === 'light' ? 'text-blueGray-700' : 'text-white',
-                ]"
-              >
-                Empleados
-              </h3>
-            </div>
-          </div>
-        </div>
-        <hr class="my-4 md:min-w-full border-black" />
-        <div class="w-full px-12 flex flex-wrap gap-2 justify-between">
-          <div class="relative flex flex-wrap items-stretch mb-3">
-            <label
-              class="py-2 text-sm font-normal text-blueGray-600 mr-2"
-              for="items"
-              >Numero de items</label
-            >
-            <select
-              v-model="itemsPerPage"
-              class="placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-auto"
-              name="items"
-              id="items"
-            >
-              <option value="10">10</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
-          </div>
-
-          <form
-            class="relative flex flex-wrap items-stretch mb-3"
-            :onSubmit="searchItems"
+  <card-data title="Empleados" icon="fa-user-tie">
+    <template v-slot:filters>
+      <div class="pb-4 flex flex-wrap gap-2">
+        <label for="table-search" class="sr-only">Search</label>
+        <div class="relative mt-1">
+          <div
+            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
           >
-            <span
-              class="z-10 h-full leading-snug font-normal text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-2 py-2"
-            >
-              <i class="fas fa-search"></i>
-            </span>
-            <input
-              type="text"
-              v-model="searchQuery"
-              placeholder="Buscar"
-              class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-full pl-10"
+            <v-icon
+              name="fa-search"
+              class="w-4 h-4 text-gray-500 dark:text-gray-400"
             />
-          </form>
-          <div class="relative flex flex-wrap items-stretch mb-3">
-            <router-link to="/admin/newEmployee" v-slot="{ href, navigate }">
-              <a :href="href" @click="navigate">
-                <button
-                  class="bg-grayBlue-800 text-sm border border-gray-300 px-2 py-2 rounded-md"
-                >
-                  Agregar Empleado
-                  <i class="fas fa-plus text-sm ml-2"></i>
-                </button>
-              </a>
-            </router-link>
           </div>
+          <input
+            type="text"
+            v-model="searchQuery"
+            class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Buscar"
+          />
         </div>
-
-        <div class="w-full px-12 flex flex-wrap gap-2 justify-between">
-          <div class="relative flex flex-wrap items-stretch mb-3">
-            <label
-              class="py-2 text-sm font-normal text-blueGray-600 mr-2"
-              for="items"
-              >Presente</label
-            >
-            <select
-              v-model="inside"
-              class="placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-auto"
-              name="items"
-              id="items"
-            >
-              <option value="all" selected>Todos</option>
-              <option value="true">Presentes</option>
-              <option value="false">Ausentes</option>
-            </select>
-          </div>
-
-          <div class="relative flex flex-wrap items-stretch mb-3">
-            <label
-              class="py-2 text-sm font-normal text-blueGray-600 mr-2"
-              for="items"
-              >Habilitados</label
-            >
-            <select
-              v-model="status"
-              class="placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-auto"
-              name="items"
-              id="items"
-            >
-              <option value="all" selected>Todos</option>
-              <option value="1">Habilitados</option>
-              <option value="2">Deshabilitados</option>
-            </select>
-          </div>
-          <div class="relative flex flex-wrap items-stretch mb-3">
-            <label
-              class="py-2 text-sm font-normal text-blueGray-600 mr-2"
-              for="items"
-              >Rol</label
-            >
-            <select
-              v-model="role"
-              class="placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-auto"
-              name="items"
-              id="items"
-            >
-              <option value="all" selected>Todos</option>
-              <option v-for="item in roles" :value="item.name" :key="item.id">
-                {{ item.name }}
-              </option>
-            </select>
-          </div>
+        <div class="mt-1">
+          <select
+            v-model="inside"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option value="all" selected>Presente/Ausente</option>
+            <option value="true">Presentes</option>
+            <option value="false">Ausentes</option>
+          </select>
         </div>
-
-        <hr class="my-4 md:min-w-full border-black" />
-        <Table
-          :items="itemsDisplay"
-          :load="load"
-          :columns="columnas"
-          :options="options"
-          :itemsPerPage="itemsPerPage"
-          @action="action"
-        />
+        <div class="mt-1">
+          <select
+            v-model="status"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option value="all" selected>Estado</option>
+            <option value="1">Habilitado</option>
+            <option value="2">Deshablitado</option>
+          </select>
+        </div>
+        <div class="mt-1">
+          <select
+            v-model="role"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option value="all" selected>Rol</option>
+            <option v-for="role in roles" :key="role.id" :value="role.name">
+              {{ role.name }}
+            </option>
+          </select>
+        </div>
       </div>
-    </div>
-  </div>
+      <button-add to="/newEmployee"> Agregar empleado </button-add>
+    </template>
+    <data-table
+      :items="itemsDisplay"
+      :columns="columnas"
+      :options="options"
+      @action="action"
+    ></data-table>
+  </card-data>
 </template>
-<script>
-import Table from "@/components/Tables/Table.vue";
+<script setup>
 import {
   getEmployeesStaffRequest,
   getEmployeesAdminRequest,
   deleteEmployeeRequest,
   changeStatusEmployeeRequest,
-} from "../../api/employee";
-import { getRolesRequest } from "../../api/role";
+} from "@/api/employee";
+import { getRolesRequest } from "@/api/role";
+import { disconnectCardEmployeeRequest } from "@/api/card";
 
-import { disconnectCardEmployeeRequest } from "../../api/card";
+import { ref, onMounted, watch } from "vue";
+import DataTable from "@/components/Tables/DataTable.vue";
+import CardData from "@/components/Cards/CardData.vue";
+import ButtonAdd from "@/components/button/ButtonAdd.vue";
+import { useRouter } from "vue-router";
+import { toast } from "vue-sonner";
+import { useProfileStore } from "@/stores/profile";
 
-export default {
-  data() {
-    return {
-      items: [],
-      itemsDisplay: [],
-      itemsPerPage: 10,
-      searchQuery: "",
-      inside: "all",
-      status: "all",
-      role: "all",
-      roles: [],
-      color: "light",
-      load: true,
-      columnas: [
-        { key: "id", label: "ID" },
-        { key: "first_name", label: "Nombre/s" },
-        { key: "last_name", label: "Apellidos" },
-        { key: "email", label: "Correo electronico" },
-        { key: "ci", label: "CI" },
-        { key: "cel", label: "Celular" },
-        { key: "telf", label: "telf" },
-        { key: "address", label: "Direccion" },
-        { key: "role", label: "Rol" },
-        { key: "inside", label: "Presente", check: true },
-        { key: "status", label: "Habilitado", status: true },
-        { key: "card", label: "Tarjeta", color: true },
-        { key: "createdAt", label: "Creado", date: true },
-      ],
-      options: [
-        { id: "update", name: "Actualizar", icon: "fas fa-plus" },
-        {
-          id: "changeStatus",
-          name: "Cambiar estado de usuario",
-          icon: "fas fa-exchange-alt",
-        },
-        {
-          id: "connect",
-          name: "Vincular tarjeta",
-          icon: "fas fa-link",
-        },
-        {
-          id: "disconnect",
-          name: "Desvincular tarjeta",
-          icon: "fas fa-eraser",
-        },
-        { id: "delete", name: "Eliminar", icon: "fas fa-times" },
-      ],
-    };
+const profileStore = useProfileStore();
+const router = useRouter();
+const items = ref([]);
+const roles = ref([]);
+const itemsDisplay = ref([]);
+const searchQuery = ref("");
+const inside = ref("all");
+const role = ref("all");
+const status = ref("all");
+const load = ref(true);
+const columnas = ref([
+  { key: "id", label: "ID" },
+  { key: "first_name", label: "Nombre/s" },
+  { key: "last_name", label: "Apellidos" },
+  { key: "email", label: "Correo electronico" },
+  { key: "ci", label: "CI" },
+  { key: "role", label: "Rol" },
+  { key: "inside", label: "Presente", check: true },
+  { key: "status", label: "Habilitado", status: true },
+  { key: "card", label: "Tarjeta", color: true },
+  { key: "createdAt", label: "Creado", date: true },
+]);
+
+const options = ref([
+  { id: "update", name: "Actualizar", icon: "fa-plus" },
+  {
+    id: "changeStatus",
+    name: "Cambiar estado de usuario",
+    icon: "fa-exchange-alt",
   },
-  components: {
-    Table,
+  {
+    id: "connect",
+    name: "Vincular tarjeta",
+    icon: "fa-link",
   },
-  async created() {
-    this.loadData();
+  {
+    id: "disconnect",
+    name: "Desvincular tarjeta",
+    icon: "fa-eraser",
+  },
+  //{ id: "delete", name: "Eliminar", icon: "fa-times" },
+]);
+
+async function loadData() {
+  load.value = true;
+  try {
+    let res;
+    if (profileStore.isAdmin) res = await getEmployeesAdminRequest();
+    else res = await getEmployeesStaffRequest();
+    items.value = res.data;
+    itemsDisplay.value = items.value;
+    load.value = false;
+  } catch (error) {
+    toast.error("Error al cargar datos");
+  }
+}
+
+watch(searchQuery, () => {
+  searchItems();
+});
+watch(inside, () => {
+  searchItems();
+});
+watch(role, () => {
+  searchItems();
+});
+watch(status, () => {
+  searchItems();
+});
+
+function searchItems(event) {
+  const filteredItems = items.value.filter(
+    (item) =>
+      (item.first_name
+        .toLowerCase()
+        .includes(searchQuery.value.toLowerCase()) ||
+        item.last_name
+          .toLowerCase()
+          .includes(searchQuery.value.toLowerCase()) ||
+        item.ci.toLowerCase().includes(searchQuery.value.toLowerCase())) &&
+      (inside.value === "all" || item.inside.toString() === inside.value) &&
+      (role.value === "all" || item.role === role.value) &&
+      (status.value === "all" || item.status === status.value)
+  );
+  itemsDisplay.value = filteredItems;
+}
+
+async function action(action) {
+  if (action.action === "update") {
+    router.push({
+      path: "/updateEmployee",
+      query: { id: action.id },
+    });
+  } else if (action.action === "changeStatus") {
     try {
-      const res = await getRolesRequest();
-      this.roles = res.data;
+      await changeStatusEmployeeRequest(action.id);
+      items.value = [];
+      loadData();
+      toast.success("Estado de empleado cambiado");
+    } catch (error) {
+      toast.error("Error al cambiar estado de empleado");
+    }
+  } else if (action.action === "delete") {
+    try {
+      await deleteEmployeeRequest(action.id);
+      items.value = [];
+      loadData();
+      toast.success("Empleado eliminado");
+    } catch (error) {
+      toast.error("Error al eliminar empleado");
+    }
+  } else if (action.action === "disconnect") {
+    try {
+      await disconnectCardEmployeeRequest(action.id);
+      items.value = [];
+      loadData();
+      toast.success("Tarjeta desvinculada");
+    } catch (error) {
+      toast.error("Error al desvincular tarjeta");
+    }
+  } else if (action.action === "connect") {
+    try {
+      router.push({
+        path: "/connectCardEmployee",
+        query: { id: action.id },
+      });
     } catch (error) {
       console.log(error);
     }
-  },
-  watch: {
-    inside() {
-      this.searchItems();
-    },
-    role() {
-      this.searchItems();
-    },
-    status() {
-      this.searchItems();
-    },
-  },
-  methods: {
-    async loadData() {
-      this.load = true;
-      try {
-        const isAdmin = this.$store.getters.isAdmin;
-        let res;
-        if (isAdmin) res = await getEmployeesAdminRequest();
-        else res = await getEmployeesStaffRequest();
-        this.items = res.data;
-        this.itemsDisplay = this.items;
-        this.load = false;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    searchItems(event) {
-      if (event) event.preventDefault();
-      const filteredItems = this.items.filter(
-        (item) =>
-          (item.first_name
-            .toLowerCase()
-            .includes(this.searchQuery.toLowerCase()) ||
-            item.last_name
-              .toLowerCase()
-              .includes(this.searchQuery.toLowerCase()) ||
-            item.ci.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-            item.email
-              .toLowerCase()
-              .includes(this.searchQuery.toLowerCase())) &&
-          (this.inside === "all" || item.inside.toString() === this.inside) &&
-          (this.status === "all" || item.status == this.status) &&
-          (this.role === "all" || item.role == this.role)
-      );
-      this.itemsDisplay = filteredItems;
-    },
-    async action(action) {
-      if (action.action === "update") {
-        this.$router.push({
-          path: "/admin/updateEmployee",
-          query: { id: action.id },
-        });
-      } else if (action.action === "changeStatus") {
-        try {
-          await changeStatusEmployeeRequest(action.id);
-          this.items = [];
-          this.loadData();
-        } catch (error) {
-          console.log(error);
-        }
-      } else if (action.action === "delete") {
-        try {
-          await deleteEmployeeRequest(action.id);
-          this.items = [];
-          this.loadData();
-        } catch (error) {
-          console.log(error);
-        }
-      } else if (action.action === "disconnect") {
-        try {
-          await disconnectCardEmployeeRequest(action.id);
-          this.items = [];
-          this.loadData();
-        } catch (error) {
-          console.log(error);
-        }
-      } else if (action.action === "connect") {
-        try {
-          this.$router.push({
-            path: "/admin/connectCardEmployee",
-            query: { id: action.id },
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    },
-  },
-};
+  }
+}
+
+onMounted(async () => {
+  loadData();
+  try {
+    const res = await getRolesRequest();
+    roles.value = res.data;
+  } catch (error) {
+    toast.error("Error al cargar roles");
+  }
+});
 </script>

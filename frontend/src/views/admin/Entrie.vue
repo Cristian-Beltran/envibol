@@ -1,208 +1,137 @@
 <template>
-  <div class="flex flex-wrap mt-4">
-    <div class="w-full mb-12 px-4">
-      <div
-        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
-        :class="[color === 'light' ? 'bg-white' : 'bg-emerald-900 text-white']"
-      >
-        <div class="rounded-t mb-0 px-4 py-3 border-0">
-          <div class="flex flex-wrap items-center">
-            <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-              <h3
-                class="font-semibold text-lg"
-                :class="[
-                  color === 'light' ? 'text-blueGray-700' : 'text-white',
-                ]"
-              >
-                Entradas
-              </h3>
-            </div>
-          </div>
-        </div>
-        <hr class="my-4 md:min-w-full border-black" />
-        <div class="w-full px-12 flex flex-wrap gap-2 justify-between">
-          <div class="relative flex flex-wrap items-stretch mb-3">
-            <label
-              class="py-2 text-sm font-normal text-blueGray-600 mr-2"
-              for="items"
-              >Numero de items</label
-            >
-            <select
-              v-model="itemsPerPage"
-              class="placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-auto"
-              name="items"
-              id="items"
-            >
-              <option value="10">10</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
-          </div>
-
-          <form
-            class="relative flex flex-wrap items-stretch mb-3"
-            :onSubmit="searchItems"
+  <card-data title="Entradas" icon="fa-sign-in-alt">
+    <template v-slot:filters>
+      <div class="pb-4 flex flex-wrap gap-2">
+        <label for="table-search" class="sr-only">Search</label>
+        <div class="relative mt-1">
+          <div
+            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
           >
-            <span
-              class="z-10 h-full leading-snug font-normal text-center text-blueGray-300 absolute bg-transparent rounded text-base items-center justify-center w-8 pl-2 py-2"
-            >
-              <i class="fas fa-search"></i>
-            </span>
-            <input
-              type="text"
-              v-model="searchQuery"
-              placeholder="Buscar"
-              class="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-full pl-10"
+            <v-icon
+              name="fa-search"
+              class="w-4 h-4 text-gray-500 dark:text-gray-400"
             />
-          </form>
-          <div class="relative flex flex-wrap items-stretch mb-3">
-            <label
-              class="py-2 text-sm font-normal text-blueGray-600 mr-2"
-              for="items"
-              >Rol</label
-            >
-            <select
-              v-model="role"
-              class="placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-auto"
-              name="items"
-              id="items"
-            >
-              <option value="all" selected>Todos</option>
-              <option v-for="item in roles" :value="item.name" :key="item.id">
-                {{ item.name }}
-              </option>
-            </select>
           </div>
+          <input
+            type="text"
+            v-model="searchQuery"
+            class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Buscar"
+          />
+        </div>
+        <div class="relative mt-1">
+          <label
+            class="text-xs text-gray-600 absolute top-0 left-2 transform translate-y-[-110%]"
+            >Fecha de inicio</label
+          >
+          <input
+            v-model="init"
+            type="date"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            name="items"
+            id="items"
+          />
         </div>
 
-        <div class="w-full px-12 flex flex-wrap gap-2 justify-between">
-          <div class="relative flex flex-wrap items-stretch mb-3">
-            <label
-              class="py-2 text-sm font-normal text-blueGray-600 mr-2"
-              for="items"
-              >Fecha de inicio</label
-            >
-            <input
-              v-model="init"
-              type="date"
-              class="placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-auto"
-              name="items"
-              id="items"
-            />
-          </div>
-
-          <div class="relative flex flex-wrap items-stretch mb-3">
-            <label
-              class="py-2 text-sm font-normal text-blueGray-600 mr-2"
-              for="items"
-              >Fecha final</label
-            >
-            <input
-              v-model="final"
-              type="date"
-              class="placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border border-blueGray-300 outline-none focus:outline-none focus:shadow-outline w-auto"
-              name="items"
-              id="items"
-            />
-          </div>
+        <div class="relative mt-1">
+          <label
+            class="text-xs text-gray-600 absolute top-0 left-2 transform translate-y-[-110%]"
+            >Fecha final</label
+          >
+          <input
+            v-model="final"
+            type="date"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            name="items"
+            id="items"
+          />
         </div>
-
-        <hr class="my-4 md:min-w-full border-black" />
-        <Table
-          :items="itemsDisplay"
-          :load="load"
-          :columns="columnas"
-          :itemsPerPage="itemsPerPage"
-        />
       </div>
-    </div>
-  </div>
+      <button-download
+        :data="itemsDisplay"
+        title="Entradas"
+        :columns="columnas"
+      />
+    </template>
+    <data-table
+      :items="itemsDisplay"
+      :columns="columnas"
+      :options="options"
+      @action="action"
+    ></data-table>
+  </card-data>
 </template>
-<script>
 
-import Table from "@/components/Tables/Table.vue";
-import { getRolesRequest } from "../../api/role";
-import { getEntriesRequest } from "../../api/entrie";
+<script setup>
+import { getEntriesRequest } from "@/api/entrie";
 
-export default {
-  data() {
-    return {
-      items: [],
-      itemsDisplay: [],
-      itemsPerPage: 10,
-      searchQuery: "",
-      init: new Date(
-        new Date().getTime() - new Date().getTimezoneOffset() * 60000
-      )
-        .toISOString()
-        .slice(0, 10),
-      final: new Date(
-        new Date().getTime() - new Date().getTimezoneOffset() * 60000
-      )
-        .toISOString()
-        .slice(0, 10),
-      role: "all",
-      roles: [],
-      color: "light",
-      load: true,
-      columnas: [
-        { key: "id", label: "ID" },
-        { key: "full_name", label: "Nombre completo" },
-        { key: "ci", label: "CI" },
-        { key: "role", label: "Rol" },
-        { key: "turnstile", label: "Molinete" },
-        { key: "createdAt", label: "Ingreso", date: true },
-      ],
-    };
-  },
-  components: {
-    Table,
-  },
-  async created() {
-    try {
-      const res = await getRolesRequest();
-      this.roles = res.data;
-      this.loadData();
-    } catch (error) {
-      console.log(error);
-    }
-  },
-  watch: {
-    role() {
-      this.searchItems();
-    },
-    init() {
-      this.loadData();
-    },
-    final() {
-      this.loadData();
-    },
-  },
-  methods: {
-    async loadData() {
-      this.load = true;
-      try {
-        const res = await getEntriesRequest(this.init, this.final);
-        this.items = res.data;
-        this.itemsDisplay = this.items;
-        this.load = false;
-        this.searchItems();
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    searchItems(event) {
-      if (event) event.preventDefault();
-      const filteredItems = this.items.filter(
-        (item) =>
-          (item.full_name
-            .toLowerCase()
-            .includes(this.searchQuery.toLowerCase()) ||
-            item.ci.toLowerCase().includes(this.searchQuery.toLowerCase())) &&
-          (this.role === "all" || item.role == this.role)
-      );
-      this.itemsDisplay = filteredItems;
-    },
-  },
-};
+import { ref, onMounted, watch } from "vue";
+import DataTable from "@/components/Tables/DataTable.vue";
+import CardData from "@/components/Cards/CardData.vue";
+import ButtonDownload from "@/components/button/ButtonDownload.vue";
+import { useRouter } from "vue-router";
+import { toast } from "vue-sonner";
+
+const router = useRouter();
+const items = ref([]);
+const itemsDisplay = ref([]);
+const searchQuery = ref("");
+const init = ref(
+  new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)
+    .toISOString()
+    .slice(0, 10)
+);
+const final = ref(
+  new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)
+    .toISOString()
+    .slice(0, 10)
+);
+
+const load = ref(true);
+const columnas = ref([
+  { key: "id", label: "ID" },
+  { key: "full_name", label: "Nombre completo" },
+  { key: "ci", label: "CI" },
+  { key: "role", label: "Rol" },
+  { key: "turnstile", label: "Molinete" },
+  { key: "createdAt", label: "Entrada", date: true },
+]);
+
+const options = ref([]);
+
+async function loadData() {
+  load.value = true;
+  try {
+    const res = await getEntriesRequest(init.value, final.value);
+    items.value = res.data;
+    itemsDisplay.value = items.value;
+    load.value = false;
+  } catch (error) {
+    toast.error("Error al cargar datos");
+  }
+}
+
+watch(searchQuery, () => {
+  searchItems();
+});
+watch(init, () => {
+  loadData();
+});
+watch(final, () => {
+  loadData();
+});
+
+function searchItems(event) {
+  const filteredItems = items.value.filter(
+    (item) =>
+      item.full_name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      item.role.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      item.ci.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+  itemsDisplay.value = filteredItems;
+}
+
+onMounted(() => {
+  loadData();
+});
 </script>

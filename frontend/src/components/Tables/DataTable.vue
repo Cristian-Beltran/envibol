@@ -1,5 +1,5 @@
 <template>
-  <div class="relative overflow-x-auto  sm:rounded-lg m-4">
+  <div class="relative overflow-x-auto sm:rounded-lg m-4">
     <table class="w-full text-left text-gray-500 dark:text-gray-400">
       <thead
         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
@@ -14,7 +14,7 @@
             {{ column.label }}
           </th>
           <th v-if="options.length > 0" class="px-4 py-3">
-            <span >Acciones</span>
+            <span>Acciones</span>
           </th>
         </tr>
       </thead>
@@ -24,7 +24,7 @@
           v-for="item in itemsDisplay"
           :key="item.id"
         >
-          <td class="px-4 py-2" v-for="column in columns" :key="column.key">
+          <td class="px-4 py-4" v-for="column in columns" :key="column.key">
             <span v-if="column.color">
               <span
                 class="rounded-full py-1 px-3"
@@ -34,20 +34,14 @@
             <span v-else-if="column.date">
               {{ dateFormated(item[column.key]) }}
             </span>
-            <span v-else-if="column.status">
-              <span v-if="item[column.key] == 1" class="flex justify-center">
-                <v-icon
-                  name="fa-check"
-                  class="text-xl rounded-full bg-emerald-600 px-2 py-1"
-                />
-                ></span
+            <span v-else-if="column.status" class="flex justify-center">
+              <span
+                class="rounded-full text-white py-1 px-1"
+                :class="[item[column.key] == 1 ? 'bg-green-600' : 'bg-red-600']"
               >
-              <span v-else class="flex justify-center"
-                ><v-icon
-                  class="text-xl rounded-full bg-red-500 px-2 py-1 text-white"
-                  name="fa-times"
-                />
-              </span>
+                <v-icon
+                  :name="[item[column.key] == 1 ? 'fa-check' : 'fa-times']"
+              /></span>
             </span>
             <span v-else-if="column.check" class="flex justify-center">
               <span
@@ -57,14 +51,11 @@
                 <v-icon :name="[item[column.key] ? 'fa-check' : 'fa-times']"
               /></span>
             </span>
-            <span v-else class="py-1">
+            <span v-else>
               {{ item[column.key] }}
             </span>
           </td>
-          <td
-            v-if="options.length > 0"
-            class="px-4 py-2"
-          >
+          <td v-if="options.length > 0" class="px-4 py-2">
             <table-dropdown :options="options" @emit="emit" :id="item.id" />
             <Dropdown>
               <template v-slot:icon>

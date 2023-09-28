@@ -31,7 +31,9 @@
               >Envibol</span
             >
           </a>
+
         </div>
+
         <Avatar></Avatar>
       </div>
     </div>
