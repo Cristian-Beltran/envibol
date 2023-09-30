@@ -39,8 +39,8 @@ export const getCards = async (req, res) => {
         where: {
           "$user.employee.admin$": {
             [Op.or]: {
-              [Op.eq]: false, 
-              [Op.is]: null, 
+              [Op.eq]: false,
+              [Op.is]: null,
             },
           },
         },

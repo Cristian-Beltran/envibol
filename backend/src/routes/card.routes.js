@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import { authRequired } from "../middlewares/validateToken.js";
 import { validateSchema } from "../middlewares/validator.middlewares.js";
+import { cardSchema } from "../schemas/card.schemas.js";
 
 import {
   createCard,
@@ -21,7 +22,7 @@ import {
 } from "../controllers/card.controllers.js";
 
 const router = new Router();
-router.post("/card", authRequired, createCard);
+router.post("/card", validateSchema(cardSchema), authRequired, createCard);
 router.get("/card", authRequired, getCards);
 router.get("/card/:id", authRequired, getCard);
 router.get("/card/employee/:id", authRequired, getCardEmployee);
