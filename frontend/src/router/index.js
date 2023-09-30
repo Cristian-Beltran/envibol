@@ -14,6 +14,7 @@ import Turnstile from "@/views/admin/Turnstile.vue";
 import Visit from "@/views/admin/Visit.vue";
 import External from "@/views/admin/External.vue";
 import Entrie from "@/views/admin/Entrie.vue";
+import Vacation from "@/views/admin/Vacation.vue";
 
 // Biometric
 import TimeTable from "@/views/admin/TimeTable.vue";
@@ -184,6 +185,10 @@ const router = createRouter({
           path: "/newTimeTable",
           component: TimeTableForms,
         },
+        {
+          path: "/vacation",
+          component: Vacation,
+        }
         //Reportes
       ],
     },

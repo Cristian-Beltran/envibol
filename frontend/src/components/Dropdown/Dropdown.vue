@@ -1,8 +1,10 @@
 <template>
-  <Popper v-bind="$attrs" hover openDelay="200" closeDelay="100">
+  <Popper arrow>
     <slot name="icon"></slot>
     <template #content="{ close }">
-      <slot @click="close"></slot>
+      <div @click="close">
+        <slot></slot>
+      </div>
     </template>
   </Popper>
 </template>

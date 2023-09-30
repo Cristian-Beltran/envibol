@@ -87,7 +87,7 @@
       </tbody>
     </table>
     <nav
-      class="flex items-center justify-between pt-4"
+      class="flex items-center justify-between pt-4 pb-8"
       aria-label="Table navigation"
     >
       <span class="text-sm font-normal text-gray-500 dark:text-gray-400"

@@ -45,7 +45,14 @@
           </ArchorAccordion>
         </li>
         <li>
-          <Archor to="/timetable" icon="fa-calendar-alt" name="Horarios" />
+          <ArchorAccordion name="Horarios" icon="fa-calendar-alt">
+            <li>
+              <Archor to="/timetable" icon="fa-calendar-alt" name="Horarios" />
+              <Archor to="/assign" icon="fa-clock" name="Asignar Horarios" />
+              <Archor to="/vacation" icon="fa-calendar-day" name="Vacaciones" />
+              <Archor to="/inactive" icon="fa-calendar-times" name="Inactivos" />
+            </li>
+          </ArchorAccordion>
         </li>
         <li>
           <ArchorAccordion name="Configuración" icon="co-settings">
