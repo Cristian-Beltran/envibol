@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import { authRequired } from "../middlewares/validateToken.js";
 import { validateSchema } from "../middlewares/validator.middlewares.js";
+import {externalSchema} from "../schemas/external.schemas.js";
 
 import {
   getExternals,
@@ -12,7 +13,7 @@ import {
 } from "../controllers/external.controllers.js";
 
 const router = new Router();
-router.post("/external", authRequired, createExternal);
+router.post("/external", validateSchema(externalSchema), authRequired, createExternal);
 router.get("/external", authRequired, getExternals);
 router.get("/external/:id", authRequired, getExternal);
 router.get("/external/ci/:ci", authRequired, getCiExternal);

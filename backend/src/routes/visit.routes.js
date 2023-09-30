@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import { authRequired } from "../middlewares/validateToken.js";
 import { validateSchema } from "../middlewares/validator.middlewares.js";
+import { visitSchema } from "../schemas/visit.schemas.js";
 
 import {
   createVisit,
@@ -13,7 +14,7 @@ import {
 } from "../controllers/visit.controllers.js";
 
 const router = new Router();
-router.post("/visit",authRequired, createVisit);
+router.post("/visit", validateSchema(visitSchema), authRequired, createVisit);
 router.get("/visit", authRequired, getVisits);
 router.get("/visit/today", authRequired, getVisitToday);
 router.get("/visit/:id", authRequired, getVisit);

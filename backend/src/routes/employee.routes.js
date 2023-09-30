@@ -2,6 +2,7 @@ import {Router} from "express";
 
 import {authRequired} from "../middlewares/validateToken.js";
 import {validateSchema} from "../middlewares/validator.middlewares.js";
+import {employeeSchema} from "../schemas/employee.schemas.js";
 
 import {
   createEmployee,
@@ -15,7 +16,7 @@ import {
 import {adminRequired} from "../middlewares/validateAdmin.js";
 
 const router = new Router();
-router.post("/employee", authRequired, createEmployee);
+router.post("/employee", validateSchema(employeeSchema), authRequired, createEmployee);
 router.get("/employeeAdmin", authRequired, adminRequired, getEmployeesAdmin);
 router.get("/employeeStaff", authRequired, getEmployeesStaff);
 router.get("/employee/:id", authRequired, getEmployee);

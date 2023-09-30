@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db.js";
-import { External } from "./User.js"; 
+import { External } from "./User.js";
 
 export const Visit = sequelize.define("visits", {
   id: {
@@ -14,11 +14,11 @@ export const Visit = sequelize.define("visits", {
 });
 
 
-External.hasMany(Visit,{
+External.hasMany(Visit, {
   foreignKey: "externalId",
   sourceKey: "id",
 })
-Visit.belongsTo(External,{
+Visit.belongsTo(External, {
   foreignKey: "externalId",
   targetKey: "id",
   allowNull: false,
