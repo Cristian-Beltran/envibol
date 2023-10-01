@@ -50,7 +50,11 @@
               <Archor to="/timetable" icon="fa-calendar-alt" name="Horarios" />
               <Archor to="/assign" icon="fa-clock" name="Asignar Horarios" />
               <Archor to="/vacation" icon="fa-calendar-day" name="Vacaciones" />
-              <Archor to="/inactive" icon="fa-calendar-times" name="Inactivos" />
+              <Archor
+                to="/inactive"
+                icon="fa-calendar-times"
+                name="Inactivos"
+              />
             </li>
           </ArchorAccordion>
         </li>
@@ -58,7 +62,7 @@
           <ArchorAccordion name="Configuración" icon="co-settings">
             <li>
               <Archor to="/role" icon="fa-users" name="Roles de empleados" />
-              <Archor to="/turnstile" icon="fa-tools" name="Molinetes" />
+              <Archor to="/turnstile" icon="gi-turnstile" name="Molinetes" />
             </li>
           </ArchorAccordion>
         </li>

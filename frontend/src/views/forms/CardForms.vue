@@ -46,14 +46,16 @@ import {
   updateCardRequest,
 } from "@/api/card";
 import { getTypeCardsRequest } from "@/api/typecard";
+
 import { useVuelidate } from "@vuelidate/core";
 import { useRoute, useRouter } from "vue-router";
 import { required, helpers } from "@vuelidate/validators";
+import { ref, computed, onMounted, reactive } from "vue";
+import { toast } from "vue-sonner";
+
 import Forms from "@/components/Cards/Forms.vue";
 import Input from "@/components/Inputs/Input.vue";
 import Select from "@/components/Inputs/Select.vue";
-import { ref, computed, onMounted, reactive } from "vue";
-import { toast } from "vue-sonner";
 
 const route = useRoute();
 const router = useRouter();

@@ -1,5 +1,5 @@
 <template>
-  <card-data title="Molinetes" icon="fa-tools">
+  <card-data title="Molinetes" icon="gi-turnstile">
     <template v-slot:filters>
       <div class="pb-4">
         <label for="table-search" class="sr-only">Search</label>
