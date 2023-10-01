@@ -94,10 +94,7 @@
             <div class="w-full mx-auto p-4 md:py-8">
               <div class="flex items-center justify-between">
                 <div class="text-center flex items-center mb-4">
-                  <router-link
-                    to="/admin/typecard"
-                    v-slot="{ href, navigate }"
-                  >
+                  <router-link to="/admin/typecard" v-slot="{ href, navigate }">
                     <button
                       :href="href"
                       :click="navigate"
@@ -124,15 +121,17 @@
     </div>
   </div>
 </template>
-<script>
+<script setup>
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers } from "@vuelidate/validators";
 import {
   createTypeCardRequest,
   getTypeCardRequest,
   updateTypeCardRequest,
-} from "../../api/typecard";
+} from "@/api/typecard";
 
+</script>
+<script>
 export default {
   setup() {
     return { v$: useVuelidate() };
