@@ -18,7 +18,7 @@
     >
       <option disabled value="">Seleccionar una opción</option>
       <option v-for="item in options" :value="item.id" :key="item.id">
-        {{ item.name }}
+        {{ item[name]}}
       </option>
     </select>
   </div>
@@ -45,6 +45,10 @@ const props = defineProps({
   options: {
     type: Array,
     required: true,
+  },
+  name: {
+    type: String,
+    default: "name",
   },
 });
 </script>

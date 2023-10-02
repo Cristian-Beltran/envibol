@@ -70,6 +70,9 @@ export const updatePassword = async (req, res) => {
     const userFound = await Employee.findOne({
       where: { id: req.user.id },
     });
+    if (newPassword !== repeatPassword)
+      return res.status(500).json({ errors: ["Las contraseñas no coinciden"] });
+
     if (!userFound) return res.status(404).json({ errors: ["User not found"] });
 
     const isMatch = await bcrypt.compare(oldPassword, userFound.password); // hashaleatorio

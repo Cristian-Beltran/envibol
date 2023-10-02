@@ -7,71 +7,38 @@
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-6/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Nombre/s
-          </label>
-
-          <input
-            disabled
-            v-model="userData.first_name"
-            type="text"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input
+          id="first_name"
+          labelText="Nombre/s"
+          v-model="userData.first_name"
+          type="text"
+          disabled="true"
+        />
       </div>
 
       <div class="w-full lg:w-6/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Apellidos
-          </label>
-
-          <input
-            disabled
-            v-model="userData.last_name"
-            type="text"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input
+          id="last_name"
+          labelText="Apellidos"
+          v-model="userData.last_name"
+          type="text"
+        />
       </div>
     </div>
-    <hr class="mt-6 border-b-1 border-blueGray-300" />
 
-    <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+    <h6 class="text-white text-sm mt-3 mb-6 font-bold uppercase">
       Informacion de Tarjeta
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-full px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Tarjeta
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.card.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <select
-            v-model="v$.card.$model"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          >
-            <option disabled value="">Seleccionar una opción</option>
-            <option v-for="item in cards" :value="item.id" :key="item.id">
-              {{ item.description }}
-            </option>
-          </select>
-        </div>
+        <Select
+          id="card"
+          labelText="Tarjeta"
+          v-model="v$.card.$model"
+          name="description"
+          :errors="v$.card.$errors"
+          :options="cards"
+        />
       </div>
     </div>
   </Forms>
@@ -89,6 +56,8 @@ import { useVuelidate } from "@vuelidate/core";
 import { useRoute, useRouter } from "vue-router";
 import { required, helpers } from "@vuelidate/validators";
 import Forms from "@/components/Cards/Forms.vue";
+import Input from "@/components/Inputs/Input.vue";
+import Select from "@/components/Inputs/Select.vue";
 import { ref, computed, onMounted, reactive } from "vue";
 import { toast } from "vue-sonner";
 
@@ -134,7 +103,7 @@ onMounted(async () => {
   }
   try {
     const card = await getCardExternalRequest(route.query.id);
-    Object.assign(formData, res.card);
+    Object.assign(formData, card.data);
   } catch (error) {
     toast("El usuario no tiene tarjeta vinculada");
   }
