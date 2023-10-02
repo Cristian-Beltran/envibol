@@ -2,8 +2,8 @@ import { Router } from "express";
 
 import { authRequired } from "../middlewares/validateToken.js";
 import { adminRequired } from "../middlewares/validateAdmin.js";
-import {validateSchema} from "../middlewares/validator.middlewares.js";
-import {turnstileSchema} from "../schemas/turnstile.schemas.js";
+import { validateSchema } from "../middlewares/validator.middlewares.js";
+import { turnstileSchema } from "../schemas/turnstile.schemas.js";
 
 import {
   createTurnstile,
