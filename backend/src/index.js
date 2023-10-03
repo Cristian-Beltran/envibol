@@ -13,6 +13,7 @@ async function main() {
     console.log("Connection established");
     app.listen(app.get("port"));
     var mqttClient = new mqttHandler();
+    mqttClient.connect();
     console.log("Server listening on port " + app.get("port"));
   } catch (error) {
     console.log("Error: " + error);
