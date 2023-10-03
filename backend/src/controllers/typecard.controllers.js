@@ -45,7 +45,7 @@ export const deleteTypeCard = async (req, res) => {
   try {
     const typecard = await TypeCard.findByPk(id);
     if (!typecard)
-      return res 
+      return res
         .status(404)
         .json({ errors: ["Tipo de tarjeta no encontrada"] });
 

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const cardSchema = z.object({
     typeCardId: z
-        .number({
+        .string({
             required_error: "El tipo de tarjeta es requerido"
         }),
     description: z.string(),

@@ -8,7 +8,7 @@ export const Card = sequelize.define("cards", {
     primaryKey: true,
     autoIncrement: true,
   },
-  
+
   description: {
     type: DataTypes.TEXT,
   },
@@ -19,7 +19,7 @@ export const Card = sequelize.define("cards", {
   },
 });
 
-export const TypeCard = sequelize.define("typeCards",{
+export const TypeCard = sequelize.define("typeCards", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -28,13 +28,13 @@ export const TypeCard = sequelize.define("typeCards",{
   name: {
     type: DataTypes.STRING,
   },
-  color:{
+  color: {
     type: DataTypes.STRING,
   },
   description: {
     type: DataTypes.TEXT,
   },
-  
+
 })
 
 TypeCard.hasOne(Card, {
