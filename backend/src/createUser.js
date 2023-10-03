@@ -49,7 +49,7 @@ async function askForData() {
   const passwordHash = await bcrypt.hash(userData.password, 10); // hashaleatorio
 
   const [role, createdRole] = await Role.findOrCreate({
-    where: { name: "administrador" },
+    where: { name: "Administrador" },
   });
 
   const [user, created] = await User.findOrCreate({

@@ -5,7 +5,8 @@ import { createEntrieMQTT } from "./controllers/entrie.controllers.js";
 class MqttHandler {
   constructor() {
     this.mqttClient = null;
-    this.host = "mqtt://164.92.78.151:5050";
+    //this.host = "mqtt://164.92.78.151:5050";
+    this.host = "mqtt://localhost:1883";
     this.username = "user"; // mqtt credentials if these are needed to connect
     this.password = "holamundo";
 

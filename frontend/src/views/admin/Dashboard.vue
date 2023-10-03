@@ -73,6 +73,7 @@
   </div>
 </template>
 <script>
+import { dateFormat } from "@/utils/index";
 import CardStats from "@/components/Cards/CardStats.vue";
 import CardLineChart from "@/components/Cards/CardLineChart.vue";
 import CardPieChart from "@/components/Cards/CardPieChart.vue";
@@ -144,10 +145,26 @@ export default {
       ],
     };
   },
+  methods: {
+    processDate(object) {
+      const res = {};
+      for (const [key, dateArray] of Object.entries(object)) {
+        const countHour = Array(24).fill(0);
+        dateArray.forEach((dateStr) => {
+          const date = new Date(dateStr.createdAt);
+          const hour = date.getHours();
+          countHour[hour]++;
+        });
+        res[key] = countHour;
+      }
+      return res;
+    },
+  },
   async created() {
     try {
-      const total = await getTotalRequest();
-      const entrieHour = await getEntrieHourRequest();
+      const date = dateFormat(new Date());
+      const total = await getTotalRequest(date);
+      const entrieHour = await getEntrieHourRequest(date);
       const employee = await getEmployeeRequest();
       const external = await getExternalRequest();
       this.employee = total.data.employees;
@@ -156,10 +173,11 @@ export default {
       this.visit = total.data.visits;
       this.employeeData[0].data = [employee.data.inside, employee.data.outside];
       this.externalData[0].data = [external.data.inside, external.data.outside];
-      this.entrieData[0].data = entrieHour.data.entrieEmployee;
-      this.entrieData[1].data = entrieHour.data.exitEmployee;
-      this.entrieData[2].data = entrieHour.data.entrieExternal;
-      this.entrieData[3].data = entrieHour.data.entrieExternal;
+      const dataHour = this.processDate(entrieHour.data);
+      this.entrieData[0].data = dataHour.entrieEmployee;
+      this.entrieData[1].data = dataHour.exitEmployee;
+      this.entrieData[2].data = dataHour.entrieExternal;
+      this.entrieData[3].data = dataHour.entrieExternal;
       this.load = false;
     } catch (error) {
       console.log(error);
