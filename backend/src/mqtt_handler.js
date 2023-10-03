@@ -1,12 +1,12 @@
 import mqtt from "mqtt";
-import { getTurnstilesMQTT } from "./controllers/turnstile.controllers.js";
-import { createEntrieMQTT } from "./controllers/entrie.controllers.js";
+import {getTurnstilesMQTT} from "./controllers/turnstile.controllers.js";
+import {createEntrieMQTT} from "./controllers/entrie.controllers.js";
 
 class MqttHandler {
   constructor() {
     this.mqttClient = null;
-    //this.host = "mqtt://164.92.78.151:5050";
-    this.host = "mqtt://localhost:1883";
+    this.host = "mqtt://164.92.78.151:5050";
+    //this.host = "mqtt://localhost:1883";
     this.username = "user"; // mqtt credentials if these are needed to connect
     this.password = "holamundo";
 
@@ -28,7 +28,7 @@ class MqttHandler {
       const res = await getTurnstilesMQTT();
       res.forEach((turnstile) => {
         const name = turnstile.dataValues.name; // Accedemos al nombre dentro de 'dataValues'
-        this.mqttClient.subscribe(name, { qos: 0 });
+        this.mqttClient.subscribe(name, {qos: 0});
       });
     };
     this.mqttClient.on("message", async function (topic, message) {
