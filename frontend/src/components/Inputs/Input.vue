@@ -13,7 +13,7 @@
     </div>
     <input
       :value="modelValue"
-      @change="$emit('update:modelValue', $event.target.value)"
+      @input="$emit('update:modelValue', $event.target.value)"
       :id="id"
       :type="type"
       :placeholder="placeholder"
@@ -24,6 +24,7 @@
 </template>
 
 <script setup>
+defineEmits(["update:modelValue"]);
 const props = defineProps({
   id: {
     type: String,
@@ -34,20 +35,20 @@ const props = defineProps({
     required: true,
   },
   modelValue: {
-    type: String,
+    type: [String, Number, Boolean],
     required: true,
   },
   errors: {
     type: Array,
-    required: true,
+    default: () => [],
   },
   type: {
     type: String,
-    required: true,
+    default: "text",
   },
   placeholder: {
     type: String,
-    required: true,
+    default: " ",
   },
   disabled: {
     type: Boolean,
