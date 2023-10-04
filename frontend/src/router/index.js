@@ -15,6 +15,7 @@ import Visit from "@/views/admin/Visit.vue";
 import External from "@/views/admin/External.vue";
 import Entrie from "@/views/admin/Entrie.vue";
 import Vacation from "@/views/admin/Vacation.vue";
+import Assign from "@/views/admin/Assign.vue";
 
 // Biometric
 import TimeTable from "@/views/admin/TimeTable.vue";
@@ -188,8 +189,11 @@ const router = createRouter({
         {
           path: "/vacation",
           component: Vacation,
-        }
-        //Reportes
+        },
+        {
+          path: "/assign",
+          component: Assign,
+        },
       ],
     },
     {

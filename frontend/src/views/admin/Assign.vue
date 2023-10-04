@@ -19,16 +19,7 @@
             placeholder="Buscar"
           />
         </div>
-        <div class="mt-1">
-          <select
-            v-model="inside"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          >
-            <option value="all" selected>Presente/Ausente</option>
-            <option value="true">Presentes</option>
-            <option value="false">Ausentes</option>
-          </select>
-        </div>
+
         <div class="mt-1">
           <select
             v-model="status"
@@ -90,37 +81,17 @@ const role = ref("all");
 const status = ref("all");
 const load = ref(true);
 const columnas = ref([
+  { key: "check", label: "Check", checkbox: true },
   { key: "id", label: "ID" },
   { key: "first_name", label: "Nombre/s" },
   { key: "last_name", label: "Apellidos" },
   { key: "email", label: "Correo electronico" },
   { key: "ci", label: "CI" },
   { key: "role", label: "Rol" },
-  { key: "inside", label: "Presente", check: true },
   { key: "status", label: "Habilitado", status: true },
-  { key: "card", label: "Tarjeta", color: true },
-  { key: "createdAt", label: "Creado", date: true },
 ]);
 
-const options = ref([
-  { id: "update", name: "Actualizar", icon: "fa-plus" },
-  {
-    id: "changeStatus",
-    name: "Cambiar estado de usuario",
-    icon: "fa-exchange-alt",
-  },
-  {
-    id: "connect",
-    name: "Vincular tarjeta",
-    icon: "fa-link",
-  },
-  {
-    id: "disconnect",
-    name: "Desvincular tarjeta",
-    icon: "fa-eraser",
-  },
-  { id: "delete", name: "Eliminar", icon: "fa-times" },
-]);
+const options = ref([]);
 
 async function loadData() {
   load.value = true;
