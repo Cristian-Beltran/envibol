@@ -14,6 +14,7 @@
     <input
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
+      @blur="$emit('blur')"
       :id="id"
       :type="type"
       :placeholder="placeholder"
@@ -24,7 +25,7 @@
 </template>
 
 <script setup>
-defineEmits(["update:modelValue"]);
+defineEmits(["update:modelValue", "blur"]);
 const props = defineProps({
   id: {
     type: String,
