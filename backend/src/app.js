@@ -15,6 +15,7 @@ import typeCardRoutes from "./routes/typecard.routes.js";
 import statsRoutes from "./routes/stats.routes.js";
 import timeTable from "./routes/timeTable.routes.js";
 import absence from "./routes/absence.routes.js";
+import absenceType from "./routes/absenceType.routes.js";
 
 const app = express();
 //Config
@@ -44,5 +45,6 @@ app.use("/api", typeCardRoutes);
 app.use("/api", statsRoutes);
 app.use("/api", timeTable);
 app.use("/api", absence);
+app.use("/api", absenceType);
 
 export default app;
