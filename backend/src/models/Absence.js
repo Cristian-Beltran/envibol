@@ -9,10 +9,10 @@ export const Absence = sequelize.define("absences", {
         autoIncrement: true,
     },
     start: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
     },
     end: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
     },
     //Detalle de ausencia
     detail: {
@@ -44,7 +44,7 @@ Absence.belongsTo(AbsenceType, {
     targetKey: "id",
 });
 AbsenceType.hasMany(Absence, {
-    foreignKey: "typeId",
+    foreignKey: "absenceTypeId",
     sourceKey: "id",
 });
 Employee.hasMany(Absence, {
