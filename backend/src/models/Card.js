@@ -8,7 +8,6 @@ export const Card = sequelize.define("cards", {
     primaryKey: true,
     autoIncrement: true,
   },
-
   description: {
     type: DataTypes.TEXT,
   },
@@ -34,8 +33,7 @@ export const TypeCard = sequelize.define("typeCards", {
   description: {
     type: DataTypes.TEXT,
   },
-
-})
+});
 
 TypeCard.hasOne(Card, {
   foreignKey: "typeCardId",

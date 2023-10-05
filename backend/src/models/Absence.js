@@ -8,27 +8,45 @@ export const Absence = sequelize.define("absences", {
         primaryKey: true,
         autoIncrement: true,
     },
-    absenceStart: {
+    start: {
         type: DataTypes.DATE,
     },
-    absenceEnd: {
+    end: {
         type: DataTypes.DATE,
-    },
-    //Tipo de ausencia
-    absenceType: {
-        type: DataTypes.STRING,
     },
     //Detalle de ausencia
-    absenceDetail: {
+    detail: {
         type: DataTypes.TEXT,
     },
     //Este campo se utiliza para almacenar cualquier documentación relacionada con la ausencia. Esto podría incluir un certificado médico, una carta de solicitud, u otra información relevante.
     documentation: {
-        type: DataTypes.BLOB,
+        type: DataTypes.TEXT,
     },
 });
 
+export const AbsenceType = sequelize.define("absence_types", {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    name: {
+        type: DataTypes.STRING,
+    },
+    detail: {
+        type: DataTypes.STRING,
+    },
+});
 
+// Define las relaciones
+Absence.belongsTo(AbsenceType, {
+    foreignKey: "absenceTypeId",
+    targetKey: "id",
+});
+AbsenceType.hasMany(Absence, {
+    foreignKey: "typeId",
+    sourceKey: "id",
+});
 Employee.hasMany(Absence, {
     foreignKey: "employeeId",
     sourceKey: "id",
