@@ -16,6 +16,7 @@ import statsRoutes from "./routes/stats.routes.js";
 import timeTable from "./routes/timeTable.routes.js";
 import absence from "./routes/absence.routes.js";
 import absenceType from "./routes/absenceType.routes.js";
+import vacation from "./routes/vacation.routes.js";
 
 const app = express();
 //Config
@@ -46,5 +47,6 @@ app.use("/api", statsRoutes);
 app.use("/api", timeTable);
 app.use("/api", absence);
 app.use("/api", absenceType);
+app.use("/api", vacation);
 
 export default app;

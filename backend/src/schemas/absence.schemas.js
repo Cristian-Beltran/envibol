@@ -16,4 +16,6 @@ export const absenceSchema = z.object({
     }),
     detail: z.string(),
     documentation: z.string(),
+    employeeId: z.string(),
+    absenceTypeId: z.string()
 });
