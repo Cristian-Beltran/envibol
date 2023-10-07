@@ -1,10 +1,119 @@
-import { Absence } from "../models/Absence.js";
+import { Absence, AbsenceType } from "../models/Absence.js";
+import { Employee, User } from "../models/User.js";
 
 // Controlador para obtener todas las ausencias
 export const getAbsences = async (req, res) => {
   try {
-    const absences = await Absence.findAll();
-    res.json(absences);
+    const absences = await Absence.findAll({
+      include: [
+        {
+          model: AbsenceType,
+        },
+        {
+          model: Employee,
+          include: [{ model: User }],
+        },
+      ],
+    });
+    const absenceModify = absences.map((absence) => ({
+      id: absence.id,
+      start: absence.start,
+      end: absence.end,
+      detail: absence.detail,
+      documentation: absence.documentation,
+      absenceTypeName: absence.absence_type ? absence.absence_type.name : null,
+      absenceTypeDetail: absence.absence_type
+        ? absence.absence_type.detail
+        : null,
+      employeeFirstName:
+        absence.employee && absence.employee.user
+          ? absence.employee.user.first_name
+          : null,
+      employeeLastName:
+        absence.employee && absence.employee.user
+          ? absence.employee.user.last_name
+          : null,
+      employeeCI:
+        absence.employee && absence.employee.user
+          ? absence.employee.user.ci
+          : null,
+      employeeTelephone:
+        absence.employee && absence.employee.user
+          ? absence.employee.user.telf
+          : null,
+      employeeCelphone:
+        absence.employee && absence.employee.user
+          ? absence.employee.user.cel
+          : null,
+      createdAt: absence.createdAt,
+    }));
+
+    res.json(absenceModify);
+  } catch (error) {
+    res.status(500).json({
+      errors: [error.message],
+    });
+  }
+};
+
+// Controlador para obtener una ausencia por ID
+export const getAbsence = async (req, res) => {
+  const absenceId = req.params.id;
+  try {
+    const absence = await Absence.findByPk(absenceId, {
+      include: [
+        {
+          model: AbsenceType,
+        },
+        {
+          model: Employee,
+          include: [{ model: User }],
+        },
+      ],
+    });
+
+    if (!absence) {
+      res.status(404).json({
+        errors: ["Ausencia no encontrada"],
+      });
+    } else {
+      const absenceModify = {
+        id: absence.id,
+        start: absence.start,
+        end: absence.end,
+        detail: absence.detail,
+        documentation: absence.documentation,
+        absenceTypeName: absence.absence_type
+          ? absence.absence_type.name
+          : null,
+        absenceTypeDetail: absence.absence_type
+          ? absence.absence_type.detail
+          : null,
+        employeeFirstName:
+          absence.employee && absence.employee.user
+            ? absence.employee.user.first_name
+            : null,
+        employeeLastName:
+          absence.employee && absence.employee.user
+            ? absence.employee.user.last_name
+            : null,
+        employeeCI:
+          absence.employee && absence.employee.user
+            ? absence.employee.user.ci
+            : null,
+        employeeTelephone:
+          absence.employee && absence.employee.user
+            ? absence.employee.user.telf
+            : null,
+        employeeCelphone:
+          absence.employee && absence.employee.user
+            ? absence.employee.user.cel
+            : null,
+        createdAt: absence.createdAt,
+      };
+
+      res.json(absenceModify);
+    }
   } catch (error) {
     res.status(500).json({
       errors: [error.message],
@@ -17,22 +126,6 @@ export const createAbsence = async (req, res) => {
   try {
     const newAbsence = await Absence.create(req.body);
     return res.json(newAbsence);
-  } catch (error) {
-    res.status(500).json({
-      errors: [error.message],
-    });
-  }
-};
-
-// Controlador para obtener una ausencia por ID
-export const getAbsence = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const absence = await Absence.findByPk(id);
-    if (!absence) {
-      return res.status(404).json({ error: "Ausencia no encontrada" });
-    }
-    return res.json(absence);
   } catch (error) {
     res.status(500).json({
       errors: [error.message],

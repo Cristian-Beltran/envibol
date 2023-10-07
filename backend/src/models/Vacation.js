@@ -9,14 +9,14 @@ export const Vacation = sequelize.define("vacations", {
         autoIncrement: true,
     },
     start: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
     },
     end: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
     },
     // El campo `dateRequested` es la fecha en que el empleado solicitó la vacación.
     dateRequested: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
     },
     // El campo `status` puede ser uno de los siguientes valores:
     //
