@@ -1,10 +1,31 @@
 import { Vacation } from '../models/Vacation.js';
-import { Employee } from '../models/User.js';
+import { Employee, User } from '../models/User.js';
 
 export const getVacations = async (req, res) => {
     try {
-        const vacations = await Vacation.findAll();
-        res.json(vacations);
+        const vacations = await Vacation.findAll({
+            include: [
+                {
+                    model: Employee,
+                    include: [{ model: User, }],
+                }],
+        });
+        const vacationModify = vacations.map((vacation) => ({
+            id: vacation.id,
+            start: vacation.start,
+            end: vacation.end,
+            dateRequested: vacation.dateRequested,
+            status: vacation.status,
+            observations: vacation.observations,
+            employeeFirstName: vacation.employee.user.first_name,
+            employeeLastName: vacation.employee.user.last_name,
+            employeeCI: vacation.employee.user.ci,
+            employeeTelephone: vacation.employee.user.telf,
+            employeeCelphone: vacation.employee.user.cel,
+            createdAt: vacation.createdAt,
+        }));
+
+        res.json(vacationModify);
     } catch (error) {
         res.status(500).json({
             errors: [error.message],
@@ -12,29 +33,16 @@ export const getVacations = async (req, res) => {
     }
 };
 
-/* export const getVacation = async (req, res) => {
-    const vacationId = req.params.id;
-    try {
-        const vacation = await Vacation.findByPk(vacationId);
-        if (!vacation) {
-            res.status(404).json({
-                errors: ['Vacación no encontrada'],
-            });
-        } else {
-            res.json(vacation);
-        }
-    } catch (error) {
-        res.status(500).json({
-            errors: [error.message],
-        });
-    }
-}; */
-
 export const getVacation = async (req, res) => {
     const vacationId = req.params.id;
     try {
         const vacation = await Vacation.findByPk(vacationId, {
-            include: Employee, // Incluye el empleado asociado a la vacación
+            include: [
+                {
+                    model: Employee,
+                    include: [{ model: User }]
+                }
+            ]
         });
 
         if (!vacation) {
@@ -42,22 +50,22 @@ export const getVacation = async (req, res) => {
                 errors: ['Vacación no encontrada'],
             });
         } else {
-            // Accede al email del empleado a través de la relación
-            const employeeEmail = vacation.Employee ? vacation.Employee.email : '';
-
-            // Crea una respuesta JSON que incluye el email del empleado
-            const response = {
+            const vacationModify = {
                 id: vacation.id,
                 start: vacation.start,
                 end: vacation.end,
                 dateRequested: vacation.dateRequested,
                 status: vacation.status,
                 observations: vacation.observations,
-                employeeId: vacation.employeeId,
-                employeeEmail, // Agrega el email del empleado
+                employeeFirstName: vacation.employee.user.first_name,
+                employeeLastName: vacation.employee.user.last_name,
+                employeeCI: vacation.employee.user.ci,
+                employeeTelephone: vacation.employee.user.telf,
+                employeeCelphone: vacation.employee.user.cel,
+                createdAt: vacation.createdAt
             };
 
-            res.json(response);
+            res.json(vacationModify);
         }
     } catch (error) {
         res.status(500).json({
@@ -65,7 +73,6 @@ export const getVacation = async (req, res) => {
         });
     }
 };
-
 
 export const createVacation = async (req, res) => {
     try {
