@@ -17,12 +17,12 @@ export const getVacations = async (req, res) => {
             dateRequested: vacation.dateRequested,
             status: vacation.status,
             observations: vacation.observations,
-            employeeFirstName: vacation.employee.user.first_name,
-            employeeLastName: vacation.employee.user.last_name,
-            employeeCI: vacation.employee.user.ci,
-            employeeTelephone: vacation.employee.user.telf,
-            employeeCelphone: vacation.employee.user.cel,
-            createdAt: vacation.createdAt,
+            employeeFirstName: vacation.employee && vacation.employee.user ? vacation.employee.user.first_name : null,
+            employeeLastName: vacation.employee && vacation.employee.user ? vacation.employee.user.last_name : null,
+            employeeCI: vacation.employee && vacation.employee.user ? vacation.employee.user.ci : null,
+            employeeTelephone: vacation.employee && vacation.employee.user ? vacation.employee.user.telf : null,
+            employeeCelphone: vacation.employee && vacation.employee.user ? vacation.employee.user.cel : null,
+            createdAt: vacation.createdAt
         }));
 
         res.json(vacationModify);
@@ -57,11 +57,11 @@ export const getVacation = async (req, res) => {
                 dateRequested: vacation.dateRequested,
                 status: vacation.status,
                 observations: vacation.observations,
-                employeeFirstName: vacation.employee.user.first_name,
-                employeeLastName: vacation.employee.user.last_name,
-                employeeCI: vacation.employee.user.ci,
-                employeeTelephone: vacation.employee.user.telf,
-                employeeCelphone: vacation.employee.user.cel,
+                employeeFirstName: vacation.employee && vacation.employee.user ? vacation.employee.user.first_name : null,
+                employeeLastName: vacation.employee && vacation.employee.user ? vacation.employee.user.last_name : null,
+                employeeCI: vacation.employee && vacation.employee.user ? vacation.employee.user.ci : null,
+                employeeTelephone: vacation.employee && vacation.employee.user ? vacation.employee.user.telf : null,
+                employeeCelphone: vacation.employee && vacation.employee.user ? vacation.employee.user.cel : null,
                 createdAt: vacation.createdAt
             };
 
