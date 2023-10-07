@@ -67,14 +67,14 @@ export const getAbsence = async (req, res) => {
                 end: absence.end,
                 detail: absence.detail,
                 documentation: absence.documentation,
-                absenceTypeName: absence.absence_type.name,
-                absenceTypeDetail: absence.absence_type.detail,
-                employeeFirstName: absence.employee.user.first_name,
-                employeeLastName: absence.employee.user.last_name,
-                employeeCI: absence.employee.user.ci,
-                employeeTelephone: absence.employee.user.telf,
-                employeeCelphone: absence.employee.user.cel,
-                createdAt: absence.createdAt
+                absenceTypeName: absence.absence_type ? absence.absence_type.name : null,
+                absenceTypeDetail: absence.absence_type ? absence.absence_type.detail : null,
+                employeeFirstName: absence.employee && absence.employee.user ? absence.employee.user.first_name : null,
+                employeeLastName: absence.employee && absence.employee.user ? absence.employee.user.last_name : null,
+                employeeCI: absence.employee && absence.employee.user ? absence.employee.user.ci : null,
+                employeeTelephone: absence.employee && absence.employee.user ? absence.employee.user.telf : null,
+                employeeCelphone: absence.employee && absence.employee.user ? absence.employee.user.cel : null,
+                createdAt: absence.createdAt,
             };
 
             res.json(absenceModify);
