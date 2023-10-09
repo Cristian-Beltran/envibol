@@ -149,7 +149,8 @@ import { ref, computed } from "vue";
 import { fullDateFormat } from "@/utils/index";
 import TableDropdown from "@/components/Dropdown/TableDropdown.vue";
 import Dropdown from "@/components/Dropdown/Dropdown.vue";
-import { toast } from "vue-sonner";
+import Checkbox from "@/components/Inputs/Checkbox.vue";
+
 const emit = defineEmits(["action"]);
 
 const props = defineProps({
@@ -185,4 +186,5 @@ function dateFormated(date) {
 function action(data) {
   emit("action", data);
 }
+const selected = ref([]);
 </script>

@@ -85,7 +85,6 @@ const columnas = ref([
   { key: "id", label: "ID" },
   { key: "first_name", label: "Nombre/s" },
   { key: "last_name", label: "Apellidos" },
-  { key: "email", label: "Correo electronico" },
   { key: "ci", label: "CI" },
   { key: "role", label: "Rol" },
   { key: "status", label: "Habilitado", status: true },

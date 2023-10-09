@@ -54,12 +54,14 @@
       <div class="w-full lg:w-6/12 px-4">
         <Checkbox
           id="staff"
+          v-if="profileStore.isAdmin"
           labelText="Acceso del sistema"
           v-model="v$.staff.$model"
         />
       </div>
       <div class="w-full lg:w-6/12 px-4">
         <Checkbox
+          v-if="profileStore.isAdmin"
           id="admin"
           labelText="Permisos de administrador"
           v-model="v$.admin.$model"
