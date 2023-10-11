@@ -31,6 +31,7 @@
     "vue": "^3.3.4",
     "vue-cookie": "^1.1.4",
     "vue-cookies": "^1.8.3",
+    "vue-final-modal": "^4.4.5",
     "vue-router": "^4.2.4",
     "vue-sonner": "^0.4.4",
     "vue3-popper": "^1.5.0",

@@ -1,4 +1,5 @@
 import "@/assets/index.css";
+import 'vue-final-modal/style.css'
 import * as FaIcons from "oh-vue-icons/icons/fa";
 import * as CoIcons from "oh-vue-icons/icons/co";
 import * as GiIcons from "oh-vue-icons/icons/gi";
@@ -13,11 +14,13 @@ const Co = Object.values({ ...CoIcons });
 const Fa = Object.values({ ...FaIcons });
 const Gi = Object.values({ ...GiIcons });
 
+const vfm = createVfm();
 addIcons(...Fa, ...Co, ...Gi);
 
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
+app.use(vfm);
 app.component("v-icon", OhVueIcon);
 app.mount("#app");

@@ -7,6 +7,8 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { INITIAL_EVENTS, createEventId } from "@/utils/event-utils";
 import CardData from "@/components/Cards/CardData.vue";
 
+
+
 export default defineComponent({
   components: {
     FullCalendar,

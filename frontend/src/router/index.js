@@ -5,6 +5,7 @@ import Auth from "@/templates/Auth.vue";
 // views for Admin layout
 import Dashboard from "@/views/admin/Dashboard.vue";
 import Settings from "@/views/admin/Settings.vue";
+import Profile from "@/views/forms/ProfileForms.vue";
 import Card from "@/views/admin/Card.vue";
 import TypeCard from "@/views/admin/TypeCard.vue";
 import Employee from "@/views/admin/Employee.vue";
@@ -54,7 +55,7 @@ const router = createRouter({
         //Configuracion
         {
           path: "/profile",
-          component: Settings,
+          component: Profile,
         },
         {
           path: "/updatePassword",

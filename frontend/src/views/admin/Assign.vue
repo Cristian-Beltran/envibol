@@ -45,6 +45,7 @@
       <button-add to="/newEmployee"> Agregar empleado </button-add>
     </template>
     <data-table
+      check="true"
       :items="itemsDisplay"
       :columns="columnas"
       :options="options"
@@ -81,7 +82,6 @@ const role = ref("all");
 const status = ref("all");
 const load = ref(true);
 const columnas = ref([
-  { key: "check", label: "Check", checkbox: true },
   { key: "id", label: "ID" },
   { key: "first_name", label: "Nombre/s" },
   { key: "last_name", label: "Apellidos" },

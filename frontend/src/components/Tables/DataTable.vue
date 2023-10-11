@@ -5,6 +5,9 @@
         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
       >
         <tr>
+          <th v-if="check" class="px-4 py-3">
+            <input type="checkbox" @click="change" v-model="checkbox" />
+          </th>
           <th
             scope="col"
             v-for="column in columns"
@@ -23,7 +26,11 @@
           class="text-xs dark:text-white text-gray-800 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
           v-for="item in itemsDisplay"
           :key="item.id"
+          @click="item.check = !item.check"
         >
+          <td v-if="check" class="px-4 py-3">
+            <input type="checkbox" v-model="item.check" />
+          </td>
           <td class="px-4 py-4" v-for="column in columns" :key="column.key">
             <span v-if="column.color">
               <span
@@ -149,7 +156,6 @@ import { ref, computed } from "vue";
 import { fullDateFormat } from "@/utils/index";
 import TableDropdown from "@/components/Dropdown/TableDropdown.vue";
 import Dropdown from "@/components/Dropdown/Dropdown.vue";
-import Checkbox from "@/components/Inputs/Checkbox.vue";
 
 const emit = defineEmits(["action"]);
 
@@ -166,25 +172,33 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  check: {
+    type: Boolean,
+    default: false,
+  },
 });
+const checkbox = ref(false);
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
-
 const totalPages = computed(() => {
   return Math.ceil(props.items.length / itemsPerPage.value);
 });
-
 const itemsDisplay = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value;
   const end = start + itemsPerPage.value;
   return props.items.slice(start, end);
 });
-
 function dateFormated(date) {
   return fullDateFormat(date);
 }
 function action(data) {
   emit("action", data);
+}
+function change() {
+  checkbox.value = !checkbox.value;
+  props.items.forEach((item) => {
+    item.check = checkbox.value;
+  });
 }
 const selected = ref([]);
 </script>
