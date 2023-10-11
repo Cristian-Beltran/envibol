@@ -75,34 +75,44 @@ export const getVacation = async (req, res) => {
     }
 };
 
+const validateVacationRequest = async (start, end, vacationId = null) => {
+    // Verificar si ya existe una solicitud para el mismo empleado en las mismas fechas
+    const existingVacation = await Vacation.findOne({
+        where: {
+            start: {
+                [Sequelize.Op.between]: [start, end]
+            },
+            end: {
+                [Sequelize.Op.between]: [start, end]
+            },
+            id: {
+                [Sequelize.Op.not]: vacationId // Excluir la vacación actual si se proporciona un vacationId
+            }
+        },
+    });
+
+    if (existingVacation) {
+        throw new Error('Ya existe una solicitud de vacaciones para el mismo período.');
+    }
+
+    // Verificar si la fecha de inicio es posterior a la fecha actual (no en el pasado)
+    const currentDate = new Date();
+    if (new Date(start) < currentDate) {
+        throw new Error('La fecha de inicio de la solicitud debe ser en el futuro.');
+    }
+
+    // Verificar si la fecha de finalización es igual o posterior a la fecha de inicio
+    if (new Date(end) < new Date(start)) {
+        throw new Error('La fecha de finalización debe ser igual o posterior a la fecha de inicio.');
+    }
+};
+
 export const createVacation = async (req, res) => {
     try {
         const { start, end, dateRequested, status, observations, employeeId } = req.body;
-        // Verificar si ya existe una solicitud para el mismo empleado en las mismas fechas
-        const existingVacation = await Vacation.findOne({
-            where: {
-                start: {
-                    [Sequelize.Op.between]: [start, end]
-                },
-                end: {
-                    [Sequelize.Op.between]: [start, end]
-                },
-            },
-        });
 
-        if (existingVacation) {
-            return res.status(400).json({
-                errors: ["Ya existe una solicitud de vacaciones para el mismo período."],
-            });
-        }
-
-        // Verificar si la fecha de inicio es posterior a la fecha actual (no en el pasado)
-        const currentDate = new Date();
-        if (new Date(start) < currentDate) {
-            return res.status(400).json({
-                errors: ["La fecha de inicio de la solicitud debe ser en el futuro."],
-            });
-        }
+        // Llamar a la función de validación
+        await validateVacationRequest(start, end);
 
         const vacation = await Vacation.create({
             start,
@@ -115,7 +125,7 @@ export const createVacation = async (req, res) => {
 
         return res.status(201).json(vacation);
     } catch (error) {
-        res.status(500).json({
+        res.status(400).json({
             errors: [error.message],
         });
     }
@@ -126,34 +136,8 @@ export const updateVacation = async (req, res) => {
     try {
         const { start, end, dateRequested, status, observations } = req.body;
 
-        // Verificar si ya existe una solicitud para el mismo empleado en las mismas fechas
-        const existingVacation = await Vacation.findOne({
-            where: {
-                start: {
-                    [Sequelize.Op.between]: [start, end]
-                },
-                end: {
-                    [Sequelize.Op.between]: [start, end]
-                },
-                id: {
-                    [Sequelize.Op.not]: vacationId // Excluir la solicitud actual
-                }
-            },
-        });
-
-        if (existingVacation) {
-            return res.status(400).json({
-                errors: ["Ya existe una solicitud de vacaciones para el mismo período."],
-            });
-        }
-
-        // Verificar si la fecha de inicio es posterior a la fecha actual (no en el pasado)
-        const currentDate = new Date();
-        if (new Date(start) < currentDate) {
-            return res.status(400).json({
-                errors: ["La fecha de inicio de la solicitud debe ser en el futuro."],
-            });
-        }
+        // Llamar a la función de validación
+        await validateVacationRequest(start, end, vacationId);
 
         const vacation = await Vacation.findByPk(vacationId);
         if (!vacation) {
@@ -172,7 +156,7 @@ export const updateVacation = async (req, res) => {
 
         return res.json(vacation);
     } catch (error) {
-        res.status(500).json({
+        res.status(400).json({
             errors: [error.message],
         });
     }
@@ -191,14 +175,10 @@ export const deleteVacation = async (req, res) => {
 
         const { start } = vacation;
 
-        // Verificar si la fecha de inicio es posterior a la fecha actual (no en el pasado)
-        const currentDate = new Date();
-        if (new Date(start) < currentDate) {
-            return res.status(400).json({
-                errors: ["No puedes eliminar una solicitud de vacaciones en el pasado."],
-            });
-        }
+        // Llamar a la función de validación
+        await validateVacationRequest(start);
 
+        // Ahora puedes eliminar la solicitud de vacaciones
         await vacation.destroy();
         return res.status(204).json();
     } catch (error) {
