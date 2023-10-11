@@ -1,677 +1,260 @@
 <template>
   <Forms title="Horario" icon="fa-calendar-alt" @handleSubmit="handleSubmit">
-    <h6
-      class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
-    >
+    <h6 class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase">
       Datos de horario
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-6/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Nombre del horario
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.rfid.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.rfid.$model"
-            type="text"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input 
+          id="title" 
+          labelText="Nombre del horario" 
+          v-model="v$.title.$model" 
+          :errors="v$.title.$errors" 
+          type="text" 
+        />
       </div>
       <div class="w-full lg:w-6/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Descripción
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.description.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.description.$model"
-            type="text"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input
+          id="description"
+          labelText="Descripción"
+          v-model="v$.description.$model"
+          :errors="v$.description.$errors"
+          type="text"
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Tolerancia en atraso (minutos)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.description.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.description.$model"
-            type="text"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input
+          id="toleranceDelay"
+          labelText="Tolerancia en atraso (minutos)"
+          v-model="v$.toleranceDelay.$model"
+          :errors="v$.toleranceDelay.$errors"
+          type="text"
+        />        
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Tolerancia en falta (minutos)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.description.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.description.$model"
-            type="text"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input
+          id="toleranceLack"
+          labelText="Tolerancia en falta (minutos)"
+          v-model="v$.toleranceLack.$model"
+          :errors="v$.toleranceLack.$errors"
+          type="text"
+        />   
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Tolerancia a la salida (minutos)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.description.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.description.$model"
-            type="text"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input
+          id="toleranceOutput"
+          labelText="Tolerancia a la salida (minutos)"
+          v-model="v$.toleranceOutput.$model"
+          :errors="v$.toleranceOutput.$errors"
+          type="text"
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Salida adelantada (minutos)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.description.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.description.$model"
-            type="text"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input
+          id="earlyExit"
+          labelText="Salida adelantada (minutos)"
+          v-model="v$.earlyExit.$model"
+          :errors="v$.earlyExit.$errors"
+          type="text"
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Puntualidad (minutos)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.description.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.description.$model"
-            type="text"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input
+          id="puntuality"
+          labelText="Puntualidad (minutos)"
+          v-model="v$.puntuality.$model"
+          :errors="v$.puntuality.$errors"
+          type="text"
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Prioridadad
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.description.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.description.$model"
-            type="text"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input
+          id="priority"
+          labelText="Prioridad"
+          v-model="v$.priority.$model"
+          :errors="v$.priority.$errors"
+          type="text"
+        />
       </div>
     </div>
-    <h6
-      class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
-    >
+    <h6 class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase">
       Horario
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Lunes (Entrada)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.rfid.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.rfid.$model"
-            type="time"
-            placeholder="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input 
+          id="mondayEntry" 
+          labelText="Lunes (Entrada)" 
+          v-model="v$.mondayEntry.$model" 
+          :errors="v$.mondayEntry.$errors" 
+          type="time" 
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Lunes (Salida)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.rfid.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.rfid.$model"
-            type="time"
-            placeholder="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input 
+          id="mondayExit" 
+          labelText="Lunes (Salida)" 
+          v-model="v$.mondayExit.$model" 
+          :errors="v$.mondayExit.$errors" 
+          type="time" 
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <div
-            class="flex items-center pl-4 mt-4 border border-gray-200 rounded dark:border-gray-700"
-          >
-            <input
-              id="bordered-checkbox-1"
-              type="checkbox"
-              value=""
-              name="bordered-checkbox"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label
-              for="bordered-checkbox-1"
-              class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >Lunes (Habilitado)</label
-            >
-          </div>
-        </div>
+        <Checkbox
+          id="mondayEnable"
+          labelText="Lunes (Habilitado)"
+          v-model="v$.mondayEnable.$model"
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Martes (Entrada)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.rfid.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.rfid.$model"
-            type="time"
-            placeholder="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input 
+          id="tuesdayEntry" 
+          labelText="Martes (Entrada)" 
+          v-model="v$.tuesdayEntry.$model" 
+          :errors="v$.tuesdayEntry.$errors" 
+          type="time" 
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Martes (Salida)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.rfid.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.rfid.$model"
-            type="time"
-            placeholder="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input 
+          id="tuesdayExit" 
+          labelText="Martes (Salida)" 
+          v-model="v$.tuesdayExit.$model" 
+          :errors="v$.tuesdayExit.$errors" 
+          type="time" 
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <div
-            class="flex items-center pl-4 mt-4 border border-gray-200 rounded dark:border-gray-700"
-          >
-            <input
-              id="bordered-checkbox-2"
-              type="checkbox"
-              value=""
-              name="bordered-checkbox"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label
-              for="bordered-checkbox-2"
-              class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >Martes (Habilitado)</label
-            >
-          </div>
-        </div>
+        <Checkbox
+          id="tuesdayEnable"
+          labelText="Martes (Habilitado)"
+          v-model="v$.tuesdayEnable.$model"
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Miercole (Entrada)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.rfid.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.rfid.$model"
-            type="time"
-            placeholder="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input 
+          id="wednesdayEntry" 
+          labelText="Miércoles (Entrada)" 
+          v-model="v$.wednesdayEntry.$model" 
+          :errors="v$.wednesdayEntry.$errors" 
+          type="time" 
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Miercoles (Salida)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.rfid.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.rfid.$model"
-            type="time"
-            placeholder="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input 
+          id="wednesdayExit" 
+          labelText="Miércoles (Salida)" 
+          v-model="v$.wednesdayExit.$model" 
+          :errors="v$.wednesdayExit.$errors" 
+          type="time" 
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <div
-            class="flex items-center pl-4 mt-4 border border-gray-200 rounded dark:border-gray-700"
-          >
-            <input
-              id="bordered-checkbox-3"
-              type="checkbox"
-              value=""
-              name="bordered-checkbox"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label
-              for="bordered-checkbox-3"
-              class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >Miercole (Habilitado)</label
-            >
-          </div>
-        </div>
+        <Checkbox
+          id="wednesdayEnable"
+          labelText="Miércoles (Habilitado)"
+          v-model="v$.wednesdayEnable.$model"
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Jueves (Entrada)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.rfid.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.rfid.$model"
-            type="time"
-            placeholder="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input 
+          id="thursdayEntry" 
+          labelText="Jueves (Entrada)" 
+          v-model="v$.thursdayEntry.$model" 
+          :errors="v$.thursdayEntry.$errors" 
+          type="time" 
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Jueves (Salida)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.rfid.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.rfid.$model"
-            type="time"
-            placeholder="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input 
+          id="thursdayExit" 
+          labelText="Jueves (Salida)" 
+          v-model="v$.thursdayExit.$model" 
+          :errors="v$.thursdayExit.$errors" 
+          type="time" 
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <div
-            class="flex items-center pl-4 mt-4 border border-gray-200 rounded dark:border-gray-700"
-          >
-            <input
-              id="bordered-checkbox-4"
-              type="checkbox"
-              value=""
-              name="bordered-checkbox"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label
-              for="bordered-checkbox-4"
-              class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >Jueves (Habilitado)</label
-            >
-          </div>
-        </div>
+        <Checkbox
+          id="thursdayEnable"
+          labelText="Jueves (Habilitado)"
+          v-model="v$.thursdayEnable.$model"
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Viernes (Entrada)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.rfid.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.rfid.$model"
-            type="time"
-            placeholder="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input 
+          id="fridayEntry" 
+          labelText="Viernes (Entrada)" 
+          v-model="v$.fridayEntry.$model" 
+          :errors="v$.fridayEntry.$errors" 
+          type="time" 
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Viernes (Salida)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.rfid.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.rfid.$model"
-            type="time"
-            placeholder="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input 
+          id="fridayExit" 
+          labelText="Viernes (Salida)" 
+          v-model="v$.fridayExit.$model" 
+          :errors="v$.fridayExit.$errors" 
+          type="time" 
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <div
-            class="flex items-center pl-4 mt-4 border border-gray-200 rounded dark:border-gray-700"
-          >
-            <input
-              id="bordered-checkbox-5"
-              type="checkbox"
-              value=""
-              name="bordered-checkbox"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label
-              for="bordered-checkbox-5"
-              class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >Viernes (Habilitado)</label
-            >
-          </div>
-        </div>
+        <Checkbox
+          id="fridayEnable"
+          labelText="Viernes (Habilitado)"
+          v-model="v$.fridayEnable.$model"
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Sabado (Entrada)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.rfid.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.rfid.$model"
-            type="time"
-            placeholder="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input 
+          id="saturdayEntry" 
+          labelText="Sábado (Entrada)" 
+          v-model="v$.saturdayEntry.$model" 
+          :errors="v$.saturdayEntry.$errors" 
+          type="time" 
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Sabado (Salida)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.rfid.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.rfid.$model"
-            type="time"
-            placeholder="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input 
+          id="saturdayExit" 
+          labelText="Sábado (Salida)" 
+          v-model="v$.saturdayExit.$model" 
+          :errors="v$.saturdayExit.$errors" 
+          type="time" 
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <div
-            class="flex items-center pl-4 mt-4 border border-gray-200 rounded dark:border-gray-700"
-          >
-            <input
-              id="bordered-checkbox-6"
-              type="checkbox"
-              value=""
-              name="bordered-checkbox"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label
-              for="bordered-checkbox-6"
-              class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >Sabado (Habilitado)</label
-            >
-          </div>
-        </div>
+        <Checkbox
+          id="saturdayEnable"
+          labelText="Sábado (Habilitado)"
+          v-model="v$.saturdayEnable.$model"
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Domingo (Entrada)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.rfid.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.rfid.$model"
-            type="time"
-            placeholder="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input 
+          id="sundayEntry" 
+          labelText="Domingo (Entrada)" 
+          v-model="v$.sundayEntry.$model" 
+          :errors="v$.sundayEntry.$errors" 
+          type="time" 
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <label
-            class="block uppercase text-gray-600 dark:text-gray-100 text-xs font-bold mb-2"
-          >
-            Domingo (Salida)
-          </label>
-          <div
-            class="p-1 mb-1"
-            v-for="(error, index) of v$.rfid.$errors"
-            :key="index"
-          >
-            <p class="text-sm text-white bg-red-500 p-2 rounded-md">
-              {{ error.$message }}
-            </p>
-          </div>
-          <input
-            v-model="v$.rfid.$model"
-            type="time"
-            placeholder="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
-        </div>
+        <Input 
+          id="sundayExit" 
+          labelText="Domingo (Salida)" 
+          v-model="v$.sundayExit.$model" 
+          :errors="v$.sundayExit.$errors" 
+          type="time" 
+        />
       </div>
       <div class="w-full lg:w-4/12 px-4">
-        <div class="relative w-full mb-3">
-          <div
-            class="flex items-center pl-4 mt-4 border border-gray-200 rounded dark:border-gray-700"
-          >
-            <input
-              id="bordered-checkbox-7"
-              type="checkbox"
-              value=""
-              name="bordered-checkbox"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-            />
-            <label
-              for="bordered-checkbox-7"
-              class="w-full py-4 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >Domingo (Habilitado)</label
-            >
-          </div>
-        </div>
+        <Checkbox
+          id="sundayEnable"
+          labelText="Domingo (Habilitado)"
+          v-model="v$.sundayEnable.$model"
+        />
       </div>
     </div>
   </Forms>
@@ -679,50 +262,121 @@
 
 <script setup>
 import {
-  createCardRequest,
-  getCardRequest,
-  updateCardRequest,
-} from "@/api/card";
-import { getTypeCardsRequest } from "@/api/typecard";
+  createTimeTable,
+  updateTimeTable,
+  getTimeTables,
+} from "@/api/timetable";
 
 import { useVuelidate } from "@vuelidate/core";
 import { useRoute, useRouter } from "vue-router";
 import { required, helpers } from "@vuelidate/validators";
-import Forms from "@/components/Cards/Forms.vue";
-import { ref, computed, onMounted, reactive } from "vue";
+import { ref, computed, onMounted, reactive, watch } from "vue";
 import { toast } from "vue-sonner";
+
+import Forms from "@/components/Cards/Forms.vue";
+import Input from "@/components/Inputs/Input.vue";
+import Checkbox from "@/components/Inputs/Checkbox.vue";
 
 const route = useRoute();
 const router = useRouter();
 const formData = reactive({
-  rfid: "",
-  typeCardId: "",
+  title: "",
   description: "",
+  toleranceDelay: "",
+  toleranceLack: "",
+  toleranceOutput: "",
+  earlyExit: "",
+  puntuality: "",
+  priority: "",
+  mondayEntry: "",
+  mondayExit: "",
+  mondayEnable: false,
+  tuesdayEntry: "",
+  tuesdayExit: "",
+  tuesdayEnable: false,
+  wednesdayEntry: "",
+  wednesdayExit: "",
+  wednesdayEnable: false,
+  thursdayEntry: "",
+  thursdayExit: "",
+  thursdayEnable: false,
+  fridayEntry: "",
+  fridayExit: "",
+  fridayEnable: false,
+  saturdayEntry: "",
+  saturdayExit: "",
+  saturdayEnable: false,
+  sundayEntry: "",
+  sundayExit: "",
+  sundayEnable: false,
 });
 const errors = ref([]);
 const types = ref([]);
 const rules = computed(() => ({
-  rfid: {
-    required: helpers.withMessage("El codigo rfid es requerido", required),
-  },
-  typeCardId: {
-    required: helpers.withMessage("El tipo de tarjeta es requerido", required),
+  title: {
+    required: helpers.withMessage("Se requiere el nombre del horario", required),
   },
   description: {
     required: helpers.withMessage("Se requiere una descripción", required),
   },
+  toleranceDelay: {
+    required: helpers.withMessage("Tolerancia en atraso es requerida", required),
+  },
+  toleranceLack: {
+    required: helpers.withMessage("Tolerancia en falta es requerida", required),
+  },
+  toleranceOutput: {
+    required: helpers.withMessage("Tolerancia a la salida es requerida", required),
+  },
+  earlyExit: {
+    required: helpers.withMessage("Salida adelantada es requerida", required),
+  },
+  puntuality: {
+    required: helpers.withMessage("Se requiere datos en puntualidad", required),
+  },
+  priority: {
+    required: helpers.withMessage("Prioridad es requerida", required),
+  },
+  mondayEntry: {},
+  mondayExit: {},
+  mondayEnable: {},
+  tuesdayEntry: {},
+  tuesdayExit: {},
+  tuesdayEnable: {},
+  wednesdayEntry: {},
+  wednesdayExit: {},
+  wednesdayEnable: {},
+  thursdayEntry: {},
+  thursdayExit: {},
+  thursdayEnable: {},
+  fridayEntry: {},
+  fridayExit: {},
+  fridayEnable: {},
+  saturdayEntry: {},
+  saturdayExit: {},
+  saturdayEnable: {},
+  sundayEntry: {},
+  sundayExit: {},
+  sundayEnable: {},
 }));
 
 const v$ = useVuelidate(rules, formData);
 
-async function handleSubmit() {
+/*watch(
+  () => formData.mondayEnable,
+  (mondayEnable) => {
+    console.log("Cambio de checkbox", mondayEnable);
+  }
+);*/
+
+async function handleSubmit () {
   const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect) {
     try {
-      if (!route.query.id) await createCardRequest(formData);
-      else await updateCardRequest(route.query.id, formData);
-      toast.success("Tarjeta guardada correctamente");
-      router.push("/card");
+      if (!route.query.id) await createTimeTable(formData);
+      else await updateTimeTable(route.query.id, formData);
+      toast.success("Horario guardado correctamente");
+      router.push("/timeTable");
     } catch (error) {
       errors.value = error.response.data.errors;
       errors.value.map((item) => toast.error(item));
@@ -730,20 +384,20 @@ async function handleSubmit() {
   }
 }
 
-onMounted(async () => {
+onMounted( async () => {
   try {
-    const res = await getTypeCardsRequest();
+    const res = await getTimeTables();
     types.value = res.data;
   } catch (error) {
     toast.error("Error al cargar los datos");
   }
   if (route.query.id) {
     try {
-      const res = await getCardRequest(route.query.id);
+      const res = await getTimeTables(route.query.id);
       Object.assign(formData, res.data);
     } catch (error) {
       toast.error("Error al cargar los datos");
-      route.push("/card");
+      route.push("/timeTable");
     }
   }
 });
