@@ -2,23 +2,7 @@
   <card-data title="Horarios" icon="fa-calendar-alt">
     <template v-slot:filters>
       <div class="pb-4">
-        <label for="table-search" class="sr-only">Search</label>
-        <div class="relative mt-1">
-          <div
-            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
-          >
-            <v-icon
-              name="fa-search"
-              class="w-4 h-4 text-gray-500 dark:text-gray-400"
-            />
-          </div>
-          <input
-            type="text"
-            v-model="searchQuery"
-            class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Buscar"
-          />
-        </div>
+        <Search v-model="searchQuery"/>
       </div>
       <button-add to="/newTimetable">Crear horario</button-add>
     </template>
@@ -30,15 +14,18 @@
     ></data-table>
   </card-data>
 </template>
+
 <script setup>
-import { getTurnstilesRequest } from "../../api/turnstile";
+import { getTimeTables } from "@/api/timetable";
 
 import { ref, onMounted, watch } from "vue";
+import { useRouter } from "vue-router";
+import { toast } from "vue-sonner";
+
 import DataTable from "@/components/Tables/DataTable.vue";
 import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import CardData from "@/components/Cards/CardData.vue";
-import { useRouter } from "vue-router";
-import { toast } from "vue-sonner";
+import Search from "@/components/Inputs/Search.vue"
 
 const router = useRouter();
 const items = ref([]);
@@ -47,8 +34,10 @@ const searchQuery = ref("");
 const load = ref(true);
 const columnas = ref([
   { key: "id", label: "ID" },
-  { key: "name", label: "Nombre" },
+  { key: "title", label: "Nombre" },
   { key: "description", label: "Descripción" },
+  { key: "tolerance", label: "Tolerancia"},
+  { key: "dayStatus", label: "Días habilitados", status: true},
   { key: "createdAt", label: "Creado", date: true },
 ]);
 
@@ -57,7 +46,7 @@ const options = ref([{ id: "update", name: "Actualizar", icon: "fa-plus" }]);
 async function loadData() {
   load.value = true;
   try {
-    const res = await getTurnstilesRequest();
+    const res = await getTimeTables();
     items.value = res.data;
     itemsDisplay.value = items.value;
     load.value = false;
@@ -81,7 +70,7 @@ function searchItems(event) {
 async function action(action) {
   if (action.action === "update") {
     router.push({
-      path: "/updateTurnstile",
+      path: "/updateTimeTable",
       query: { id: action.id },
     });
   }
