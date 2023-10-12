@@ -5,6 +5,7 @@ import * as CoIcons from "oh-vue-icons/icons/co";
 import * as GiIcons from "oh-vue-icons/icons/gi";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
+import { createVfm } from 'vue-final-modal'
 
 import App from "./App.vue";
 import router from "./router";

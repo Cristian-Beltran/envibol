@@ -1,5 +1,5 @@
-<script>
-import { defineComponent } from "vue";
+<script setup>
+import { ref, reactive, computed } from "vue";
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -7,77 +7,67 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { INITIAL_EVENTS, createEventId } from "@/utils/event-utils";
 import CardData from "@/components/Cards/CardData.vue";
 
-
-
-export default defineComponent({
-  components: {
-    FullCalendar,
-    CardData,
+import ModalConfirm from "@/components/modals/ModalConfirm.vue";
+const show = ref(false);
+const currentEvents = ref([]);
+const calendarOptions = reactive({
+  plugins: [
+    dayGridPlugin,
+    timeGridPlugin,
+    interactionPlugin, // needed for dateClick
+  ],
+  headerToolbar: {
+    left: "prev,next today",
+    center: "title",
   },
-  data() {
-    return {
-      calendarOptions: {
-        plugins: [
-          dayGridPlugin,
-          timeGridPlugin,
-          interactionPlugin, // needed for dateClick
-        ],
-        headerToolbar: {
-          left: "prev,next today",
-          center: "title",
-        },
-        initialView: "dayGridMonth",
-        initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
-        editable: true,
-        selectable: true,
-        selectMirror: true,
-        dayMaxEvents: true,
-        select: this.handleDateSelect,
-        eventClick: this.handleEventClick,
-        eventsSet: this.handleEvents,
-        /* you can update a remote database when these fire:
-        eventAdd:
-        eventChange:
-        eventRemove:
-        */
-      },
-      currentEvents: [],
-    };
-  },
-  methods: {
-    handleWeekendsToggle() {
-      this.calendarOptions.weekends = !this.calendarOptions.weekends; // update a property
-    },
-    handleDateSelect(selectInfo) {
-      let title = prompt("Please enter a new title for your event");
-      let calendarApi = selectInfo.view.calendar;
-
-      calendarApi.unselect(); // clear date selection
-
-      if (title) {
-        calendarApi.addEvent({
-          id: createEventId(),
-          title,
-          start: selectInfo.startStr,
-          end: selectInfo.endStr,
-          allDay: selectInfo.allDay,
-        });
-      }
-    },
-    handleEventClick(clickInfo) {
-      if (
-        confirm(
-          `Are you sure you want to delete the event '${clickInfo.event.title}'`
-        )
-      ) {
-        clickInfo.event.remove();
-      }
-    },
-    handleEvents(events) {
-      this.currentEvents = events;
-    },
-  },
+  initialView: "dayGridMonth",
+  initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
+  editable: false,
+  selectable: true,
+  selectMirror: true,
+  dayMaxEvents: true,
+  select: handleDateSelect,
+  eventClick: handleEventClick,
+  eventsSet: handleEvents,
+  /* you can update a remote database when these fire:
+  eventAdd:
+  eventChange:
+  eventRemove:
+  */
 });
+
+function handleWeekendsToggle() {
+  calendarOptions.weekends = !calendarOptions.weekends; // update a property
+}
+
+function handleDateSelect(selectInfo) {
+  show.value = true;
+  let title = prompt("Please enter a new title for your event");
+  let calendarApi = selectInfo.view.calendar;
+  calendarApi.unselect(); // clear date selection
+  if (title) {
+    calendarApi.addEvent({
+      id: createEventId(),
+      title,
+      start: selectInfo.startStr,
+      end: selectInfo.endStr,
+      allDay: selectInfo.allDay,
+    });
+  }
+}
+
+function handleEventClick(clickInfo) {
+  if (
+    confirm(
+      `Are you sure you want to delete the event '${clickInfo.event.title}'`
+    )
+  ) {
+    clickInfo.event.remove();
+  }
+}
+function handleEvents(events) {
+  currentEvents.val = events;
+}
 </script>
 
 <template>
@@ -117,6 +107,17 @@ export default defineComponent({
       </div>
     </div>
   </CardData>
+  <ModalConfirm v-model="show" title="Hello World!" @confirm="() => confirm()">
+    <p>VModel: The content of the modal</p>
+    <p>VModel: The content of the modal</p>
+    <p>VModel: The content of the modal</p>
+    <p>VModel: The content of the modal</p>
+    <p>VModel: The content of the modal</p>
+    <p>asdlfkjasdlkfjlksadjlfkjasdlkjflkasjdlkfjasdlkjflkadsjflkjaskldfjVModel: The content of the modal</p>
+    <p>asdlfkjasdlkfjlksadjlfkjasdlkjflkasjdlkfjasdlkjflkadsjflkjaskldfjVModel: The content of the modal</p>
+    <p>asdlfkjasdlkfjlksadjlfkjasdlkjflkasjdlkfjasdlkjflkadsjflkjaskldfjVModel: The content of the modal</p>
+    <p>asdlfkjasdlkfjlksadjlfkjasdlkjflkasjdlkfjasdlkjflkadsjflkjaskldfjVModel: The content of the modal</p>
+  </ModalConfirm>
 </template>
 
 <style lang="css">
