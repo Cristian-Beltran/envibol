@@ -28,7 +28,9 @@
           labelText="Tolerancia en atraso (minutos)"
           v-model="v$.toleranceDelay.$model"
           :errors="v$.toleranceDelay.$errors"
-          type="text"
+          type="number"
+          :min="0"
+          :max="60"
         />        
       </div>
       <div class="w-full lg:w-4/12 px-4">
@@ -37,7 +39,9 @@
           labelText="Tolerancia en falta (minutos)"
           v-model="v$.toleranceLack.$model"
           :errors="v$.toleranceLack.$errors"
-          type="text"
+          type="number"
+          :min="0"
+          :max="60"
         />   
       </div>
       <div class="w-full lg:w-4/12 px-4">
@@ -46,7 +50,9 @@
           labelText="Tolerancia a la salida (minutos)"
           v-model="v$.toleranceOutput.$model"
           :errors="v$.toleranceOutput.$errors"
-          type="text"
+          type="number"
+          :min="0"
+          :max="60"
         />
       </div>
       <div class="w-full lg:w-4/12 px-4">
@@ -55,7 +61,9 @@
           labelText="Salida adelantada (minutos)"
           v-model="v$.earlyExit.$model"
           :errors="v$.earlyExit.$errors"
-          type="text"
+          type="number"
+          :min="0"
+          :max="60"
         />
       </div>
       <div class="w-full lg:w-4/12 px-4">
@@ -64,7 +72,9 @@
           labelText="Puntualidad (minutos)"
           v-model="v$.puntuality.$model"
           :errors="v$.puntuality.$errors"
-          type="text"
+          type="number"
+          :min="0"
+          :max="60"
         />
       </div>
       <div class="w-full lg:w-4/12 px-4">
@@ -73,7 +83,9 @@
           labelText="Prioridad"
           v-model="v$.priority.$model"
           :errors="v$.priority.$errors"
-          type="text"
+          type="number"
+          :min="0"
+          :max="60"
         />
       </div>
     </div>
@@ -83,7 +95,7 @@
     <div class="flex flex-wrap">
       <div class="w-full lg:w-4/12 px-4">
         <Input 
-          id="schedule" 
+          id="mondayEntry" 
           labelText="Lunes (Entrada)" 
           v-model="formData.schedule.monday.entry"
           type="time" 
@@ -248,9 +260,9 @@
 
 <script setup>
 import {
-  createTimeTable,
-  updateTimeTable,
-  getTimeTables,
+  createTimeTableRequest,
+  updateTimeTableRequest,
+  getTimeTableRequest,
 } from "@/api/timetable";
 
 import { useVuelidate } from "@vuelidate/core";
@@ -380,27 +392,12 @@ const rules = computed(() => ({
 
 const v$ = useVuelidate(rules, formData);
 
-/*watch(
-  () => formData.toleranceDelay,
-  (delay) => {
-    console.log("Tolerancia de atraso", delay);
-    if (!isNaN(delay)) {
-      console.log("Es un número");
-      if(delay < 0 || delay > 5000)
-        formData.toleranceDelay = "";
-    } else if (typeof delay === 'string') {
-      console.log("Es una cadena");
-      formData.toleranceDelay = "";
-    }
-  }
-);*/
-
 async function handleSubmit () {
   const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect) {
     try {
-      if (!route.query.id) await createTimeTable(formData);
-      else await updateTimeTable(route.query.id, formData);
+      if (!route.query.id) await createTimeTableRequest(formData);
+      else await updateTimeTableRequest(route.query.id, formData);
       toast.success("Horario guardado correctamente");
       router.push("/timeTable");
     } catch (error) {
@@ -411,18 +408,13 @@ async function handleSubmit () {
 }
 
 onMounted( async () => {
-  try {
-    const res = await getTimeTables();
-    types.value = res.data;
-  } catch (error) {
-    toast.error("Error al cargar los datos");
-  }
   if (route.query.id) {
     try {
-      const res = await getTimeTables(route.query.id);
+      const res = await getTimeTableRequest(route.query.id);
       Object.assign(formData, res.data);
+      console.log("Datos del horario guardados", formData.schedule);
     } catch (error) {
-      toast.error("Error al cargar los datos");
+      toast.error("Error al cargar los datos 2");
       route.push("/timeTable");
     }
   }

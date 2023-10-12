@@ -1,11 +1,10 @@
 import axios from "./axios";
 
-export const createTimeTable = (timeTable) =>
-  axios.post("/timeTable", timeTable);
+export const createTimeTableRequest = (timeTable) => axios.post("/timeTable", timeTable);
 
-export const getTimeTables = () => axios.get("/timeTable");
+export const getTimeTableRequest = (id) => axios.get("/timeTable/" + id);
 
-export const getTimeTableById = (id) => axios.get("/timeTable/");
+export const getTimeTablesRequest = () => axios.get("/timeTable/");
 
-export const updateTimeTable = (id, timeTable) =>
+export const updateTimeTableRequest = (id, timeTable) =>
   axios.put("/timeTable/" + id, timeTable);
