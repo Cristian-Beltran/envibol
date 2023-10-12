@@ -1,28 +1,5 @@
 import { TimeTable } from "../models/TimeTable.js";
 
-//obtiene la tabla de tiempo
-export const getTimeTables = async (req, res) => {
-    try {
-        const timeTable = await TimeTable.findAll();
-        res.json(timeTable);
-    } catch (error) {
-        res.status(500).json({
-            errors: [error.message],
-        });
-    }
-};
-//obtener un solo tiempo
-export const getTimeTableById = async (req, res) => {
-    try {
-        const timeTable = await TimeTable.findByPk(req.params.id);
-        res.json(timeTable);
-    } catch (error) {
-        res.status(500).json({
-            errors: [error.message],
-        });
-    }
-};
-
 //crear un tiempo
 export const createTimeTable = async (req, res) => {
     try {
@@ -35,27 +12,7 @@ export const createTimeTable = async (req, res) => {
             earlyExit,
             puntuality,
             priority,
-            mondayEntry,
-            mondayExit,
-            mondayEnable,
-            tuesdayEntry,
-            tuesdayExit,
-            tuesdayEnable,
-            wednesdayEntry,
-            wednesdayExit,
-            wednesdayEnable,
-            thursdayEntry,
-            thursdayExit,
-            thursdayEnable,
-            fridayEntry,
-            fridayExit,
-            fridayEnable,
-            saturdayEntry,
-            saturdayExit,
-            saturdayEnable,
-            sundayEntry,
-            sundayExit,
-            sundayEnable,
+            schedule,
         } = req.body;
         const newTimetable = await TimeTable.create({
             title,
@@ -66,29 +23,32 @@ export const createTimeTable = async (req, res) => {
             earlyExit,
             puntuality,
             priority,
-            mondayEntry,
-            mondayExit,
-            mondayEnable,
-            tuesdayEntry,
-            tuesdayExit,
-            tuesdayEnable,
-            wednesdayEntry,
-            wednesdayExit,
-            wednesdayEnable,
-            thursdayEntry,
-            thursdayExit,
-            thursdayEnable,
-            fridayEntry,
-            fridayExit,
-            fridayEnable,
-            saturdayEntry,
-            saturdayExit,
-            saturdayEnable,
-            sundayEntry,
-            sundayExit,
-            sundayEnable,
+            schedule,
         });
         return res.json(newTimetable);
+    } catch (error) {
+        res.status(500).json({
+            errors: [error.message],
+        });
+    }
+};
+
+//obtiene la tabla de tiempo
+export const getTimeTables = async (req, res) => {
+    try {
+        const timeTable = await TimeTable.findAll();
+        res.json(timeTable);
+    } catch (error) {
+        res.status(500).json({
+            errors: [error.message],
+        });
+    }
+};
+//obtener un solo tiempo
+export const getTimeTable = async (req, res) => {
+    try {
+        const timeTable = await TimeTable.findByPk(req.params.id);
+        res.json(timeTable);
     } catch (error) {
         res.status(500).json({
             errors: [error.message],

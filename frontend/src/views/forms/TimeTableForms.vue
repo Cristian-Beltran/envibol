@@ -28,7 +28,9 @@
           labelText="Tolerancia en atraso (minutos)"
           v-model="v$.toleranceDelay.$model"
           :errors="v$.toleranceDelay.$errors"
-          type="text"
+          type="number"
+          :min="0"
+          :max="60"
         />        
       </div>
       <div class="w-full lg:w-4/12 px-4">
@@ -37,7 +39,9 @@
           labelText="Tolerancia en falta (minutos)"
           v-model="v$.toleranceLack.$model"
           :errors="v$.toleranceLack.$errors"
-          type="text"
+          type="number"
+          :min="0"
+          :max="60"
         />   
       </div>
       <div class="w-full lg:w-4/12 px-4">
@@ -46,7 +50,9 @@
           labelText="Tolerancia a la salida (minutos)"
           v-model="v$.toleranceOutput.$model"
           :errors="v$.toleranceOutput.$errors"
-          type="text"
+          type="number"
+          :min="0"
+          :max="60"
         />
       </div>
       <div class="w-full lg:w-4/12 px-4">
@@ -55,7 +61,9 @@
           labelText="Salida adelantada (minutos)"
           v-model="v$.earlyExit.$model"
           :errors="v$.earlyExit.$errors"
-          type="text"
+          type="number"
+          :min="0"
+          :max="60"
         />
       </div>
       <div class="w-full lg:w-4/12 px-4">
@@ -64,7 +72,9 @@
           labelText="Puntualidad (minutos)"
           v-model="v$.puntuality.$model"
           :errors="v$.puntuality.$errors"
-          type="text"
+          type="number"
+          :min="0"
+          :max="60"
         />
       </div>
       <div class="w-full lg:w-4/12 px-4">
@@ -73,7 +83,9 @@
           labelText="Prioridad"
           v-model="v$.priority.$model"
           :errors="v$.priority.$errors"
-          type="text"
+          type="number"
+          :min="0"
+          :max="60"
         />
       </div>
     </div>
@@ -85,8 +97,7 @@
         <Input 
           id="mondayEntry" 
           labelText="Lunes (Entrada)" 
-          v-model="v$.mondayEntry.$model" 
-          :errors="v$.mondayEntry.$errors" 
+          v-model="formData.schedule.monday.entry"
           type="time" 
         />
       </div>
@@ -94,8 +105,7 @@
         <Input 
           id="mondayExit" 
           labelText="Lunes (Salida)" 
-          v-model="v$.mondayExit.$model" 
-          :errors="v$.mondayExit.$errors" 
+          v-model="formData.schedule.monday.exit"
           type="time" 
         />
       </div>
@@ -103,15 +113,14 @@
         <Checkbox
           id="mondayEnable"
           labelText="Lunes (Habilitado)"
-          v-model="v$.mondayEnable.$model"
+          v-model="formData.schedule.monday.enable"
         />
       </div>
       <div class="w-full lg:w-4/12 px-4">
         <Input 
           id="tuesdayEntry" 
           labelText="Martes (Entrada)" 
-          v-model="v$.tuesdayEntry.$model" 
-          :errors="v$.tuesdayEntry.$errors" 
+          v-model="formData.schedule.tuesday.entry"
           type="time" 
         />
       </div>
@@ -119,8 +128,7 @@
         <Input 
           id="tuesdayExit" 
           labelText="Martes (Salida)" 
-          v-model="v$.tuesdayExit.$model" 
-          :errors="v$.tuesdayExit.$errors" 
+          v-model="formData.schedule.tuesday.exit" 
           type="time" 
         />
       </div>
@@ -128,15 +136,14 @@
         <Checkbox
           id="tuesdayEnable"
           labelText="Martes (Habilitado)"
-          v-model="v$.tuesdayEnable.$model"
+          v-model="formData.schedule.tuesday.enable"
         />
       </div>
       <div class="w-full lg:w-4/12 px-4">
         <Input 
           id="wednesdayEntry" 
           labelText="Miércoles (Entrada)" 
-          v-model="v$.wednesdayEntry.$model" 
-          :errors="v$.wednesdayEntry.$errors" 
+          v-model="formData.schedule.wednesady.entry" 
           type="time" 
         />
       </div>
@@ -144,8 +151,7 @@
         <Input 
           id="wednesdayExit" 
           labelText="Miércoles (Salida)" 
-          v-model="v$.wednesdayExit.$model" 
-          :errors="v$.wednesdayExit.$errors" 
+          v-model="formData.schedule.wednesady.exit"
           type="time" 
         />
       </div>
@@ -153,15 +159,14 @@
         <Checkbox
           id="wednesdayEnable"
           labelText="Miércoles (Habilitado)"
-          v-model="v$.wednesdayEnable.$model"
+          v-model="formData.schedule.wednesady.enable"
         />
       </div>
       <div class="w-full lg:w-4/12 px-4">
         <Input 
           id="thursdayEntry" 
           labelText="Jueves (Entrada)" 
-          v-model="v$.thursdayEntry.$model" 
-          :errors="v$.thursdayEntry.$errors" 
+          v-model="formData.schedule.thursday.entry"
           type="time" 
         />
       </div>
@@ -169,8 +174,7 @@
         <Input 
           id="thursdayExit" 
           labelText="Jueves (Salida)" 
-          v-model="v$.thursdayExit.$model" 
-          :errors="v$.thursdayExit.$errors" 
+          v-model="formData.schedule.thursday.exit" 
           type="time" 
         />
       </div>
@@ -178,15 +182,14 @@
         <Checkbox
           id="thursdayEnable"
           labelText="Jueves (Habilitado)"
-          v-model="v$.thursdayEnable.$model"
+          v-model="formData.schedule.thursday.enable"
         />
       </div>
       <div class="w-full lg:w-4/12 px-4">
         <Input 
           id="fridayEntry" 
           labelText="Viernes (Entrada)" 
-          v-model="v$.fridayEntry.$model" 
-          :errors="v$.fridayEntry.$errors" 
+          v-model="formData.schedule.friday.entry"
           type="time" 
         />
       </div>
@@ -194,8 +197,7 @@
         <Input 
           id="fridayExit" 
           labelText="Viernes (Salida)" 
-          v-model="v$.fridayExit.$model" 
-          :errors="v$.fridayExit.$errors" 
+          v-model="formData.schedule.friday.exit" 
           type="time" 
         />
       </div>
@@ -203,15 +205,14 @@
         <Checkbox
           id="fridayEnable"
           labelText="Viernes (Habilitado)"
-          v-model="v$.fridayEnable.$model"
+          v-model="formData.schedule.friday.enable"
         />
       </div>
       <div class="w-full lg:w-4/12 px-4">
         <Input 
           id="saturdayEntry" 
           labelText="Sábado (Entrada)" 
-          v-model="v$.saturdayEntry.$model" 
-          :errors="v$.saturdayEntry.$errors" 
+          v-model="formData.schedule.saturday.entry"
           type="time" 
         />
       </div>
@@ -219,8 +220,7 @@
         <Input 
           id="saturdayExit" 
           labelText="Sábado (Salida)" 
-          v-model="v$.saturdayExit.$model" 
-          :errors="v$.saturdayExit.$errors" 
+          v-model="formData.schedule.saturday.exit" 
           type="time" 
         />
       </div>
@@ -228,15 +228,14 @@
         <Checkbox
           id="saturdayEnable"
           labelText="Sábado (Habilitado)"
-          v-model="v$.saturdayEnable.$model"
+          v-model="formData.schedule.saturday.enable"
         />
       </div>
       <div class="w-full lg:w-4/12 px-4">
         <Input 
           id="sundayEntry" 
           labelText="Domingo (Entrada)" 
-          v-model="v$.sundayEntry.$model" 
-          :errors="v$.sundayEntry.$errors" 
+          v-model="formData.schedule.sunday.entry"  
           type="time" 
         />
       </div>
@@ -244,8 +243,7 @@
         <Input 
           id="sundayExit" 
           labelText="Domingo (Salida)" 
-          v-model="v$.sundayExit.$model" 
-          :errors="v$.sundayExit.$errors" 
+          v-model="formData.schedule.sunday.exit" 
           type="time" 
         />
       </div>
@@ -253,7 +251,7 @@
         <Checkbox
           id="sundayEnable"
           labelText="Domingo (Habilitado)"
-          v-model="v$.sundayEnable.$model"
+          v-model="formData.schedule.sunday.enable"
         />
       </div>
     </div>
@@ -262,9 +260,9 @@
 
 <script setup>
 import {
-  createTimeTable,
-  updateTimeTable,
-  getTimeTables,
+  createTimeTableRequest,
+  updateTimeTableRequest,
+  getTimeTableRequest,
 } from "@/api/timetable";
 
 import { useVuelidate } from "@vuelidate/core";
@@ -288,27 +286,43 @@ const formData = reactive({
   earlyExit: "",
   puntuality: "",
   priority: "",
-  mondayEntry: "",
-  mondayExit: "",
-  mondayEnable: false,
-  tuesdayEntry: "",
-  tuesdayExit: "",
-  tuesdayEnable: false,
-  wednesdayEntry: "",
-  wednesdayExit: "",
-  wednesdayEnable: false,
-  thursdayEntry: "",
-  thursdayExit: "",
-  thursdayEnable: false,
-  fridayEntry: "",
-  fridayExit: "",
-  fridayEnable: false,
-  saturdayEntry: "",
-  saturdayExit: "",
-  saturdayEnable: false,
-  sundayEntry: "",
-  sundayExit: "",
-  sundayEnable: false,
+  schedule: {
+    monday: {
+      entry: null,
+      exit: null,
+      enable: false,
+    },
+    tuesday: {
+      entry: null,
+      exit: null,
+      enable: false,
+    },
+    wednesady: {
+      entry: null,
+      exit: null,
+      enable: false,
+    },
+    thursday: {
+      entry: null,
+      exit: null,
+      enable: false,
+    },
+    friday: {
+      entry: null,
+      exit: null,
+      enable: false,
+    },
+    saturday: {
+      entry: null,
+      exit: null,
+      enable: false,
+    },
+    sunday: {
+      entry: null,
+      exit: null,
+      enable: false,
+    },
+  }
 });
 const errors = ref([]);
 const types = ref([]);
@@ -337,44 +351,53 @@ const rules = computed(() => ({
   priority: {
     required: helpers.withMessage("Prioridad es requerida", required),
   },
-  mondayEntry: {},
-  mondayExit: {},
-  mondayEnable: {},
-  tuesdayEntry: {},
-  tuesdayExit: {},
-  tuesdayEnable: {},
-  wednesdayEntry: {},
-  wednesdayExit: {},
-  wednesdayEnable: {},
-  thursdayEntry: {},
-  thursdayExit: {},
-  thursdayEnable: {},
-  fridayEntry: {},
-  fridayExit: {},
-  fridayEnable: {},
-  saturdayEntry: {},
-  saturdayExit: {},
-  saturdayEnable: {},
-  sundayEntry: {},
-  sundayExit: {},
-  sundayEnable: {},
+  schedule: {
+    monday: {
+      entry: {},
+      exit: {},
+      enable: {},
+    },
+    tuesday: {
+      entry: {},
+      exit: {},
+      enable: {},
+    },
+    wednesady: {
+      entry: {},
+      exit: {},
+      enable: {},
+    },
+    thursday: {
+      entry: {},
+      exit: {},
+      enable: {},
+    },
+    friday: {
+      entry: {},
+      exit: {},
+      enable: {},
+    },
+    saturday: {
+      entry: {},
+      exit: {},
+      enable: {},
+    },
+    sunday: {
+      entry: {},
+      exit: {},
+      enable: {},
+    },
+  },
 }));
 
 const v$ = useVuelidate(rules, formData);
-
-/*watch(
-  () => formData.mondayEnable,
-  (mondayEnable) => {
-    console.log("Cambio de checkbox", mondayEnable);
-  }
-);*/
 
 async function handleSubmit () {
   const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect) {
     try {
-      if (!route.query.id) await createTimeTable(formData);
-      else await updateTimeTable(route.query.id, formData);
+      if (!route.query.id) await createTimeTableRequest(formData);
+      else await updateTimeTableRequest(route.query.id, formData);
       toast.success("Horario guardado correctamente");
       router.push("/timeTable");
     } catch (error) {
@@ -385,18 +408,13 @@ async function handleSubmit () {
 }
 
 onMounted( async () => {
-  try {
-    const res = await getTimeTables();
-    types.value = res.data;
-  } catch (error) {
-    toast.error("Error al cargar los datos");
-  }
   if (route.query.id) {
     try {
-      const res = await getTimeTables(route.query.id);
+      const res = await getTimeTableRequest(route.query.id);
       Object.assign(formData, res.data);
+      console.log("Datos del horario guardados", formData.schedule);
     } catch (error) {
-      toast.error("Error al cargar los datos");
+      toast.error("Error al cargar los datos 2");
       route.push("/timeTable");
     }
   }

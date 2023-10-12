@@ -8,13 +8,13 @@ import { timeTableSchema } from "../schemas/timeTable.schemas.js";
 import {
     createTimeTable,
     getTimeTables,
-    getTimeTableById,
+    getTimeTable,
     updateTimeTable,
 } from "../controllers/timeTable.controllers.js";
 
 const router = new Router();
 router.post("/timeTable", validateSchema(timeTableSchema), authRequired, adminRequired, createTimeTable);
 router.get("/timeTable", authRequired, adminRequired, getTimeTables);
-router.get("/timeTable/:id", authRequired, adminRequired, getTimeTableById);
+router.get("/timeTable/:id", authRequired, adminRequired, getTimeTable);
 router.put("/timeTable/:id", authRequired, adminRequired, updateTimeTable);
 export default router;
