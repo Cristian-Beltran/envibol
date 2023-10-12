@@ -37,67 +37,14 @@ export const TimeTable = sequelize.define("timeTable", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  mondayEntry: {
-    type: DataTypes.TIME,
-  },
-  mondayExit: {
-    type: DataTypes.TIME,
-  },
-  mondayEnable: {
-    type: DataTypes.BOOLEAN,
-  },
-  tuesdayEntry: {
-    type: DataTypes.TIME,
-  },
-  tuesdayExit: {
-    type: DataTypes.TIME,
-  },
-  tuesdayEnable: {
-    type: DataTypes.BOOLEAN,
-  },
-  wednesdayEntry: {
-    type: DataTypes.TIME,
-  },
-  wednesdayExit: {
-    type: DataTypes.TIME,
-  },
-  wednesdayEnable: {
-    type: DataTypes.BOOLEAN,
-  },
-  thursdayEntry: {
-    type: DataTypes.TIME,
-  },
-  thursdayExit: {
-    type: DataTypes.TIME,
-  },
-  thursdayEnable: {
-    type: DataTypes.BOOLEAN,
-  },
-  fridayEntry: {
-    type: DataTypes.TIME,
-  },
-  fridayExit: {
-    type: DataTypes.TIME,
-  },
-  fridayEnable: {
-    type: DataTypes.BOOLEAN,
-  },
-  saturdayEntry: {
-    type: DataTypes.TIME,
-  },
-  saturdayExit: {
-    type: DataTypes.TIME,
-  },
-  saturdayEnable: {
-    type: DataTypes.BOOLEAN,
-  },
-  sundayEntry: {
-    type: DataTypes.TIME,
-  },
-  sundayExit: {
-    type: DataTypes.TIME,
-  },
-  sundayEnable: {
-    type: DataTypes.BOOLEAN,
-  },
+
+  //Schedule almacena los horarios para cada día de la semana
+  // El campo `schedule` almacena un array de objetos con los siguientes campos:
+  //
+  // * `entry`: ingreso de un dia de la semana.
+  // * `exit`: salida de un dia de la semana.
+  // * `enable`: habilitacion de un dia de la semana.
+  schedule: {
+    type: DataTypes.JSONB,
+  }
 });
