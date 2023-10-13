@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db.js";
+import { TimeTable } from "./TimeTable.js"
 
 export const User = sequelize.define("users", {
   id: {
@@ -53,7 +54,7 @@ export const Employee = sequelize.define("employees", {
     type: DataTypes.BOOLEAN,
     default: false,
   },
-  admin:{
+  admin: {
     type: DataTypes.BOOLEAN,
     default: false,
   }
@@ -91,6 +92,17 @@ User.hasOne(External, {
 
 External.belongsTo(User, {
   foreignKey: "userId",
+  targetKey: "id",
+  allowNull: false,
+  unique: true,
+});
+
+TimeTable.hasMany(Employee, {
+  foreignKey: "timeTableId",
+  sourceKey: "id",
+});
+Employee.belongsTo(TimeTable, {
+  foreignKey: "timeTableId",
   targetKey: "id",
   allowNull: false,
   unique: true,

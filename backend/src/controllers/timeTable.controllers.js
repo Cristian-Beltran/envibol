@@ -44,6 +44,7 @@ export const getTimeTables = async (req, res) => {
         });
     }
 };
+
 //obtener un solo tiempo
 export const getTimeTable = async (req, res) => {
     try {
