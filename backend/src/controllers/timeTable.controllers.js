@@ -44,6 +44,7 @@ export const getTimeTables = async (req, res) => {
         });
     }
 };
+
 //obtener un solo tiempo
 export const getTimeTable = async (req, res) => {
     try {
@@ -64,6 +65,13 @@ export const updateTimeTable = async (req, res) => {
         const timeTable = await TimeTable.findByPk(id);
         timeTable.title = title;
         timeTable.description = description;
+        timeTable.toleranceDelay = toleranceDelay;
+        timeTable.toleranceLack = toleranceLack;
+        timeTable.toleranceOutput = toleranceOutput;
+        timeTable.earlyExit = earlyExit;
+        timeTable.puntuality = puntuality;
+        timeTable.priority = priority;
+        timeTable.schedule = schedule;
         await timeTable.save();
         res.json(timeTable);
     } catch (error) {

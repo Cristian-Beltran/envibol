@@ -1,4 +1,5 @@
 import { User, Employee } from "../models/User.js";
+import { TimeTable } from "../models/TimeTable.js";
 import { Role } from "../models/Role.js";
 import { Card, TypeCard } from "../models/Card.js";
 import { Op } from "sequelize";
@@ -38,7 +39,7 @@ export const getEmployeesAdmin = async (req, res) => {
       ],
     });
 
-    const myUser = await User.findByPk(req.user.id);
+    // ! esta variable no se usa: const myUser = await User.findByPk(req.user.id);
     const employeesModify = employees.map((user) => ({
       id: user.id,
       email: user.email,
@@ -134,18 +135,21 @@ export const createEmployee = async (req, res) => {
     roleId,
     staff,
     admin,
+    timeTableId, // Nuevo parámetro de horario
   } = req.body;
+
   try {
     const userEmail = await Employee.findOne({ where: { email } });
     if (userEmail)
       return res.status(400).json({ errors: ["El correo ya existe"] });
+
     const userCi = await Employee.findOne({
       include: [{ model: User, where: { ci } }],
     });
     if (userCi)
       return res.status(400).json({ errors: ["El ci ya esta ingresado"] });
 
-    const passwordHash = await bcrypt.hash(password, 10); // hashaleatorio
+    const passwordHash = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
       first_name,
@@ -165,6 +169,7 @@ export const createEmployee = async (req, res) => {
         userId: newUser.id,
         staff,
         admin,
+        timeTableId, // Asignar el ID del horario
       });
       return res.json(newEmployee);
     } else {
@@ -175,6 +180,7 @@ export const createEmployee = async (req, res) => {
         userId: newUser.id,
         staff: false,
         admin: false,
+        timeTableId, // Asignar el ID del horario
       });
       return res.json(newEmployee);
     }
@@ -305,5 +311,113 @@ export const updateStatusEmployee = async (req, res) => {
     return res.sendStatus(204);
   } catch (error) {
     return res.status(500).json({ errors: [error.message] });
+  }
+};
+
+//obetener empleado y su horario
+export const getEmployeeTimeTable = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const employee = await Employee.findByPk(id, {
+      include: [
+        { model: User, },
+        { model: Role },
+        { model: TimeTable }
+      ],
+    });
+
+    const data = {
+      id: employee.id,
+      first_name: employee.user.first_name,
+      last_name: employee.user.last_name,
+      ci: employee.user.ci,
+      telf: employee.user.telf,
+      cel: employee.user.cel,
+      status: employee.status,
+      roleName: employee.role ? employee.role.name : null,
+      timeTable: employee.timeTable ? {
+        title: employee.timeTable.title,
+        toleranceDelay: employee.timeTable.toleranceDelay,
+        toleranceLack: employee.timeTable.toleranceLack,
+        toleranceOutput: employee.timeTable.toleranceOutput,
+        earlyExit: employee.timeTable.earlyExit,
+        punctuality: employee.timeTable.punctuality,
+        priority: employee.timeTable.priority,
+        schedule: employee.timeTable.schedule
+      } : null,
+      createdAt: employee.createdAt,
+    };
+
+    const myUser = await Employee.findByPk(req.user.id);
+    if (myUser.admin) {
+      data.staff = employee.staff;
+      data.admin = employee.admin;
+    }
+    res.json(data);
+  } catch (error) {
+    return res.status(500).json({ errors: [error] });
+  }
+};
+
+//obtener todos los empleados y horarios
+export const getEmployeeTimes = async (req, res) => {
+  try {
+    const employees = await Employee.findAll({
+      include: [
+        { model: User },
+        { model: Role },
+        { model: TimeTable },
+      ],
+    });
+
+    const employeesData = employees.map(employee => ({
+      id: employee.id,
+      first_name: employee.user.first_name,
+      last_name: employee.user.last_name,
+      ci: employee.user.ci,
+      telf: employee.user.telf,
+      cel: employee.user.cel,
+      roleName: employee.role ? employee.role.name : null,
+      status: employee.status,
+      timeTable: employee.timeTable
+        ? {
+          title: employee.timeTable.title,
+          toleranceDelay: employee.timeTable.toleranceDelay,
+          toleranceLack: employee.timeTable.toleranceLack,
+          toleranceOutput: employee.timeTable.toleranceOutput,
+          earlyExit: employee.timeTable.earlyExit,
+          punctuality: employee.timeTable.punctuality,
+          priority: employee.timeTable.priority,
+          schedule: employee.timeTable.schedule,
+        }
+        : null,
+      createdAt: employee.createdAt,
+    }));
+
+    const myUser = await Employee.findByPk(req.user.id);
+    if (myUser.admin) {
+      employeesData.forEach(employee => {
+        employee.staff = employee.staff;
+        employee.admin = employee.admin;
+      });
+    }
+
+    res.json(employees);
+  } catch (error) {
+    return res.status(500).json({ errors: [error] });
+  }
+};
+
+//modificar horario de un empleado
+export const updateEmployeeTimeTable = async (req, res) => {
+  const { id } = req.params;
+  const { timeTableId } = req.body;
+  try {
+    const employee = await Employee.findByPk(id);
+    employee.timeTableId = timeTableId;
+    employee.save();
+    res.sendStatus(204);
+  } catch (error) {
+    return res.status(500).json({ errors: [error] });
   }
 };
