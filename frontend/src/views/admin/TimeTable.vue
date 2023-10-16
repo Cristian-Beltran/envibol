@@ -2,7 +2,7 @@
   <card-data title="Horarios" icon="fa-calendar-alt">
     <template v-slot:filters>
       <div class="pb-4">
-        <Search v-model="searchQuery"/>
+        <Search v-model="searchQuery" />
       </div>
       <button-add to="/newTimetable">Crear horario</button-add>
     </template>
@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { getTimeTables } from "@/api/timetable";
+import { getTimeTablesRequest } from "@/api/timetable";
 
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
@@ -25,7 +25,7 @@ import { toast } from "vue-sonner";
 import DataTable from "@/components/Tables/DataTable.vue";
 import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import CardData from "@/components/Cards/CardData.vue";
-import Search from "@/components/Inputs/Search.vue"
+import Search from "@/components/Inputs/Search.vue";
 
 const router = useRouter();
 const items = ref([]);
@@ -36,8 +36,8 @@ const columnas = ref([
   { key: "id", label: "ID" },
   { key: "title", label: "Nombre" },
   { key: "description", label: "Descripción" },
-  { key: "tolerance", label: "Tolerancia"},
-  { key: "dayStatus", label: "Días habilitados", status: true},
+  { key: "tolerance", label: "Tolerancia" },
+  { key: "dayStatus", label: "Días habilitados", status: true },
   { key: "createdAt", label: "Creado", date: true },
 ]);
 
@@ -46,7 +46,7 @@ const options = ref([{ id: "update", name: "Actualizar", icon: "fa-plus" }]);
 async function loadData() {
   load.value = true;
   try {
-    const res = await getTimeTables();
+    const res = await getTimeTablesRequest();
     items.value = res.data;
     itemsDisplay.value = items.value;
     load.value = false;
