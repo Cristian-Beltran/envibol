@@ -28,7 +28,7 @@ router.delete("/employee/:id", authRequired, deleteEmployee);
 router.put("/employee/status/:id", authRequired, updateStatusEmployee);
 
 //rutas para el horario
-router.get("/employee/time", authRequired, getEmployeeTimes);
+router.get("/employee-time", authRequired, getEmployeeTimes);
 router.get("/employee/time/:id", authRequired, getEmployeeTimeTable);
 router.put("/employee/time/:id", authRequired, updateEmployeeTimeTable);
 

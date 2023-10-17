@@ -401,9 +401,9 @@ export const getEmployeeTimes = async (req, res) => {
         employee.admin = employee.admin;
       });
     }
-
     res.json(employees);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ errors: [error] });
   }
 };

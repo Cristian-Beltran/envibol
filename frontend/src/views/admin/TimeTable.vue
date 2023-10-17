@@ -36,8 +36,6 @@ const columnas = ref([
   { key: "id", label: "ID" },
   { key: "title", label: "Nombre" },
   { key: "description", label: "Descripción" },
-  { key: "tolerance", label: "Tolerancia" },
-  { key: "dayStatus", label: "Días habilitados", status: true },
   { key: "createdAt", label: "Creado", date: true },
 ]);
 
