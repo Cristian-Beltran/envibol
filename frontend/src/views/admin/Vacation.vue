@@ -116,7 +116,6 @@ const formData = reactive({
   employeeId: 0,
 });
 
-
 function handleDateSelect(selectInfo) {
   show.value = true;
   /*let title = prompt("Please enter a new title for your event");
@@ -145,10 +144,4 @@ function handleEventClick(clickInfo) {
 function handleEvents(events) {
   currentEvents.val = events;
 }
-
-
-onMounted(() => {
- 
-});
-
 </script>
