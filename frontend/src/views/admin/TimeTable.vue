@@ -60,7 +60,7 @@ watch(searchQuery, () => {
 function searchItems(event) {
   const filteredItems = items.value.filter(
     (item) =>
-      item.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      item.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       item.description.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
   itemsDisplay.value = filteredItems;

@@ -50,6 +50,7 @@
       :columns="columnas"
       :options="options"
       @action="action"
+      @click="handleRowClick"
     ></data-table>
   </card-data>
 </template>
@@ -92,6 +93,9 @@ const columnas = ref([
 
 const options = ref([]);
 
+// array de IDs de empleados
+const arrayIds = ref([]);
+
 async function loadData() {
   load.value = true;
   try {
@@ -118,6 +122,18 @@ watch(role, () => {
 watch(status, () => {
   searchItems();
 });
+
+// agregar IDs de empleados seleccionados al array
+async function handleRowClick() {
+  let id = 0;
+  for(let i = 0; i < items.value.length; i++){
+    id = items.value[i].id;
+    if(items.value[i].check && !arrayIds.value.includes(id)){
+      arrayIds.value.push(id);
+    }
+  }
+  console.table(arrayIds.value);
+}
 
 function searchItems(event) {
   const filteredItems = items.value.filter(
