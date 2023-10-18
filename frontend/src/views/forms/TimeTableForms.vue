@@ -143,7 +143,7 @@
         <Input 
           id="wednesdayEntry" 
           labelText="Miércoles (Entrada)" 
-          v-model="formData.schedule.wednesady.entry" 
+          v-model="formData.schedule.wednesday.entry" 
           type="time" 
         />
       </div>
@@ -151,7 +151,7 @@
         <Input 
           id="wednesdayExit" 
           labelText="Miércoles (Salida)" 
-          v-model="formData.schedule.wednesady.exit"
+          v-model="formData.schedule.wednesday.exit"
           type="time" 
         />
       </div>
@@ -159,7 +159,7 @@
         <Checkbox
           id="wednesdayEnable"
           labelText="Miércoles (Habilitado)"
-          v-model="formData.schedule.wednesady.enable"
+          v-model="formData.schedule.wednesday.enable"
         />
       </div>
       <div class="w-full lg:w-4/12 px-4">
@@ -297,7 +297,7 @@ const formData = reactive({
       exit: null,
       enable: false,
     },
-    wednesady: {
+    wednesday: {
       entry: null,
       exit: null,
       enable: false,
@@ -362,7 +362,7 @@ const rules = computed(() => ({
       exit: {},
       enable: {},
     },
-    wednesady: {
+    wednesday: {
       entry: {},
       exit: {},
       enable: {},
@@ -412,9 +412,8 @@ onMounted( async () => {
     try {
       const res = await getTimeTableRequest(route.query.id);
       Object.assign(formData, res.data);
-      console.log("Datos del horario guardados", formData.schedule);
     } catch (error) {
-      toast.error("Error al cargar los datos 2");
+      toast.error("Error al cargar los datos");
       route.push("/timeTable");
     }
   }

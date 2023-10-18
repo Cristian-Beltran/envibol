@@ -128,8 +128,12 @@ async function handleRowClick() {
   let id = 0;
   for(let i = 0; i < items.value.length; i++){
     id = items.value[i].id;
-    if(items.value[i].check && !arrayIds.value.includes(id)){
-      arrayIds.value.push(id);
+    if(items.value[i].check){
+      if(!arrayIds.value.includes(id))
+        arrayIds.value.push(id);
+    } else if(arrayIds.value.includes(id)){
+      const indexId = arrayIds.value.indexOf(id);
+      arrayIds.value.splice(indexId, 1);
     }
   }
   console.table(arrayIds.value);
