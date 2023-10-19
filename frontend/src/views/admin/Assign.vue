@@ -2,39 +2,18 @@
   <card-data title="Empleados" icon="fa-user-tie">
     <template v-slot:filters>
       <div class="pb-4 flex flex-wrap gap-2">
-        <label for="table-search" class="sr-only">Search</label>
-        <div class="relative mt-1">
-          <div
-            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
-          >
-            <v-icon
-              name="fa-search"
-              class="w-4 h-4 text-gray-500 dark:text-gray-400"
-            />
-          </div>
-          <input
-            type="text"
-            v-model="searchQuery"
-            class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Buscar"
-          />
-        </div>
-
+        <Search v-model="searchQuery" />
         <div class="mt-1">
-          <select
-            v-model="status"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          >
+          <select v-model="status"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             <option value="all" selected>Estado</option>
             <option value="1">Habilitado</option>
             <option value="2">Deshablitado</option>
           </select>
         </div>
         <div class="mt-1">
-          <select
-            v-model="role"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          >
+          <select v-model="role"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             <option value="all" selected>Rol</option>
             <option v-for="role in roles" :key="role.id" :value="role.name">
               {{ role.name }}
@@ -44,14 +23,14 @@
       </div>
       <button-add to="/newEmployee"> Agregar empleado </button-add>
     </template>
-    <data-table
-      check="true"
-      :items="itemsDisplay"
-      :columns="columnas"
-      :options="options"
+    <data-table 
+      check="true" 
+      :items="itemsDisplay" 
+      :columns="columnas" 
+      :options="options" 
       @action="action"
-      @click="handleRowClick"
-    ></data-table>
+      @click="handleRowClick">
+    </data-table>
   </card-data>
 </template>
 <script setup>
@@ -65,12 +44,14 @@ import { getRolesRequest } from "@/api/role";
 import { disconnectCardEmployeeRequest } from "@/api/card";
 
 import { ref, onMounted, watch } from "vue";
-import DataTable from "@/components/Tables/DataTable.vue";
-import CardData from "@/components/Cards/CardData.vue";
-import ButtonAdd from "@/components/button/ButtonAdd.vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
 import { useProfileStore } from "@/stores/profile";
+
+import DataTable from "@/components/Tables/DataTable.vue";
+import CardData from "@/components/Cards/CardData.vue";
+import ButtonAdd from "@/components/button/ButtonAdd.vue";
+import Search from "@/components/Inputs/Search.vue";
 
 const profileStore = useProfileStore();
 const router = useRouter();
@@ -126,12 +107,12 @@ watch(status, () => {
 // agregar IDs de empleados seleccionados al array
 async function handleRowClick() {
   let id = 0;
-  for(let i = 0; i < items.value.length; i++){
+  for (let i = 0; i < items.value.length; i++) {
     id = items.value[i].id;
-    if(items.value[i].check){
-      if(!arrayIds.value.includes(id))
+    if (items.value[i].check) {
+      if (!arrayIds.value.includes(id))
         arrayIds.value.push(id);
-    } else if(arrayIds.value.includes(id)){
+    } else if (arrayIds.value.includes(id)) {
       const indexId = arrayIds.value.indexOf(id);
       arrayIds.value.splice(indexId, 1);
     }
