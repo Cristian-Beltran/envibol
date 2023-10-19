@@ -14,7 +14,6 @@
     ></data-table>
   </card-data>
 </template>
-
 <script setup>
 import { getTimeTablesRequest } from "@/api/timetable";
 

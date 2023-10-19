@@ -2,23 +2,7 @@
   <CardData title="Vacaciones" icon="fa-calendar-day">
     <template v-slot:filters>
       <div class="pb-4">
-        <label for="table-search" class="sr-only">Search</label>
-        <div class="relative mt-1">
-          <div
-            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
-          >
-            <v-icon
-              name="fa-search"
-              class="w-4 h-4 text-gray-500 dark:text-gray-400"
-            />
-          </div>
-          <input
-            type="text"
-            v-model="searchQuery"
-            class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Buscar"
-          />
-        </div>
+        <Search v-model="searchQuery"/>
       </div>
     </template>
     <div class="demo-app">
@@ -69,6 +53,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { INITIAL_EVENTS, createEventId } from "@/utils/event-utils";
 import CardData from "@/components/Cards/CardData.vue";
+import Search from "@/components/Inputs/Search.vue";
 
 import ModalConfirm from "@/components/modals/ModalConfirm.vue";
 const show = ref(false);
