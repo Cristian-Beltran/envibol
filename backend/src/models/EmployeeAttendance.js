@@ -1,7 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../db.js";
 import { Employee } from "./User.js";
-import { TimeTable } from "./TimeTable.js";
 
 export const EmployeeAttendance = sequelize.define('employeeAttendance', {
     id: {
@@ -20,20 +19,9 @@ export const EmployeeAttendance = sequelize.define('employeeAttendance', {
     },
 
     // *Solo se permiten "onTime" y "late"
-    punctualityStatus: {
+    punctuality: {
         type: DataTypes.STRING,
     },
-});
-
-EmployeeAttendance.hasOne(TimeTable, {
-    foreignKey: "timeTableId",
-    sourceKey: "id",
-});
-TimeTable.belongsTo(EmployeeAttendance, {
-    foreignKey: "employeeAttendanceId",
-    targetKey: "id",
-    allowNull: true,
-    unique: true,
 });
 
 Employee.hasMany(EmployeeAttendance, {
